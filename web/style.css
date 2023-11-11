@@ -15,14 +15,14 @@
     .container {
         display: grid;
         height: 100vh;
-        grid-template-columns: .5fr 1fr 1fr 1fr;
+        grid-template-columns: .8fr 1fr 1fr 1fr;
         grid-template-rows: .2fr 1fr 1.5fr .3fr;
         grid-template-areas: 
         "header header header header"
         "sidbar main main main"
         "sidbar grafiek_1 grafiek_2 grafiek_3"
         "sidbar voet_noot voet_noot voet_noot";
-        grid-gap: 0.2rem;
+        grid-gap: 0.5rem;
     }
 
 
@@ -69,15 +69,15 @@
 
     button {
         padding: 9px 25px;
-        background-color: #0088a9;
+        background-color: rgb(255, 0, 0);
         border: none;
         border-radius: 50px;
         cursor: pointer;
-        transition: all 0.3s ease 0s;
+        transition: all .3s ease 0s;
     }
 
     button:hover {
-        background-color: #00657a;
+        background-color: rgba(255, 1, 1, 0.5);
     }
 
 
@@ -90,17 +90,21 @@
         background: #0088a9;
     }
 
-    
-    /* sidbar */
+
+/* sidbar */
 
     #sidbar {
         grid-area: sidbar;
         border-radius: var(--main-radius);
         padding-top: var(--main-padding);
-        background: #edf0f1;
+        background: #4d7786;
     }
 
-    /* grafiek 1 */
+/* naam input */
+
+
+ 
+/* grafiek 1 */
 
     #grafiek_1 {
         grid-area: grafiek_1;
@@ -110,7 +114,7 @@
     }
 
     
-    /* grafiek 2 */
+/* grafiek 2 */
 
     #grafiek_2 {
         grid-area: grafiek_2;
@@ -120,7 +124,7 @@
     }
 
 
-    /* grafiek 3 */
+/* grafiek 3 */
 
     #grafiek_3 {
         grid-area: grafiek_3;
@@ -130,7 +134,7 @@
     }
 
     
-    /* voot note */
+/* voot note */
 
     #voet_noot {
         grid-area: voet_noot;
