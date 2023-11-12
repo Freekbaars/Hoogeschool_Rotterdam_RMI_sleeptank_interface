@@ -5,6 +5,9 @@ import ujson
 import pandas as pd
 from datetime import datetime
 
+naam_document = input("Geef de naam van het document: ")
+
+
 def find_serial_port():
     ports = list(serial.tools.list_ports.comports())
     portlist = []
@@ -88,7 +91,7 @@ def main():
     # Save the data to a CSV file
     data_dict = {'Elapsed Time (s)': [td.total_seconds() for td in elapsed_time_data], 'Kracht': kracht_data}
     df = pd.DataFrame(data_dict)
-    df.to_csv('sensor_data.csv', index=False)
+    df.to_csv(naam_document, index=False)
 
     serialInst.close()
 
