@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import ujson
 import pandas as pd
+from datetime import datetime
 
 def find_serial_port():
     ports = list(serial.tools.list_ports.comports())
@@ -35,7 +36,7 @@ def open_serial_port(portVar):
 
     return serialInst
 
-def process_sensor_data(packet, kracht_data):
+def process_sensor_data(packet, kracht_data, elapsed_time_data):
     stringN = packet.decode()
     string = stringN.rstrip()
     print(string)
@@ -44,6 +45,7 @@ def process_sensor_data(packet, kracht_data):
         try:
             data = ujson.loads(string.split("Verzonden gegevens: ")[1])
             kracht_data.append(data['kracht'])
+            elapsed_time_data.append(datetime.now() - start_time)
         except ValueError:
             print(f"Kon de numerieke waarden niet uit de JSON-string halen: {string}")
 
@@ -55,7 +57,9 @@ def main():
 
     serialInst = open_serial_port(portVar)
 
-    kracht_data = []  # Een lijst om gegevens op te slaan
+    kracht_data = []   # A list to store force data
+    elapsed_time_data = []      # A list to store elapsed time
+
 
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6))
     fig.suptitle('Live Sensor Data')
@@ -65,21 +69,29 @@ def main():
     def update(frame):
         if serialInst.in_waiting:
             packet = serialInst.readline()
-            process_sensor_data(packet, kracht_data)
+            process_sensor_data(packet, kracht_data, elapsed_time_data)
 
             line_kracht.set_data(range(len(kracht_data)), kracht_data)
-            
+
             ax1.relim()
             ax1.autoscale_view()
             ax2.relim()
             ax2.autoscale_view()
 
-    ani = FuncAnimation(fig, update, frames=range(1000), repeat=False)
+    # Modify the FuncAnimation call here
+    ani = FuncAnimation(fig, update, frames=1000, repeat=False)
+
     plt.legend(handles=[line_kracht])
     plt.tight_layout()
     plt.show()
 
+    # Save the data to a CSV file
+    data_dict = {'Elapsed Time (s)': [td.total_seconds() for td in elapsed_time_data], 'Kracht': kracht_data}
+    df = pd.DataFrame(data_dict)
+    df.to_csv('sensor_data.csv', index=False)
+
     serialInst.close()
 
 if __name__ == "__main__":
+    start_time = datetime.now()
     main()
