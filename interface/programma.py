@@ -27,6 +27,7 @@ from datetime import datetime # voor het bijhouden van de tijd
 naam_document = input("Geef de naam van het document: ")
 
 # zoek de juiste poort ------------------------------------------------------
+# todo maak een funtie voor het niet vinden van een COM poort
 def find_serial_port():
     ports = list(serial.tools.list_ports.comports())
     portlist = []
