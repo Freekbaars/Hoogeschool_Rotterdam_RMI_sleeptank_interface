@@ -14,8 +14,8 @@
     data: {
       labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test', "test 2",'Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test', "test 2"],
       datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3, 4, 30,12, 19, 3, 5, 2, 3, 4, 30],
+        label: 'weerstand over tijd',
+        data: [12, 19, 3, 5, 70, 3, 4, 30,12, 19, 3, 5, 2, 3, 4, 30],
         borderWidth: 1,
         borderColor: 'black',
       }]
@@ -37,8 +37,8 @@ const Weerstand_Chart_2 = new Chart(ctx2, {
   data: {
     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test', "test 2",'Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test', "test 2"],
     datasets: [{
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3, 4, 30,12, 19, 3, 5, 2, 3, 4, 30],
+      label: 'hoek over tijd',
+      data: [12, 19, 3, 5, 2, 3, 4, 30,12, 19, 12, 50, 2, 30, 4, 30],
       borderWidth: 1,
       borderColor: 'black',
     }]
@@ -60,7 +60,7 @@ const Weerstand_Chart_3 = new Chart(ctx3, {
   data: {
     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test', "test 2",'Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test', "test 2"],
     datasets: [{
-      label: '# of Votes',
+      label: 'nog iets over tijd',
       data: [12, 19, 3, 5, 2, 3, 4, 30,12, 19, 3, 5, 2, 3, 4, 30],
       borderWidth: 1,
       borderColor: 'black',
