@@ -2,6 +2,9 @@
     :root{
         --main-radius:5px;
         --main-padding:5px;
+        --main-collor: #76d5f5;
+        --backup-collor: gray;
+        --graph-collor: #cce8f5; 
 
     }
 
@@ -9,7 +12,7 @@
     * {
         margin: 0;
         padding: 0;
-        background-color: #24252A;
+        background-color: var(--main-collor);
     }
 
     .container {
@@ -34,7 +37,7 @@
         font-family: 'Roboto', sans-serif;
         font-weight: 500;
         font-size: 16px;
-        color: #edf0f1;
+        color: #000000;
         text-decoration: none;
     }
 
@@ -44,7 +47,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 30px 10%;
-        background-color: #24252A;	
+        background-color: var(--main-collor);	
     }
 
     .logo {
@@ -89,14 +92,14 @@
         grid-area: main;
         border-radius: var(--main-radius);
         padding-top: var(--main-padding);
-        background: #0088a9;
+        background: var(--backup-collor);
     }
 
     #visual {
         grid-area: visual;
         border-radius: var(--main-radius);
         padding-top: var(--main-padding);
-        background: #0088a9; 
+        background: var(--backup-collor); 
     }
 /* sidbar */
 
@@ -104,7 +107,7 @@
         grid-area: sidbar;
         border-radius: var(--main-radius);
         padding-top: var(--main-padding);
-        background: #4d7786;
+        background: var(--backup-collor);
     }
 
 /* naam input */
@@ -117,11 +120,11 @@
         grid-area: grafiek_1;
         border-radius: var(--main-radius);
         padding-top: var(--main-padding);
-        background: #0088a9;
+        background: var(--backup-collor);
     }
 
     #Weerstand_Chart_1 {
-        background-color: #0088a9;
+        background-color: var(--graph-collor);
         width: 100%;
         height: 100%;
     }
@@ -132,11 +135,11 @@
         grid-area: grafiek_2;
         border-radius: var(--main-radius);
         padding-top: var(--main-padding);
-        background: #0088a9;
+        background: var(--backup-collor);
     }
     
     #Weerstand_Chart_2 {
-        background-color: #0088a9;
+        background-color: var(--graph-collor);
         width: 100%;
         height: 100%;
     }
@@ -147,10 +150,10 @@
         grid-area: grafiek_3;
         border-radius: var(--main-radius);
         padding-top: var(--main-padding);
-        background: #0088a9;
+        background: var(--backup-collor);
     }
     #Weerstand_Chart_3 {
-        background-color: #0088a9;
+        background-color: var(--graph-collor);
         width: 100%;
         height: 100%;
     }
@@ -160,5 +163,5 @@
         grid-area: voet_noot;
         border-radius: var(--main-radius);
         padding-top: var(--main-padding);
-        background: #0088a9;
+        background:var(--backup-collor);
     }    

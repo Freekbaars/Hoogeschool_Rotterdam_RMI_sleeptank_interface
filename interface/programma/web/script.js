@@ -75,4 +75,6 @@ const Weerstand_Chart_3 = new Chart(ctx3, {
   }
 });
 
+
+// 
   
