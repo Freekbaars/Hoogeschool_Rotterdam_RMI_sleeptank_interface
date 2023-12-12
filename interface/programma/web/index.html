@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>dachboard</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <!--header balk-->
+      <header>
+        <!--logo-->
+        <img class="logo" src="img/logo.png" alt="logo">
+        <!--opties in header-->
+        <nav>
+          <ul class="nav_links">
+            <li><a href="#">home</a></li>
+            <li><a href="#">settings</a></li>
+          </ul>
+        </nav>
+       
+        <!--start test knop in header-->
+        <a class="cta" href="#"><button>start test</button></a>
+      </header>
+     
+      <!--begin main block-->
+      <main>
+        hier komt iets van info
+      </main>
+      
+      
+      <!--begin sidebar-->
+      <div id="sidebar">
+        <!--naam ingave output bestand-->
+        <div id="naam_document">
+          <h2>Naam export document</h2>
+          <form>
+            <div class="input_field">
+              <input type="text" name="" required="">
+              <label>.csv</label>
+              <span></span>
+            </div>
+            <input type="submit" value="oke" name="">
+          </form>
+        </div>
+      </div>
+
+    <div id="visual">  
+    </div>
+
+    <div id="grafiek_1">
+      grafiek 1
+      <div id="rol"></div>
+      <div>
+        <canvas id="Weerstand_Chart_1"></canvas>
+      </div>
+    </div>
+
+    <div id="grafiek_2">
+      grafiek 2
+      <div id="rol_2"></div>
+      <div>
+        <canvas id="Weerstand_Chart_2"></canvas>
+      </div>
+    </div>
+
+    <div id="grafiek_3">
+      grafiek 3
+      <div id="rol_3"></div>
+      <div>
+        <canvas id="Weerstand_Chart_3"></canvas>
+      </div>
+    </div>
+    
+      
+      <div id="voet_noot">
+        Dit programma is onderdeel van de sleeptank module voor het meten van de afdeling marietime techniek van de MRI van de Hoogeschool Rotterdam 
+      </div>
+      
+    </div>
+  </body>
+</html>

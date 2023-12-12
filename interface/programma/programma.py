@@ -4,18 +4,19 @@
 # start datum: 06-11-2023
 
 # importeer de benodigde modules ---------------------------------------------
-import eel # voor de web interface
-import serial.tools.list_ports # voor het zoeken van de juiste poort
-import matplotlib.pyplot as plt # voor het maken van de grafiek
-from matplotlib.animation import FuncAnimation # voor het updaten van de grafiek
-import ujson # voor het verwerken van de data
-import pandas as pd # voor het opslaan van de data in een csv bestand
-from datetime import datetime # voor het bijhouden van de tijd
+
+import eel                                      # voor de web interface
+import serial.tools.list_ports                  # voor het zoeken van de juiste poort
+import matplotlib.pyplot as plt                 # voor het maken van de grafiek
+from matplotlib.animation import FuncAnimation  # voor het updaten van de grafiek
+import ujson                                    # voor het verwerken van de data
+import pandas as pd                             # voor het opslaan van de data in een csv bestand
+from datetime import datetime                   # voor het bijhouden van de tijd
 
 
 # start web interface -------------------------------------------------------
-# eel.init("web")
-# eel.start("index.html")
+eel.init("web")
+eel.start("index.html")
 
 
 
@@ -73,6 +74,13 @@ def process_sensor_data(packet, kracht_data, elapsed_time_data):
             elapsed_time_data.append(datetime.now() - start_time)
         except ValueError:
             print(f"Kon de numerieke waarden niet uit de JSON-string halen: {string}")
+
+# maak een functie voor het opslaan van de data -----------------------------
+@eel.expose
+def save_data():
+    data_dict = {'Elapsed Time (s)': [td.total_seconds() for td in elapsed_time_data], 'Kracht': kracht_data}
+    df = pd.DataFrame(data_dict)
+    df.to_csv(naam_document, index=False)
 
 # maak de grafiek -----------------------------------------------------------
 def main():
