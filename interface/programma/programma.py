@@ -1,5 +1,6 @@
 # programma voor het uitlezen van de kracht sensor op de M4
 # en het opslaan van de data in een csv bestand
+# python 3.10.11
 # auteur: Freek Baars
 # start datum: 06-11-2023
 
@@ -12,13 +13,15 @@ from matplotlib.animation import FuncAnimation  # voor het updaten van de grafie
 import ujson                                    # voor het verwerken van de data
 import pandas as pd                             # voor het opslaan van de data in een csv bestand
 from datetime import datetime                   # voor het bijhouden van de tijd
+import os
 
 
 # start web interface -------------------------------------------------------
-eel.init("web")
+diranme = os.path.dirname(__file__)
+
+eel.init(diranme + "/web")
+
 eel.start("index.html")
-
-
 
 
 # start test programma ------------------------------------------------------
@@ -75,8 +78,15 @@ def process_sensor_data(packet, kracht_data, elapsed_time_data):
         except ValueError:
             print(f"Kon de numerieke waarden niet uit de JSON-string halen: {string}")
 
-# maak een functie voor het opslaan van de data -----------------------------
+# eel functies --------------------------------------------------------------
+kracht_data = []   # A list to store force data
+
 @eel.expose
+def get_kracht_data():
+    return kracht_data
+
+# maak een functie voor het opslaan van de data -----------------------------
+
 def save_data():
     data_dict = {'Elapsed Time (s)': [td.total_seconds() for td in elapsed_time_data], 'Kracht': kracht_data}
     df = pd.DataFrame(data_dict)
@@ -126,7 +136,9 @@ def main():
 
     serialInst.close()
 
+
 # run programma --------------------------------------------------------------
 if __name__ == "__main__":
     start_time = datetime.now()
     main()
+
