@@ -2,8 +2,10 @@ import eel
 import serial.tools.list_ports
 import serial
 import threading
+from threading import Lock
 import pandas as pd
 import time
+import csv
 
 eel.init('test\web')  # Vervang met het pad naar je web map
 
@@ -13,6 +15,9 @@ serial_instance = None
 is_test_running = False
 data_frame = None
 csv_bestandsnaam = None
+csv_writer = None
+write_lock = Lock()
+
 
 def read_serial_data():
     global data_frame, is_test_running, latest_force_reading
@@ -22,6 +27,22 @@ def read_serial_data():
             current_time = time.strftime("%Y-%m-%d %H:%M:%S")
             data_frame = data_frame.append({'Tijd': current_time, 'Data': data}, ignore_index=True)
         latest_force_reading = data  # Update de laatste meting
+
+#def read_serial_data():
+#    global is_test_running, serial_instance, csv_writer
+#    while is_test_running and serial_instance and serial_instance.isOpen():
+#        data = serial_instance.readline().decode().strip()
+#        current_time = time.strftime("%Y-%m-%d %H:%M:%S")
+#
+#        with write_lock:
+#            if csv_writer is not None:
+#                csv_writer.writerow([current_time, data])
+#            else:
+#                print("csv_writer is None, kan niet naar CSV-bestand schrijven")
+
+
+
+
 
 @eel.expose
 def get_serial_ports():
@@ -58,37 +79,38 @@ def set_csv_bestandsnaam(bestandsnaam):
     print("Bestandsnaam voor CSV is ingesteld op:", csv_bestandsnaam)
 
 
-
 @eel.expose
 def start_test():
-    global is_test_running, data_frame, csv_bestandsnaam
+    global is_test_running, csv_bestandsnaam
     if not is_test_running and csv_bestandsnaam:
         is_test_running = True
-        data_frame = pd.DataFrame(columns=['Tijd', 'Data'])
-        
-        # Sla een leeg DataFrame op als CSV-bestand om het bestand aan te maken
-        data_frame.to_csv(csv_bestandsnaam + '.csv', index=False)
-        
-        # Start de thread voor het lezen van data
-        threading.Thread(target=read_serial_data, daemon=True).start()
-        print("Test gestart, leeg CSV-bestand aangemaakt:", csv_bestandsnaam + '.csv')
-    else:
-        print("Test is al gestart of bestandsnaam is niet ingesteld")
 
+        csv_file = open(csv_bestandsnaam + '.csv', mode='w', newline='', encoding='utf-8')
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(['Tijd', 'Data'])
+
+        # Zorg ervoor dat deze regel ná de initialisatie van csv_writer komt
+        threading.Thread(target=read_serial_data, daemon=True).start()
+        print("Test gestart met bestandsnaam:", csv_bestandsnaam)
+    else:
+        print("Test kan niet worden gestart. Is test running:", is_test_running, "Bestandsnaam:", csv_bestandsnaam)
 
 
 @eel.expose
 def stop_test():
-    global is_test_running, data_frame, csv_bestandsnaam
+    global is_test_running, csv_file
     if is_test_running:
         is_test_running = False
-        if data_frame is not None:
-            data_frame.to_csv(csv_bestandsnaam + '.csv', index=False)
-            print("Data opgeslagen in:", csv_bestandsnaam + '.csv')
-        data_frame = None
-        csv_bestandsnaam = None  # Reset de bestandsnaam
+        if csv_file:
+            csv_file.close()
+            csv_file = None  # Voeg dit toe om csv_file te resetten
+        print("Test gestopt en CSV-bestand gesloten")
     else:
         print("Geen actieve test om te stoppen")
+
+
+
+
 
 
 
