@@ -1,89 +1,89 @@
-// Version: 1.0
-// Date: 2021-05-31
-// Description: Script voor het programma
+async function loadSerialPorts() {
+    let ports = await eel.get_serial_ports()();
+    let portsDropdown = document.getElementById('serial-ports-dropdown');
 
-// Chart.js
-// https://www.chartjs.org/docs/latest/getting-started/installation.html
-// https://www.chartjs.org/docs/latest/charts/bar.html
-// https://www.chartjs.org/docs/latest/charts/line.html
+    ports.forEach(port => {
+        let option = document.createElement('option');
+        option.value = port;
+        option.text = port;
+        portsDropdown.appendChild(option);
+    });
+}
 
-//eel inporteren
 
-eel.get_kracht_data()(data => {
-  Weerstand_Chart.data.datasets[0].data = data;
-  Weerstand_Chart.update();
-});
 
-// Grafiek 1
-const ctx = document.getElementById('Weerstand_Chart_1');
-
-const Weerstand_Chart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test', "test 2",'Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test', "test 2"],
-    datasets: [{
-      label: 'weerstand over tijd',
-      data: [12, 19, 3, 5, 70, 3, 4, 30,12, 19, 3, 5, 2, 3, 4, 30],
-      borderWidth: 1,
-      borderColor: 'black',
-    }]
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true
-      }
+async function openSelectedPort() {
+    let selectedPort = document.getElementById('serial-ports-dropdown').value;
+    let isOpened = await eel.open_serial_port(selectedPort)();
+    if (isOpened) {
+        console.log("Poort geopend: " + selectedPort);
+    } else {
+        console.log("Fout bij het openen van de poort");
     }
-  }
-});
+}
 
 
-// Grafiek 2
-const ctx2 = document.getElementById('Weerstand_Chart_2');
+var gewichtsChart;
 
-const Weerstand_Chart_2 = new Chart(ctx2, {
-  type: 'line',
-  data: {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test', "test 2",'Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test', "test 2"],
-    datasets: [{
-      label: 'hoek over tijd',
-      data: [12, 19, 3, 5, 2, 3, 4, 30,12, 19, 12, 50, 2, 30, 4, 30],
-      borderWidth: 1,
-      borderColor: 'black',
-    }]
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true
-      }
+function tekenGewichtsGrafiek() {
+    var ctx = document.getElementById('Weerstand_Chart_1').getContext('2d');
+    gewichtsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],  // Tijdlabels
+            datasets: [{
+                label: 'Gewicht',
+                data: [],  // Gewichtsdata
+                // Voeg hier styling toe
+            }]
+        },
+        options: {
+            // Voeg hier grafiekopties toe
+        }
+    });
+}
+
+async function updateGewichtsGrafiek() {
+    let gewichtsdata = await eel.get_latest_force_reading()();
+    if (gewichtsdata) {
+        let tijd = new Date().toLocaleTimeString(); // Huidige tijd voor de label
+        gewichtsChart.data.labels.push(tijd);
+        gewichtsChart.data.datasets[0].data.push(gewichtsdata);
+        gewichtsChart.update();
     }
-  }
-});
+}
 
-// Grafiek 3
-const ctx3 = document.getElementById('Weerstand_Chart_3');
 
-const Weerstand_Chart_3 = new Chart(ctx3, {
-  type: 'line',
-  data: {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test', "test 2",'Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'test', "test 2"],
-    datasets: [{
-      label: 'nog iets over tijd',
-      data: [12, 19, 3, 5, 2, 3, 4, 30,12, 19, 3, 5, 2, 3, 4, 30],
-      borderWidth: 1,
-      borderColor: 'black',
-    }]
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true
-      }
+let bestandsnaamBevestigd = false;
+
+function bevestigBestandsnaam() {
+    let bestandsnaam = document.getElementById('csv-bestandsnaam').value;
+    if (bestandsnaam) {
+        eel.set_csv_bestandsnaam(bestandsnaam)(function() {
+            bestandsnaamBevestigd = true;
+        });
+    } else {
+        alert('Voer een geldige bestandsnaam in.');
     }
-  }
-});
+}
+
+async function startTest() {
+    if (bestandsnaamBevestigd) {
+        await eel.start_test()();
+    } else {
+        alert('Bevestig eerst de bestandsnaam.');
+    }
+}
 
 
-// 
-  
+function stopTest() {
+    eel.stop_test()();  // Roep de Python-functie aan om de test te stoppen
+}
+
+
+
+window.onload = function() {
+    loadSerialPorts();  // Laadt de seriële poorten
+    tekenGewichtsGrafiek();  // Tekent de grafiek
+    setInterval(updateGewichtsGrafiek, 1000); // Update de grafiek elke seconden
+};

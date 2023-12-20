@@ -6,12 +6,14 @@
     <title>dachboard</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
   </head>
 
   <body>
+
     <div class="container">
       <!--header balk-->
       <header>
@@ -28,58 +30,31 @@
         <!--start test knop in header-->
         <a class="cta" href="#"><button>start test</button></a>
       </header>
-     
-      <!--begin main block-->
-      <main>
-        hier komt iets van info
-      </main>
-      
-      
-      <!--begin sidebar-->
-      <div id="sidebar">
-        <!--naam ingave output bestand-->
-        <div id="naam_document">
-          <h2>Naam export document</h2>
-          <form>
-            <div class="input_field">
-              <input type="text" name="" required="">
-              <label>.csv</label>
-              <span></span>
-            </div>
-            <input type="submit" value="oke" name="">
-          </form>
-        </div>
-      </div>
-
-    <div id="visual">  
     </div>
 
-    <div id="grafiek_1">
-      <div id="rol"></div>
-      <div>
-        <canvas id="Weerstand_Chart_1"></canvas>
-      </div>
-    </div>
-
-    <div id="grafiek_2">
-      <div id="rol_2"></div>
-      <div>
-        <canvas id="Weerstand_Chart_2"></canvas>
-      </div>
-    </div>
-
-    <div id="grafiek_3">
-      <div id="rol_3"></div>
-      <div>
-        <canvas id="Weerstand_Chart_3"></canvas>
-      </div>
-    </div>
     
-      
-      <div id="voet_noot">
-        Dit programma is onderdeel van de sleeptank module voor het meten van de afdeling marietime techniek van de MRI van de Hoogeschool Rotterdam 
-      </div>
-
+    <div class="dropdown">
+      <select id="serial-ports-dropdown"></select>
+      <button onclick="openSelectedPort()">Open Poort</button>
     </div>
+
+
+    <canvas id="Weerstand_Chart_1"></canvas>
+
+    
+    <div id="bestandsnaam-invoer">
+        <input type="text" id="csv-bestandsnaam" placeholder="Voer bestandsnaam in">
+        <button onclick="bevestigBestandsnaam()">Akkoord</button>
+    </div>
+
+    <div id="test-starten">
+        <button onclick="startTest()">Start Test</button>
+    </div>
+    <div id="test-stoppen">
+        <button onclick="stopTest()">Stop Test</button>
+    </div>
+
+
+
   </body>
 </html>

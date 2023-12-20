@@ -1,167 +1,141 @@
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
-    :root{
-        --main-radius:5px;
-        --main-padding:5px;
-        --main-collor: #76d5f5;
-        --backup-collor: gray;
-        --graph-collor: #cce8f5; 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+:root{
+    --main-radius:5px;
+    --main-padding:5px;
+    --main-collor: #76d5f5;
+    --backup-collor: gray;
+    --graph-collor: #cce8f5; 
 
-    }
+}
 
 
-    * {
-        margin: 0;
-        padding: 0;
-        background-color: var(--main-collor);
-    }
+* {
+    margin: 0;
+    padding: 0;
+    background-color: var(--main-collor);
+}
 
-    .container {
-        display: grid;
-        height: 100vh;
-        grid-template-columns: .8fr 1fr 1fr 1fr;
-        grid-template-rows: .1fr .2fr 1fr 1fr 1fr .2fr;
-        grid-template-areas: 
-        "header header header header"
-        "sidbar main main main"
-        "sidbar grafiek_1 grafiek_1 visual"
-        "sidbar grafiek_2 grafiek_2 visual"
-        "sidbar grafiek_3 grafiek_3 visual"
-        "sidbar voet_noot voet_noot voet_noot";
-        grid-gap: 0.5rem;
-    }
+/*.container {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: .8fr 1fr 1fr 1fr;
+    grid-template-rows: .1fr .2fr 1fr 1fr 1fr .2fr;
+    grid-template-areas: 
+    "header header header header"
+    "sidbar main main main"
+    "sidbar grafiek_1 grafiek_1 visual"
+    "sidbar grafiek_2 grafiek_2 visual"
+    "sidbar grafiek_3 grafiek_3 visual"
+    "sidbar voet_noot voet_noot voet_noot";
+    grid-gap: 0.5rem;
+}
+*/
 
 
 /* navbar style */
 
-    li, a, button {
-        font-family: 'Roboto', sans-serif;
-        font-weight: 500;
-        font-size: 16px;
-        color: #000000;
-        text-decoration: none;
-    }
+li, a, button {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000000;
+    text-decoration: none;
+}
 
-    header {
-        grid-area: header;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 30px 10%;
-        background-color: var(--main-collor);	
-    }
+header {
+    grid-area: header;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 10%;
+    background-color: var(--main-collor);	
+}
 
-    .logo {
-        width: 70px;
-        cursor: pointer;
-    }
+.logo {
+    width: 70px;
+    cursor: pointer;
+}
 
-    .nav_links {
-        list-style: none;
-    }
+.nav_links {
+    list-style: none;
+}
 
-    .nav_links li {
-        display: inline-block;
-        padding: 0px 20px;
-    }
+.nav_links li {
+    display: inline-block;
+    padding: 0px 20px;
+}
 
-    .nav_links li a {
-        transition: all 0.3s ease 0s;
-    }
+.nav_links li a {
+    transition: all 0.3s ease 0s;
+}
 
-    .nav_links li a:hover {
-        color: #0088a9;
-    }
+.nav_links li a:hover {
+    color: #0088a9;
+}
 
-    button {
-        padding: 9px 25px;
-        background-color: rgb(255, 0, 0);
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: all .3s ease 0s;
-    }
+button {
+    padding: 9px 25px;
+    background-color: rgb(255, 0, 0);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all .3s ease 0s;
+}
 
-    button:hover {
-        background-color: rgba(255, 1, 1, 0.5);
-    }
+button:hover {
+    background-color: rgba(255, 1, 1, 0.5);
+}
 
 
-    /* main */
+/* main */
 
-    main {
-        grid-area: main;
-        border-radius: var(--main-radius);
-        padding-top: var(--main-padding);
-        background: var(--backup-collor);
-    }
+main {
+    grid-area: main;
+    border-radius: var(--main-radius);
+    padding-top: var(--main-padding);
+    background: var(--backup-collor);
+}
 
-    #visual {
-        grid-area: visual;
-        border-radius: var(--main-radius);
-        padding-top: var(--main-padding);
-        background: var(--backup-collor); 
-    }
+#visual {
+    grid-area: visual;
+    border-radius: var(--main-radius);
+    padding-top: var(--main-padding);
+    background: var(--backup-collor); 
+}
 /* sidbar */
 
-    #sidbar {
-        grid-area: sidbar;
-        border-radius: var(--main-radius);
-        padding-top: var(--main-padding);
-        background: var(--backup-collor);
-    }
+#sidbar {
+    grid-area: sidbar;
+    border-radius: var(--main-radius);
+    padding-top: var(--main-padding);
+    background: var(--backup-collor);
+}
 
 /* naam input */
 
 
- 
+
 /* grafiek 1 */
 
-    #grafiek_1 {
-        grid-area: grafiek_1;
-        border-radius: var(--main-radius);
-        padding-top: var(--main-padding);
-        background: var(--backup-collor);
-    }
+#grafiek_1 {
+    grid-area: grafiek_1;
+    border-radius: var(--main-radius);
+    padding-top: var(--main-padding);
+    background: var(--backup-collor);
+}
 
-    #Weerstand_Chart_1 {
-        background-color: var(--graph-collor);
-        width: 100%;
-        height: 100%;
-    }
-    
-/* grafiek 2 */
+#Weerstand_Chart_1 {
+    background-color: var(--graph-collor);
+    width: 100%;
+    height: 100%;
+}
 
-    #grafiek_2 {
-        grid-area: grafiek_2;
-        border-radius: var(--main-radius);
-        padding-top: var(--main-padding);
-        background: var(--backup-collor);
-    }
-    
-    #Weerstand_Chart_2 {
-        background-color: var(--graph-collor);
-        width: 100%;
-        height: 100%;
-    }
 
-/* grafiek 3 */
-
-    #grafiek_3 {
-        grid-area: grafiek_3;
-        border-radius: var(--main-radius);
-        padding-top: var(--main-padding);
-        background: var(--backup-collor);
-    }
-    #Weerstand_Chart_3 {
-        background-color: var(--graph-collor);
-        width: 100%;
-        height: 100%;
-    }
 /* voot note */
 
-    #voet_noot {
-        grid-area: voet_noot;
-        border-radius: var(--main-radius);
-        padding-top: var(--main-padding);
-        background:var(--backup-collor);
-    }    
+#voet_noot {
+    grid-area: voet_noot;
+    border-radius: var(--main-radius);
+    padding-top: var(--main-padding);
+    background:var(--backup-collor);
+}    
