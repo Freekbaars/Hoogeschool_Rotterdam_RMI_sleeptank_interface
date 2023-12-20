@@ -16,32 +16,25 @@ is_test_running = False
 data_frame = None
 csv_bestandsnaam = None
 csv_writer = None
+csv_file = None  # Dit zorgt ervoor dat csv_file globaal beschikbaar is
 write_lock = Lock()
 
 
+
 def read_serial_data():
-    global data_frame, is_test_running, latest_force_reading
-    while is_test_running and serial_instance.isOpen():
-        data = serial_instance.readline().decode().strip()
-        if data_frame is not None:
+    global is_test_running, serial_instance, csv_writer,  latest_force_reading
+    while is_test_running and serial_instance and serial_instance.isOpen():
+        if serial_instance.in_waiting > 0:
+            data = serial_instance.readline().decode().strip()
             current_time = time.strftime("%Y-%m-%d %H:%M:%S")
-            data_frame = data_frame.append({'Tijd': current_time, 'Data': data}, ignore_index=True)
-        latest_force_reading = data  # Update de laatste meting
 
-#def read_serial_data():
-#    global is_test_running, serial_instance, csv_writer
-#    while is_test_running and serial_instance and serial_instance.isOpen():
-#        data = serial_instance.readline().decode().strip()
-#        current_time = time.strftime("%Y-%m-%d %H:%M:%S")
-#
-#        with write_lock:
-#            if csv_writer is not None:
-#                csv_writer.writerow([current_time, data])
-#            else:
-#                print("csv_writer is None, kan niet naar CSV-bestand schrijven")
+            latest_force_reading = data
 
-
-
+            with write_lock:
+                if csv_writer is not None:
+                    csv_writer.writerow([current_time, data])
+                else:
+                    print("csv_writer is None, kan niet naar CSV-bestand schrijven")
 
 
 @eel.expose
@@ -56,15 +49,14 @@ def open_serial_port(portVar):
     global serial_instance, is_test_running
     try:
         serial_instance = serial.Serial(portVar, baudrate=9600, timeout=1)
+        print("Seriële poort geopend:", portVar)
         if not is_test_running:
-            is_test_running = True
-            # Start de thread zonder argumenten mee te geven
             threading.Thread(target=read_serial_data, daemon=True).start()
+            print("Seriële lees thread gestart")
         return True
     except Exception as e:
         print(f"Fout bij het openen van de poort {portVar}: {str(e)}")
         return False
-
 
 @eel.expose
 def get_latest_force_reading():
@@ -81,7 +73,7 @@ def set_csv_bestandsnaam(bestandsnaam):
 
 @eel.expose
 def start_test():
-    global is_test_running, csv_bestandsnaam
+    global is_test_running, csv_bestandsnaam, csv_file, csv_writer
     if not is_test_running and csv_bestandsnaam:
         is_test_running = True
 
@@ -89,11 +81,11 @@ def start_test():
         csv_writer = csv.writer(csv_file)
         csv_writer.writerow(['Tijd', 'Data'])
 
-        # Zorg ervoor dat deze regel ná de initialisatie van csv_writer komt
         threading.Thread(target=read_serial_data, daemon=True).start()
         print("Test gestart met bestandsnaam:", csv_bestandsnaam)
     else:
         print("Test kan niet worden gestart. Is test running:", is_test_running, "Bestandsnaam:", csv_bestandsnaam)
+
 
 
 @eel.expose
@@ -103,18 +95,10 @@ def stop_test():
         is_test_running = False
         if csv_file:
             csv_file.close()
-            csv_file = None  # Voeg dit toe om csv_file te resetten
+            csv_file = None  # Reset csv_file na sluiting
         print("Test gestopt en CSV-bestand gesloten")
     else:
         print("Geen actieve test om te stoppen")
-
-
-
-
-
-
-
-
 
 
 eel.start('index.html')

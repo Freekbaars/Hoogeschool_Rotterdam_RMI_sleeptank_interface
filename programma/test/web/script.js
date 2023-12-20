@@ -54,7 +54,6 @@ async function updateGewichtsGrafiek() {
 }
 
 
-
 let bestandsnaamBevestigd = false;
 
 function bevestigBestandsnaam() {

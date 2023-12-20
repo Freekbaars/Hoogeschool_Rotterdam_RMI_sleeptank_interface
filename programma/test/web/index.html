@@ -13,12 +13,35 @@
   </head>
 
   <body>
-    <select id="serial-ports-dropdown"></select>
+
+    <div class="container">
+      <!--header balk-->
+      <header>
+        <!--logo-->
+        <img class="logo" src="img/logo.png" alt="logo">
+        <!--opties in header-->
+        <nav>
+          <ul class="nav_links">
+            <li><a href="#">Reset</a></li>
+            <li><a href="#">Stop</a></li>
+          </ul>
+        </nav>
+       
+        <!--start test knop in header-->
+        <a class="cta" href="#"><button>start test</button></a>
+      </header>
+    </div>
+
     
-    <button onclick="openSelectedPort()">Open Poort</button>
+    <div class="dropdown">
+      <select id="serial-ports-dropdown"></select>
+      <button onclick="openSelectedPort()">Open Poort</button>
+    </div>
+
 
     <canvas id="Weerstand_Chart_1"></canvas>
 
+    
     <div id="bestandsnaam-invoer">
         <input type="text" id="csv-bestandsnaam" placeholder="Voer bestandsnaam in">
         <button onclick="bevestigBestandsnaam()">Akkoord</button>
