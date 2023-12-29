@@ -7,7 +7,7 @@ import pandas as pd
 import time
 import csv
 
-eel.init('test\web')  # Vervang met het pad naar je web map
+eel.init('web')  # Vervang met het pad naar je web map
 
 # Globale variabele voor het bijhouden van de laatste krachtmeting
 latest_force_reading = None

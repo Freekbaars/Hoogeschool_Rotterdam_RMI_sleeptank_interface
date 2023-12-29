@@ -73,7 +73,7 @@ header {
     color: #0088a9;
 }
 
-button {
+/*button {
     padding: 9px 25px;
     background-color: rgb(255, 0, 0);
     border: none;
@@ -85,7 +85,7 @@ button {
 button:hover {
     background-color: rgba(255, 1, 1, 0.5);
 }
-
+*/
 
 /* main */
 
