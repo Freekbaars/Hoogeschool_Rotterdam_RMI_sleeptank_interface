@@ -22,39 +22,31 @@
         <!--opties in header-->
         <nav>
           <ul class="nav_links">
-            <li><a href="#">Reset</a></li>
-            <li><a href="#">Stop</a></li>
+            <li>
+              <select id="serial-ports-dropdown"></select> 
+              <button onclick="openSelectedPort()">Open Poort</button>
+            </li>
+
+            <li><button class="btn_start" onclick="startTest()">start test</button></li>
+            
+            <li><button class="btn_stop" onclick="stopTest()">stop test</button></li>
+
+            
+            <li class="input-group">
+              <input type="text" class="input" id="csv-bestandsnaam" name="naam_doc" placeholder="CSV-naam" autocomplete="off">
+              <button class="button--submit" onclick="bevestigBestandsnaam()">bevestig</button>
+            </li>
           </ul>
         </nav>
        
-        <!--start test knop in header-->
-        <a class="cta" href="#"><button>start test</button></a>
       </header>
     </div>
 
     
-    <div class="dropdown">
-      <select id="serial-ports-dropdown"></select>
-      <button onclick="openSelectedPort()">Open Poort</button>
-    </div>
-
-
     <canvas id="Weerstand_Chart_1"></canvas>
 
-    
-    <div id="bestandsnaam-invoer">
-        <input type="text" id="csv-bestandsnaam" placeholder="Voer bestandsnaam in">
-        <button onclick="bevestigBestandsnaam()">Akkoord</button>
-    </div>
-
-    <div id="test-starten">
-        <button onclick="startTest()">Start Test</button>
-    </div>
-    <div id="test-stoppen">
-        <button onclick="stopTest()">Stop Test</button>
-    </div>
-
-
-
+    <!--onzin :)
+    <div class="one-div"></div>
+    -->
   </body>
 </html>
