@@ -2,8 +2,6 @@
 :root {
     --background-color: #212121; /* Donkere achtergrond voor het hele lichaam */
     --nav-background-color: #212121; /* Donkere achtergrond voor de header */
-    --nav-text-color: #e0e0e0; /* Lichtere tekst voor de navigatielinks */
-    --nav-hover-background-color: #333; /* Kleur voor nav items bij hover */
   }
   
   /* Algemene stijl van de pagina */
@@ -25,7 +23,7 @@
   
   /* Logo stijl */
   .logo {
-    height: 60px;
+    height: 60px;    
   }
   
   /* Navigatie stijlen */
@@ -47,7 +45,6 @@
   
   .nav_links a:hover {
     background-color: var(--nav-hover-background-color);
-    /* Voeg een padding of een andere stijl toe voor een beter effect */
   }
   
   /* start knop*/
@@ -115,7 +112,7 @@
   }
   
   .input {
-    min-height: 50px;
+    min-height: 53px;
     max-width: 150px;
     padding: 0 1rem;
     color: #fff;
@@ -123,10 +120,11 @@
     border: 1px solid #5e4dcd;
     border-radius: 6px 0 0 6px;
     background-color: transparent;
+    -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
   }
   
   .button--submit {
-    min-height: 50px;
+    min-height: 53px;
     padding: .5em 1em;
     border: none;
     border-radius: 0 6px 6px 0;
@@ -135,6 +133,7 @@
     font-size: 15px;
     cursor: pointer;
     transition: background-color .3s ease-in-out;
+    -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
   }
   
   .button--submit:hover {
@@ -143,6 +142,11 @@
   
   .input:focus, .input:focus-visible {
     border-color: #3898EC;
+    outline: none;
+  }
+
+  .input:hover, .input:focus-visible {
+    border-color: #47ec38;
     outline: none;
   }
   
