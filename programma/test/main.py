@@ -58,6 +58,7 @@ def open_serial_port(portVar):
         print(f"Fout bij het openen van de poort {portVar}: {str(e)}")
         return False
 
+
 @eel.expose
 def get_latest_force_reading():
     global latest_force_reading
@@ -101,4 +102,9 @@ def stop_test():
         print("Geen actieve test om te stoppen")
 
 
-eel.start('index.html')
+def close_callback(route, websockets):
+    if not websockets:
+        print("Websocket verbinding gesloten")
+        exit()
+
+eel.start('index.html', close_callback=close_callback)
