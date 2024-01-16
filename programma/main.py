@@ -1,3 +1,8 @@
+# author: Freek Baars
+# date: 2021-04-28
+# version: 1.0.0
+# python 3.12.1
+
 import eel
 import serial.tools.list_ports
 import serial
@@ -7,7 +12,7 @@ import pandas as pd
 import time
 import csv
 
-eel.init('web')  # Vervang met het pad naar je web map
+eel.init('programma/web')  # Vervang met het pad naar je web map
 
 # Globale variabele voor het bijhouden van de laatste krachtmeting
 latest_force_reading = None
