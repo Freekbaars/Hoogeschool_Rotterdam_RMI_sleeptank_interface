@@ -135,6 +135,10 @@
   border: none;
 }
 
+.zijmenu-toggle:hover {
+  color: rgb(140, 255, 0);  
+}
+
   
   .zijmenu h2 {
     color: white;
@@ -176,10 +180,10 @@
     border: 2px solid #ff0000; /* witte rand */
     background-color: transparent;
     color: #ff0000; /* witte tekst of icoon */
-    font-size: 24px; /* pas aan op basis van uw behoefte */
+    font-size: 25px; /* pas aan op basis van uw behoefte */
     border-radius: 50%; /* maakt de knop rond */
-    width: 50px; /* breedte van de knop */
-    height: 50px; /* hoogte van de knop */
+    width: 25px; /* breedte van de knop */
+    height: 25px; /* hoogte van de knop */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -195,8 +199,8 @@
 
 /* port selectie */
   #serial-ports-dropdown {
-   max-width: 50px;
-   padding: 0.5rem 1rem;
+   max-width: 90px;
+   padding: 0.5rem 0.5rem;
    border: 1px solid #5e4dcd;
    border-radius: 0.4rem;
    background-color: transparent;
@@ -216,7 +220,7 @@
   button[onclick="openSelectedPort()"] {
     height: auto;
     min-width: 100px;
-    padding: 10px 15px;
+    padding: 10px 10px;
     font-size: 13px;
     border: none;
     outline: none;
@@ -245,7 +249,7 @@ button[onclick="openSelectedPort()"]:hover, button[onclick="openSelectedPort()"]
     color: #fff;
     font-size: 15px;
     border: 1px solid #5e4dcd;
-    border-radius: 6px 0 0 6px;
+    border-radius: 6px;
     background-color: transparent;
     -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
   }
@@ -254,7 +258,7 @@ button[onclick="openSelectedPort()"]:hover, button[onclick="openSelectedPort()"]
     min-height: 20px;
     padding: .5em 0.5em;
     border: none;
-    border-radius: 0 6px 6px 0;
+    border-radius: 6px;
     background-color: #5e4dcd;
     color: #fff;
     font-size: 15px;

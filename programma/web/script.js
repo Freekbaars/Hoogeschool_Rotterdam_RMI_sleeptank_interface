@@ -1,3 +1,6 @@
+let isTestActief = false;
+let updateInterval;
+
 //bazis functies
 function resetGrafiek() {
     gewichtsChart.data.labels = []; // Labels resetten
@@ -87,15 +90,13 @@ async function updateGewichtsGrafiek() {
     if (!isTestActief) return;
 
     let gewichtsdata = await eel.get_latest_force_reading()();
-    if (gewichtsdata === null || gewichtsdata === undefined) {
-        // Als er geen nieuwe data is, doe dan niets
-        return;
+    
+    if (gewichtsdata !== null && gewichtsdata !== undefined) {
+        let tijd = new Date().toLocaleTimeString();
+        gewichtsChart.data.labels.push(tijd);
+        gewichtsChart.data.datasets[0].data.push(gewichtsdata);
+        gewichtsChart.update();
     }
-
-    let tijd = new Date().toLocaleTimeString();
-    gewichtsChart.data.labels.push(tijd);
-    gewichtsChart.data.datasets[0].data.push(gewichtsdata);
-    gewichtsChart.update();
 }
 
 
@@ -116,20 +117,24 @@ function bevestigBestandsnaam() {
 
 //test-starten
 async function startTest() {
-    if (bestandsnaamBevestigd) {
-        await eel.start_test()();
+    let bestandsnaam = document.getElementById('csv-bestandsnaam').value;
+    if (bestandsnaam) {
+        isTestActief = true;
+        eel.start_test()(function() {
+            updateInterval = setInterval(updateGewichtsGrafiek, 1000); // Start de interval om de grafiek bij te werken
+        });
     } else {
-        alert('Bevestig eerst de bestandsnaam.');
+        alert('Voer een geldige bestandsnaam in en bevestig.');
     }
 }
 
 
 //test-stoppen
 function stopTest() {
-    eel.stop_test()();  // Roep de Python-functie aan om de test te stoppen
+    eel.stop_test()(); 
     isTestActief = false;
-    clearInterval(updateInterval); // Stop de interval die de grafiek update
-    resetGrafiek();
+    clearInterval(updateInterval); // Stop de interval
+    resetGrafiek(); // Reset de grafiek
 }
 
 
