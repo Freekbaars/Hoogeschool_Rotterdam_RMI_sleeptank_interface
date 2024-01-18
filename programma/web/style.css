@@ -1,290 +1,290 @@
 /* Globale variabelen */
 :root {
-    --background-color: #212121; /* Donkere achtergrond voor het hele lichaam */
-    --nav-background-color: #212121; /* Donkere achtergrond voor de header */
-  }
-  
-  /* Algemene stijl van de pagina */
-  body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: var(--background-color);
-    color: #e0e0e0; /* Deze kleur kan ook als variabele worden ingesteld indien gewenst */
-  }
-  
-  /* Header stijlen */
-  header {
-    background: var(--nav-background-color);
-    color: var(--nav-text-color);
-    padding: 20px 0;
-    text-align: center;
-  }
-  
-  /* Logo stijl */
-  .logo {
-    height: 60px;    
-  }
-  
-  /* Navigatie stijlen */
-  .nav_links {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .nav_links li {
-    display: inline;
-    margin: 0 20px;
-  }
-  
-  .nav_links a {
-    color: var(--nav-text-color);
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .nav_links a:hover {
-    background-color: var(--nav-hover-background-color);
-  }
-  
+  --background-color: #212121; /* Donkere achtergrond voor het hele lichaam */
+  --nav-background-color: #212121; /* Donkere achtergrond voor de header */
+}
+
+/* Algemene stijl van de pagina */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: #e0e0e0; /* Deze kleur kan ook als variabele worden ingesteld indien gewenst */
+}
+
+/* Header stijlen */
+header {
+  background: var(--nav-background-color);
+  color: var(--nav-text-color);
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* Logo stijl */
+.logo {
+  height: 60px;    
+}
+
+/* Navigatie stijlen */
+.nav_links {
+  list-style: none;
+  padding: 0;
+}
+
+.nav_links li {
+  display: inline;
+  margin: 0 20px;
+}
+
+.nav_links a {
+  color: var(--nav-text-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav_links a:hover {
+  background-color: var(--nav-hover-background-color);
+}
+
 
 /* start knop*/
-  .btn_start {
-    font-size: 1.2rem;
-    padding: 1rem 2.5rem;
-    border: none;
-    outline: none;
-    border-radius: 0.4rem;
-    cursor: pointer;
-    text-transform: uppercase;
-    background-color: rgb(14, 26, 18);
-    color: rgb(234, 234, 234);
-    font-weight: 700;
-    transition: 0.6s;
-    box-shadow: 0px 0px 60px #1f4c65;
-    -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
-  }
-  
-  .btn_start:active {
-    scale: 0.92;
-  }
-  
-  .btn_start:hover {
-    background: rgb(2,29,78);
-    background: linear-gradient(270deg, rgba(8, 78, 2, 0.681) 0%, rgba(44, 232, 31, 0.873) 60%);
-    color: rgb(4, 4, 38);
-  }
+.btn_start {
+  font-size: 1.2rem;
+  padding: 1rem 2.5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  background-color: rgb(14, 26, 18);
+  color: rgb(234, 234, 234);
+  font-weight: 700;
+  transition: 0.6s;
+  box-shadow: 0px 0px 60px #1f4c65;
+  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
+}
+
+.btn_start:active {
+  scale: 0.92;
+}
+
+.btn_start:hover {
+  background: rgb(2,29,78);
+  background: linear-gradient(270deg, rgba(8, 78, 2, 0.681) 0%, rgba(44, 232, 31, 0.873) 60%);
+  color: rgb(4, 4, 38);
+}
 
 
-  /* stop knop*/
-  
-  .btn_stop {
-    font-size: 1.2rem;
-    padding: 1rem 2.5rem;
-    border: none;
-    outline: none;
-    border-radius: 0.4rem;
-    cursor: pointer;
-    text-transform: uppercase;
-    background-color: rgb(26, 14, 14);
-    color: rgb(234, 234, 234);
-    font-weight: 700;
-    transition: 0.6s;
-    box-shadow: 0px 0px 60px #1f4c65;
-    -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
-  }
-  
-  .btn_stop:active {
-    scale: 0.92;
-  }
-  
-  .btn_stop:hover {
-    background: rgb(2,29,78);
-    background: linear-gradient(270deg, rgba(78, 2, 2, 0.681) 0%, rgba(232, 31, 31, 0.873) 60%);
-    color: rgb(4, 4, 38);
-  }
- 
-  
+/* stop knop*/
+
+.btn_stop {
+  font-size: 1.2rem;
+  padding: 1rem 2.5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  background-color: rgb(26, 14, 14);
+  color: rgb(234, 234, 234);
+  font-weight: 700;
+  transition: 0.6s;
+  box-shadow: 0px 0px 60px #1f4c65;
+  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
+}
+
+.btn_stop:active {
+  scale: 0.92;
+}
+
+.btn_stop:hover {
+  background: rgb(2,29,78);
+  background: linear-gradient(270deg, rgba(78, 2, 2, 0.681) 0%, rgba(232, 31, 31, 0.873) 60%);
+  color: rgb(4, 4, 38);
+}
+
+
 /* zijmenu*/
 
 .zijmenu {
-  height: 100%;
-  width: 0; /* Zijmenu is standaard verborgen */
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  transition: 0.5s; /* Gladde overgang voor in/uitklappen */
-  padding-top: 60px;
+height: 100%;
+width: 0; /* Zijmenu is standaard verborgen */
+position: fixed;
+z-index: 1;
+top: 0;
+left: 0;
+background-color: #111;
+overflow-x: hidden;
+transition: 0.5s; /* Gladde overgang voor in/uitklappen */
+padding-top: 60px;
 }
 
 .zijmenu-open {
-  width: 250px; /* Breedte wanneer het menu zichtbaar is */
+width: 250px; /* Breedte wanneer het menu zichtbaar is */
 }
 
 .zijmenu-toggle {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  font-size: 30px;
-  cursor: pointer;
-  color: white;
-  background: none;
-  border: none;
+position: fixed;
+top: 20px;
+left: 20px;
+font-size: 30px;
+cursor: pointer;
+color: white;
+background: none;
+border: none;
 }
 
 .zijmenu-toggle:hover {
-  color: rgb(140, 255, 0);  
+color: rgb(140, 255, 0);  
 }
 
-  
-  .zijmenu h2 {
-    color: white;
-    padding: 6px 16px;
-  }
-  
-  .zijmenu input, .zijmenu select {
-    padding: 6px 16px;
-    margin: 10px;
-    width: 90%;
-  }
-  
-  .zijmenu button {
-    margin: 10px 16px;
-  }
-  
-  .input-group {
-    display: flex;
-    align-items: center;
-  }
+
+.zijmenu h2 {
+  color: white;
+  padding: 6px 16px;
+}
+
+.zijmenu input, .zijmenu select {
+  padding: 6px 16px;
+  margin: 10px;
+  width: 90%;
+}
+
+.zijmenu button {
+  margin: 10px 16px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
 
 
-  #poort-instellingen {
-    margin-bottom: 100px;
-  }
+#poort-instellingen {
+  margin-bottom: 100px;
+}
 
-  #output-bestand {
-    margin-bottom: 100px;
-  }
+#output-bestand {
+  margin-bottom: 100px;
+}
 
-  #sensor-instellingen {
-    margin-bottom: 100px;
-  } 
+#sensor-instellingen {
+  margin-bottom: 100px;
+} 
 
-  .closebtn {
-    position: absolute;
-    top: 10px; 
-    right: 10px;
-    border: 2px solid #ff0000; /* witte rand */
-    background-color: transparent;
-    color: #ff0000; /* witte tekst of icoon */
-    font-size: 25px; /* pas aan op basis van uw behoefte */
-    border-radius: 50%; /* maakt de knop rond */
-    width: 25px; /* breedte van de knop */
-    height: 25px; /* hoogte van de knop */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s, color 0.3s;
+.closebtn {
+  position: absolute;
+  top: 10px; 
+  right: 10px;
+  border: 2px solid #ff0000; /* witte rand */
+  background-color: transparent;
+  color: #ff0000; /* witte tekst of icoon */
+  font-size: 25px; /* pas aan op basis van uw behoefte */
+  border-radius: 50%; /* maakt de knop rond */
+  width: 25px; /* breedte van de knop */
+  height: 25px; /* hoogte van de knop */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .closebtn:hover {
-    background-color: #ff0000; /* achtergrond wit op hover */
-    color: #000; /* tekst/icoon zwart op hover */
+  background-color: #ff0000; /* achtergrond wit op hover */
+  color: #000; /* tekst/icoon zwart op hover */
 }
 
 /* port selectie */
-  #serial-ports-dropdown {
-   max-width: 90px;
-   padding: 0.5rem 0.5rem;
-   border: 1px solid #5e4dcd;
-   border-radius: 0.4rem;
-   background-color: transparent;
-   color: #fff;
-   font-size: 1rem;
-   cursor: pointer;
-   transition: background-color 0.3s ease-in-out;
-   -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
-  }
+#serial-ports-dropdown {
+ max-width: 90px;
+ padding: 0.5rem 0.5rem;
+ border: 1px solid #5e4dcd;
+ border-radius: 0.4rem;
+ background-color: transparent;
+ color: #fff;
+ font-size: 1rem;
+ cursor: pointer;
+ transition: background-color 0.3s ease-in-out;
+ -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
+}
 
-  #serial-ports-dropdown:hover, #serial-ports-dropdown:focus {
-    background-color: rgba(44, 232, 31, 0.6);
-    border-color: #47ec38;
-  }
+#serial-ports-dropdown:hover, #serial-ports-dropdown:focus {
+  background-color: rgba(44, 232, 31, 0.6);
+  border-color: #47ec38;
+}
 
 
-  button[onclick="openSelectedPort()"] {
-    height: auto;
-    min-width: 100px;
-    padding: 10px 10px;
-    font-size: 13px;
-    border: none;
-    outline: none;
-    border-radius: 0.4rem;
-    cursor: pointer;
-    text-transform: uppercase;
-    background-color: rgb(26, 26, 26);
-    color: rgb(234, 234, 234);
-    font-weight: 700;
-    transition: background-color 0.3s ease-in-out;
-    box-shadow: 0px 0px 60px #1f4c65;
-    -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
+button[onclick="openSelectedPort()"] {
+  height: auto;
+  min-width: 100px;
+  padding: 10px 10px;
+  font-size: 13px;
+  border: none;
+  outline: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  background-color: rgb(26, 26, 26);
+  color: rgb(234, 234, 234);
+  font-weight: 700;
+  transition: background-color 0.3s ease-in-out;
+  box-shadow: 0px 0px 60px #1f4c65;
+  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
 }
 
 button[onclick="openSelectedPort()"]:hover, button[onclick="openSelectedPort()"]:focus {
-    background-color: rgba(44, 232, 31, 0.873);
-    color: rgb(4, 4, 38);
+  background-color: rgba(44, 232, 31, 0.873);
+  color: rgb(4, 4, 38);
 }
 
 
 /* CSV naam in voer*/  
-  .input {
-    min-height: 20px;
-    max-width: 100px;
-    padding: 0 1rem;
-    color: #fff;
-    font-size: 15px;
-    border: 1px solid #5e4dcd;
-    border-radius: 6px;
-    background-color: transparent;
-    -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
-  }
-  
-  .button--submit {
-    min-height: 20px;
-    padding: .5em 0.5em;
-    border: none;
-    border-radius: 6px;
-    background-color: #5e4dcd;
-    color: #fff;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background-color .3s ease-in-out;
-    -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
-  }
-  
-  .button--submit:hover {
-    background-color: rgba(44, 232, 31, 0.873);
-  }
-  
-  .input:focus, .input:focus-visible {
-    border-color: #3898EC;
-    outline: none;
-  }
+.input {
+  min-height: 20px;
+  max-width: 100px;
+  padding: 0 1rem;
+  color: #fff;
+  font-size: 15px;
+  border: 1px solid #5e4dcd;
+  border-radius: 6px;
+  background-color: transparent;
+  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
+}
 
-  .input:hover, .input:focus-visible {
-    border-color: #47ec38;
-    outline: none;
-  }
+.button--submit {
+  min-height: 20px;
+  padding: .5em 0.5em;
+  border: none;
+  border-radius: 6px;
+  background-color: #5e4dcd;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color .3s ease-in-out;
+  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
+}
+
+.button--submit:hover {
+  background-color: rgba(44, 232, 31, 0.873);
+}
+
+.input:focus, .input:focus-visible {
+  border-color: #3898EC;
+  outline: none;
+}
+
+.input:hover, .input:focus-visible {
+  border-color: #47ec38;
+  outline: none;
+}
 
 /*grafiek*/
 #grafiek-container {
-  height: 500px;
-  width: 100%;
+height: 500px;
+width: 100%;
 }
 
 
@@ -292,81 +292,80 @@ button[onclick="openSelectedPort()"]:hover, button[onclick="openSelectedPort()"]
 
 
 
- /* gewoon wat onzin ;)
-  .one-div {
-    height: 200px;
-    display: grid;
-    position: relative;
-    margin: auto 0 0;
-    background: radial-gradient(circle 44px at top,#0000 94%,#5dc1e4) 0 40px, radial-gradient(circle 44px at top,#0000 94%,#008cd9) 0 0;
-    background-size: 80px 100%;
-    background-repeat: repeat-x;
-    animation: a 1s infinite linear;
-    border-radius: 20px;
-    transition: height 1s;
-    cursor: pointer;
+/* gewoon wat onzin ;)
+.one-div {
+  height: 200px;
+  display: grid;
+  position: relative;
+  margin: auto 0 0;
+  background: radial-gradient(circle 44px at top,#0000 94%,#5dc1e4) 0 40px, radial-gradient(circle 44px at top,#0000 94%,#008cd9) 0 0;
+  background-size: 80px 100%;
+  background-repeat: repeat-x;
+  animation: a 1s infinite linear;
+  border-radius: 20px;
+  transition: height 1s;
+  cursor: pointer;
+}
+
+.one-div:hover {
+  height: 350px;
+}
+
+.one-div:before {
+  content: "";
+  width: 100%;
+  z-index: 1;
+  background: radial-gradient(circle 44px at top,#0000 94%,#b0e5f3) 0 70px;
+  background-size: 80px 100%;
+  background-repeat: repeat-x;
+  animation: b 1s infinite linear;
+  border-radius: 20px;
+}
+
+.one-div:after {
+  content: "";
+  position: absolute;
+  width: 70px;
+  height: 150px;
+  background: linear-gradient(#f0caa3 0 0) bottom/16% 67%, linear-gradient(#33b54d 0 0) 50% 50%/54% 12%, radial-gradient(farthest-side at bottom left,#33b54d 98%,#0000) 100% 48%/25% 12%, radial-gradient(farthest-side at bottom right,#33b54d 98%,#0000) 0 48%/25% 12%, radial-gradient(farthest-side at top left,#0000 98%,#33b54d) 16% 30%/31% 20%, radial-gradient(farthest-side at top right,#0000 98%,#33b54d) 87% 30%/31% 20%, linear-gradient(#a87d53 0 0) top/20% 8%,linear-gradient(#33b54d 0 0)50% 7%/37% 8%, linear-gradient(#33b54d 0 0) bottom/100% 50%, linear-gradient(#33b54d 0 0) center/20% 100%;
+  background-repeat: no-repeat;
+  border-radius: 0 0 20px 20px;
+  left: calc(50% - 35px);
+  top: 0px;
+  transform: rotate(45deg);
+  animation: c 1s infinite linear;
+}
+
+@keyframes a {
+  50% {
+    background-position: -40px 15px,45px 10px
   }
-  
-  .one-div:hover {
-    height: 350px;
+
+  100% {
+    background-position: -80px 40px,80px 0px
   }
-  
-  .one-div:before {
-    content: "";
-    width: 100%;
-    z-index: 1;
-    background: radial-gradient(circle 44px at top,#0000 94%,#b0e5f3) 0 70px;
-    background-size: 80px 100%;
-    background-repeat: repeat-x;
-    animation: b 1s infinite linear;
-    border-radius: 20px;
+}
+
+@keyframes b {
+  50% {
+    background-position: 40px 45px
   }
-  
-  .one-div:after {
-    content: "";
-    position: absolute;
-    width: 70px;
-    height: 150px;
-    background: linear-gradient(#f0caa3 0 0) bottom/16% 67%, linear-gradient(#33b54d 0 0) 50% 50%/54% 12%, radial-gradient(farthest-side at bottom left,#33b54d 98%,#0000) 100% 48%/25% 12%, radial-gradient(farthest-side at bottom right,#33b54d 98%,#0000) 0 48%/25% 12%, radial-gradient(farthest-side at top left,#0000 98%,#33b54d) 16% 30%/31% 20%, radial-gradient(farthest-side at top right,#0000 98%,#33b54d) 87% 30%/31% 20%, linear-gradient(#a87d53 0 0) top/20% 8%,linear-gradient(#33b54d 0 0)50% 7%/37% 8%, linear-gradient(#33b54d 0 0) bottom/100% 50%, linear-gradient(#33b54d 0 0) center/20% 100%;
-    background-repeat: no-repeat;
-    border-radius: 0 0 20px 20px;
-    left: calc(50% - 35px);
-    top: 0px;
-    transform: rotate(45deg);
-    animation: c 1s infinite linear;
+
+  100% {
+    background-position: 80px 70px
   }
-  
-  @keyframes a {
-    50% {
-      background-position: -40px 15px,45px 10px
-    }
-  
-    100% {
-      background-position: -80px 40px,80px 0px
-    }
+}
+
+@keyframes c {
+  0%,100% {
+    transform: translate(0,0) rotate(40deg)
   }
-  
-  @keyframes b {
-    50% {
-      background-position: 40px 45px
-    }
-  
-    100% {
-      background-position: 80px 70px
-    }
+
+  33% {
+    transform: translate(10px,-20px) rotate(50deg)
   }
-  
-  @keyframes c {
-    0%,100% {
-      transform: translate(0,0) rotate(40deg)
-    }
-  
-    33% {
-      transform: translate(10px,-20px) rotate(50deg)
-    }
-  
-    66% {
-      transform: translate(5px,-10px) rotate(30deg)
-    }
+
+  66% {
+    transform: translate(5px,-10px) rotate(30deg)
   }
-  
+}

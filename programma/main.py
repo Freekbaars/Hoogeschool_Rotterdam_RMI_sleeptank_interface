@@ -15,6 +15,10 @@ import csv
 eel.init('programma/web')  # Vervang met het pad naar je web map
 
 # Globale variabele voor het bijhouden van de laatste krachtmeting
+latest_weight = None
+latest_angle_x = None
+latest_angle_y = None
+
 latest_force_reading = None
 serial_instance = None
 is_test_running = False
@@ -26,20 +30,28 @@ write_lock = Lock()
 
 
 def read_serial_data():
-    global is_test_running, serial_instance, csv_writer, latest_force_reading
+    global is_test_running, serial_instance, latest_weight, latest_angle_x, latest_angle_y
     while is_test_running and serial_instance and serial_instance.isOpen():
         if serial_instance.in_waiting > 0:
             data = serial_instance.readline().decode().strip()
-            calibrated_data = format_data(data)  # Voeg de formatteerfunctie toe
+            parts = data.split(',')
+            if len(parts) == 3:
+                weight, angle_x, angle_y = parts
+                calibrated_weight = format_data(weight)  # Pas format_data toe op gewicht
 
-            current_time = time.strftime("%Y-%m-%d %H:%M:%S")
-            latest_force_reading = calibrated_data
+                # Update global variabelen
+                latest_weight = calibrated_weight
+                latest_angle_x = angle_x
+                latest_angle_y = angle_y
 
-            with write_lock:
-                if csv_writer is not None:
-                    csv_writer.writerow([current_time, calibrated_data])
-                else:
-                    print("csv_writer is None, kan niet naar CSV-bestand schrijven")
+                # Schrijf naar CSV-bestand
+                with write_lock:
+                    if csv_writer is not None:
+                        current_time = time.strftime("%Y-%m-%d %H:%M:%S")
+                        csv_writer.writerow([current_time, calibrated_weight, angle_x, angle_y])
+
+
+
 
 
 def format_data(raw_data, scalar=1232, offset=0.0, unit_factor=0.000001, precision=2):
@@ -108,6 +120,21 @@ def open_serial_port(portVar):
 def get_latest_force_reading():
     global latest_force_reading
     return latest_force_reading
+
+@eel.expose
+def get_latest_weight():
+    global latest_weight
+    return latest_weight
+
+@eel.expose
+def get_latest_angle_x():
+    global latest_angle_x
+    return latest_angle_x
+
+@eel.expose
+def get_latest_angle_y():
+    global latest_angle_y
+    return latest_angle_y
 
 
 @eel.expose
