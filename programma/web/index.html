@@ -36,37 +36,51 @@
     <button onclick="toggleZijmenu()" class="zijmenu-toggle">☰ Menu</button>
     <div id="zijmenu" class="zijmenu">
       <a href="javascript:void(0)" class="closebtn" onclick="toggleZijmenu()">&times;</a>
-      <h2>Poort instellingen</h2>
       
-      <li>
-        <select id="serial-ports-dropdown"></select> 
-        <button onclick="openSelectedPort()">Open Poort</button>
-      </li>
-      
-      <h2></h2>
-      <h2></h2>
-      <h2>Output bestand</h2>
+      <div id="poort-instellingen">
 
-      <li class="input-group">
-        <input type="text" class="input" id="csv-bestandsnaam" name="naam_doc" placeholder="CSV-naam" autocomplete="off">
-        <button class="button--submit" onclick="bevestigBestandsnaam()">bevestig</button>
-      </li>
+        <h2>Poort instellingen</h2>
 
-      <h2></h2>
-      <h2></h2>
-      <h2>Sensorinstellingen</h2>
+        <div style="display: flex; align-items: center;">
 
-      <input type="number" id="scalar-factor" placeholder=1232>
-      
-      <select id="eenheid-select">
-        <option value="gram">Gram</option>
-        <option value="newton">Newton</option>
-      </select>
-    
-      <button onclick="updateSensorInstellingen()">Update Instellingen</button>
+          <select id="serial-ports-dropdown"></select> 
+          <button onclick="openSelectedPort()">Open Poort</button>
+
+        </div>
+        
+      </div>
+
+      <div id="output-bestand">
+
+        <h2>Output bestand</h2>
+
+        <li class="input-group">
+          <input type="text" class="input" id="csv-bestandsnaam" name="naam_doc" placeholder="CSV-naam" autocomplete="off">
+          <button class="button--submit" onclick="bevestigBestandsnaam()">bevestig</button>
+        </li>
+
+      </div>
+
+      <div id="sensor-instellingen">
+
+       <h2>Sensor instellingen</h2>
+
+       <input type="number" id="scalar-factor" placeholder=1232>
+       
+       <select id="eenheid-select">
+         <option value="gram">Gram</option>
+         <option value="newton">Newton</option>
+       </select>
+     
+       <button onclick="updateSensorInstellingen()">Update Instellingen</button>
+
+      </div>
+
     </div>
     
-    <canvas id="Weerstand_Chart_1"></canvas>
+    <div id="grafiek-container">
+      <canvas id="Weerstand_Chart_1"></canvas>
+    </div>
 
     <div id="incline">
       hier komt een grafiek voor de hoek van het model aan tegeven

@@ -156,19 +156,46 @@
     align-items: center;
   }
 
-  
+
+  #poort-instellingen {
+    margin-bottom: 100px;
+  }
+
+  #output-bestand {
+    margin-bottom: 100px;
+  }
+
+  #sensor-instellingen {
+    margin-bottom: 100px;
+  } 
+
   .closebtn {
     position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-    color: #fff;
+    top: 10px; 
+    right: 10px;
+    border: 2px solid #ff0000; /* witte rand */
+    background-color: transparent;
+    color: #ff0000; /* witte tekst of icoon */
+    font-size: 24px; /* pas aan op basis van uw behoefte */
+    border-radius: 50%; /* maakt de knop rond */
+    width: 50px; /* breedte van de knop */
+    height: 50px; /* hoogte van de knop */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.closebtn:hover {
+    background-color: #ff0000; /* achtergrond wit op hover */
+    color: #000; /* tekst/icoon zwart op hover */
 }
 
 /* port selectie */
   #serial-ports-dropdown {
+   max-width: 50px;
    padding: 0.5rem 1rem;
    border: 1px solid #5e4dcd;
    border-radius: 0.4rem;
@@ -187,25 +214,28 @@
 
 
   button[onclick="openSelectedPort()"] {
-    font-size: 1.2rem;
-    padding: 1rem 2.5rem;
+    height: auto;
+    min-width: 100px;
+    padding: 10px 15px;
+    font-size: 13px;
     border: none;
     outline: none;
     border-radius: 0.4rem;
     cursor: pointer;
     text-transform: uppercase;
-    background-color: rgb(26, 26, 26); /* Dark background */
-    color: rgb(234, 234, 234); /* Light text */
+    background-color: rgb(26, 26, 26);
+    color: rgb(234, 234, 234);
     font-weight: 700;
     transition: background-color 0.3s ease-in-out;
     box-shadow: 0px 0px 60px #1f4c65;
     -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
-  }
+}
 
-  button[onclick="openSelectedPort()"]:hover, button[onclick="openSelectedPort()"]:focus {
-    background-color: rgba(44, 232, 31, 0.873); /* Greenish hover effect */
-    color: rgb(4, 4, 38); /* Dark text on hover */
-  }
+button[onclick="openSelectedPort()"]:hover, button[onclick="openSelectedPort()"]:focus {
+    background-color: rgba(44, 232, 31, 0.873);
+    color: rgb(4, 4, 38);
+}
+
 
 /* CSV naam in voer*/  
   .input {
@@ -247,7 +277,11 @@
     outline: none;
   }
 
-
+/*grafiek*/
+#grafiek-container {
+  height: 500px;
+  width: 100%;
+}
 
 
 

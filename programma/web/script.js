@@ -1,3 +1,13 @@
+//bazis functies
+function resetGrafiek() {
+    gewichtsChart.data.labels = []; // Labels resetten
+    gewichtsChart.data.datasets.forEach((dataset) => {
+        dataset.data = []; // Data resetten
+    });
+    gewichtsChart.update(); // Grafiek bijwerken om wijzigingen toe te passen
+}
+
+//zijmenu
 function toggleZijmenu() {
     var zijmenu = document.getElementById("zijmenu");
     if (zijmenu.style.width === "250px") {
@@ -8,7 +18,7 @@ function toggleZijmenu() {
 }
 
 
-
+//poorten
 async function loadSerialPorts() {
     let ports = await eel.get_serial_ports()();
     let portsDropdown = document.getElementById('serial-ports-dropdown');
@@ -33,6 +43,7 @@ async function openSelectedPort() {
 }
 
 
+//sensoren
 async function updateSensorInstellingen() {
 
     let scalar = document.getElementById('scalar-factor').value;
@@ -50,6 +61,7 @@ async function updateSensorInstellingen() {
 }
 
 
+//grafiek
 var gewichtsChart;
 
 function tekenGewichtsGrafiek() {
@@ -65,23 +77,29 @@ function tekenGewichtsGrafiek() {
             }]
         },
         options: {
-            // Voeg hier grafiekopties toe
+            maintainAspectRatio: false,
         }
     });
 }
 
 
 async function updateGewichtsGrafiek() {
+    if (!isTestActief) return;
+
     let gewichtsdata = await eel.get_latest_force_reading()();
-    if (gewichtsdata) {
-        let tijd = new Date().toLocaleTimeString(); // Huidige tijd voor de label
-        gewichtsChart.data.labels.push(tijd);
-        gewichtsChart.data.datasets[0].data.push(gewichtsdata);
-        gewichtsChart.update();
+    if (gewichtsdata === null || gewichtsdata === undefined) {
+        // Als er geen nieuwe data is, doe dan niets
+        return;
     }
+
+    let tijd = new Date().toLocaleTimeString();
+    gewichtsChart.data.labels.push(tijd);
+    gewichtsChart.data.datasets[0].data.push(gewichtsdata);
+    gewichtsChart.update();
 }
 
 
+//test-naam
 let bestandsnaamBevestigd = false;
 
 function bevestigBestandsnaam() {
@@ -96,6 +114,7 @@ function bevestigBestandsnaam() {
 }
 
 
+//test-starten
 async function startTest() {
     if (bestandsnaamBevestigd) {
         await eel.start_test()();
@@ -105,9 +124,14 @@ async function startTest() {
 }
 
 
+//test-stoppen
 function stopTest() {
     eel.stop_test()();  // Roep de Python-functie aan om de test te stoppen
+    isTestActief = false;
+    clearInterval(updateInterval); // Stop de interval die de grafiek update
+    resetGrafiek();
 }
+
 
 
 window.onload = function() {

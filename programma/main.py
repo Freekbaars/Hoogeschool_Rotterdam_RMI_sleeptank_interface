@@ -135,15 +135,17 @@ def start_test():
 
 @eel.expose
 def stop_test():
-    global is_test_running, csv_file
+    global is_test_running, csv_file, latest_force_reading
     if is_test_running:
         is_test_running = False
+        latest_force_reading = None  # Reset de laatste krachtmeting
         if csv_file:
             csv_file.close()
             csv_file = None  # Reset csv_file na sluiting
         print("Test gestopt en CSV-bestand gesloten")
     else:
         print("Geen actieve test om te stoppen")
+
 
 
 def close_callback(route, websockets):
