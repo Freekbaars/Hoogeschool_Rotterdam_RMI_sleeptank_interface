@@ -1,3 +1,14 @@
+function toggleZijmenu() {
+    var zijmenu = document.getElementById("zijmenu");
+    if (zijmenu.style.width === "250px") {
+        zijmenu.style.width = "0";
+    } else {
+        zijmenu.style.width = "250px";
+    }
+}
+
+
+
 async function loadSerialPorts() {
     let ports = await eel.get_serial_ports()();
     let portsDropdown = document.getElementById('serial-ports-dropdown');
@@ -11,7 +22,6 @@ async function loadSerialPorts() {
 }
 
 
-
 async function openSelectedPort() {
     let selectedPort = document.getElementById('serial-ports-dropdown').value;
     let isOpened = await eel.open_serial_port(selectedPort)();
@@ -19,6 +29,23 @@ async function openSelectedPort() {
         console.log("Poort geopend: " + selectedPort);
     } else {
         console.log("Fout bij het openen van de poort");
+    }
+}
+
+
+async function updateSensorInstellingen() {
+
+    let scalar = document.getElementById('scalar-factor').value;
+    let eenheid = document.getElementById('eenheid-select').value;
+
+    // Valideer de invoer indien nodig
+
+    // Stuur de gegevens naar de Python backend
+    let resultaat = await eel.update_sensor_instellingen(naam, scalar, eenheid)();
+    if (resultaat) {
+        console.log("Sensorinstellingen bijgewerkt.");
+    } else {
+        console.log("Fout bij het bijwerken van sensorinstellingen.");
     }
 }
 
@@ -42,6 +69,7 @@ function tekenGewichtsGrafiek() {
         }
     });
 }
+
 
 async function updateGewichtsGrafiek() {
     let gewichtsdata = await eel.get_latest_force_reading()();
@@ -67,6 +95,7 @@ function bevestigBestandsnaam() {
     }
 }
 
+
 async function startTest() {
     if (bestandsnaamBevestigd) {
         await eel.start_test()();
@@ -79,7 +108,6 @@ async function startTest() {
 function stopTest() {
     eel.stop_test()();  // Roep de Python-functie aan om de test te stoppen
 }
-
 
 
 window.onload = function() {

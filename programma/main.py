@@ -25,21 +25,61 @@ csv_file = None  # Dit zorgt ervoor dat csv_file globaal beschikbaar is
 write_lock = Lock()
 
 
-
 def read_serial_data():
-    global is_test_running, serial_instance, csv_writer,  latest_force_reading
+    global is_test_running, serial_instance, csv_writer, latest_force_reading
     while is_test_running and serial_instance and serial_instance.isOpen():
         if serial_instance.in_waiting > 0:
             data = serial_instance.readline().decode().strip()
-            current_time = time.strftime("%Y-%m-%d %H:%M:%S")
+            calibrated_data = format_data(data)  # Voeg de formatteerfunctie toe
 
-            latest_force_reading = data
+            current_time = time.strftime("%Y-%m-%d %H:%M:%S")
+            latest_force_reading = calibrated_data
 
             with write_lock:
                 if csv_writer is not None:
-                    csv_writer.writerow([current_time, data])
+                    csv_writer.writerow([current_time, calibrated_data])
                 else:
                     print("csv_writer is None, kan niet naar CSV-bestand schrijven")
+
+
+def format_data(raw_data, scalar=1232, offset=0.0, unit_factor=0.000001, precision=2):
+    """
+    Kalibreert en formateert de ruwe data van de sensor.
+
+    :param raw_data: De ruwe data van de sensor als een string.
+    :param scalar: De kalibratiefactor voor de sensor.
+    :param offset: De offsetwaarde voor nul kalibratie.
+    :param unit_factor: De factor om de eenheid te converteren (bijv. van gram naar kilogram).
+    :param precision: Het aantal decimalen voor afronding.
+    :return: De gekalibreerde en geformatteerde waarde.
+    """
+    try:
+        # Converteer de ruwe data naar een float
+        value = float(raw_data)
+
+        # Pas kalibratie toe
+        calibrated_value = (value - offset) * scalar
+
+        # Converteer naar de gewenste eenheid
+        unit_converted_value = calibrated_value * unit_factor
+
+        # Rond af tot de gewenste precisie
+        return round(unit_converted_value, precision)
+    except ValueError:
+        return None
+
+
+@eel.expose
+def update_sensor_instellingen( scalar, eenheid):
+    global sensor_scalar, sensor_eenheid
+    try:
+        sensor_scalar = float(scalar)
+        sensor_eenheid = eenheid
+        # Voeg hier eventuele extra logica toe om de sensorinstellingen toe te passen
+        return True
+    except Exception as e:
+        print(f"Fout bij het bijwerken van sensorinstellingen: {str(e)}")
+        return False
 
 
 @eel.expose
@@ -93,7 +133,6 @@ def start_test():
         print("Test kan niet worden gestart. Is test running:", is_test_running, "Bestandsnaam:", csv_bestandsnaam)
 
 
-
 @eel.expose
 def stop_test():
     global is_test_running, csv_file
@@ -111,5 +150,6 @@ def close_callback(route, websockets):
     if not websockets:
         print("Websocket verbinding gesloten")
         exit()
+
 
 eel.start('index.html', close_callback=close_callback)

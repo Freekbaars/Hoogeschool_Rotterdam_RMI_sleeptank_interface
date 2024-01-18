@@ -1,4 +1,4 @@
-# deze code loopt op de metro m4
+# deze code loopt op de metro m4 (circuitpython)
 # author: Freek Baars
 # date: 2021-04-28
 # version: 1.0.0

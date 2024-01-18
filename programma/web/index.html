@@ -7,7 +7,6 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="/eel.js"></script>
-    <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
   </head>
@@ -22,26 +21,50 @@
         <!--opties in header-->
         <nav>
           <ul class="nav_links">
-            <li>
-              <select id="serial-ports-dropdown"></select> 
-              <button onclick="openSelectedPort()">Open Poort</button>
-            </li>
 
             <li><button class="btn_start" onclick="startTest()">start test</button></li>
             
             <li><button class="btn_stop" onclick="stopTest()">stop test</button></li>
 
-            
-            <li class="input-group">
-              <input type="text" class="input" id="csv-bestandsnaam" name="naam_doc" placeholder="CSV-naam" autocomplete="off">
-              <button class="button--submit" onclick="bevestigBestandsnaam()">bevestig</button>
-            </li>
           </ul>
         </nav>
        
       </header>
     </div>
 
+
+    <button onclick="toggleZijmenu()" class="zijmenu-toggle">☰ Menu</button>
+    <div id="zijmenu" class="zijmenu">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleZijmenu()">&times;</a>
+      <h2>Poort instellingen</h2>
+      
+      <li>
+        <select id="serial-ports-dropdown"></select> 
+        <button onclick="openSelectedPort()">Open Poort</button>
+      </li>
+      
+      <h2></h2>
+      <h2></h2>
+      <h2>Output bestand</h2>
+
+      <li class="input-group">
+        <input type="text" class="input" id="csv-bestandsnaam" name="naam_doc" placeholder="CSV-naam" autocomplete="off">
+        <button class="button--submit" onclick="bevestigBestandsnaam()">bevestig</button>
+      </li>
+
+      <h2></h2>
+      <h2></h2>
+      <h2>Sensorinstellingen</h2>
+
+      <input type="number" id="scalar-factor" placeholder=1232>
+      
+      <select id="eenheid-select">
+        <option value="gram">Gram</option>
+        <option value="newton">Newton</option>
+      </select>
+    
+      <button onclick="updateSensorInstellingen()">Update Instellingen</button>
+    </div>
     
     <canvas id="Weerstand_Chart_1"></canvas>
 
@@ -55,4 +78,5 @@
 
   
   </body>
+  <script src="script.js"></script>
 </html>
