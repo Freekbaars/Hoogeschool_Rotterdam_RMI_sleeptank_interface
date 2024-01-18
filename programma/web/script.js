@@ -76,7 +76,6 @@ async function updateGewichtsGrafiek() {
     let gewichtsdata = await eel.get_latest_weight()();
     
     if (gewichtsdata !== null && gewichtsdata !== undefined) {
-        // Zorg ervoor dat de deling door 1000 correct wordt uitgevoerd
         let verstrekenTijd = (Date.now() - startTijd) / 1000; 
         let verstrekenTijdAfgerond = verstrekenTijd.toFixed(2); // Rond af op twee decimalen
 
@@ -109,8 +108,10 @@ async function updateGyroGrafiek() {
     let hoekX = await eel.get_latest_angle_x()();
     let hoekY = await eel.get_latest_angle_y()();
     if (hoekX !== null && hoekX !== undefined && hoekY !== null && hoekY !== undefined) {
-        let tijd = new Date().toLocaleTimeString();
-        gyroChart.data.labels.push(tijd);
+        let verstrekenTijd = (Date.now() - startTijd) / 1000; 
+        let verstrekenTijdAfgerond = verstrekenTijd.toFixed(2);
+
+        gyroChart.data.labels.push(verstrekenTijdAfgerond);
         gyroChart.data.datasets[0].data.push(hoekX);
         gyroChart.data.datasets[1].data.push(hoekY);
         gyroChart.update();

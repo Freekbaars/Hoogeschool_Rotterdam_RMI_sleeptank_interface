@@ -10,6 +10,7 @@ import threading
 from threading import Lock
 import time
 import csv
+import os
 
 eel.init('programma/web')
 
@@ -67,6 +68,15 @@ def format_data(raw_data, precision=2):
         return round(unit_converted_value, precision)
     except ValueError:
         return None
+
+
+def create_unique_filename(base_name):
+    counter = 1
+    unique_name = base_name
+    while os.path.exists(unique_name + '.csv'):
+        unique_name = f"{base_name}_{counter}"
+        counter += 1
+    return unique_name
 
 
 @eel.expose
@@ -161,6 +171,7 @@ def get_latest_angle_y():
 def set_csv_bestandsnaam(bestandsnaam):
     global csv_bestandsnaam
     csv_bestandsnaam = bestandsnaam
+    csv_bestandsnaam = create_unique_filename(bestandsnaam)
     print("Bestandsnaam voor CSV is ingesteld op:", csv_bestandsnaam)
 
 
