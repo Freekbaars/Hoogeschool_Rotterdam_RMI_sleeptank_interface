@@ -145,6 +145,12 @@ color: rgb(140, 255, 0);
   padding: 6px 16px;
 }
 
+
+.zijmenu h4 {
+  color: rgba(255, 255, 255, 0.482);
+  padding: 0px 16px;
+}
+
 .zijmenu input, .zijmenu select {
   padding: 6px 16px;
   margin: 10px;

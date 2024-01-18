@@ -8,53 +8,86 @@ import serial.tools.list_ports
 import serial
 import threading
 from threading import Lock
-import pandas as pd
 import time
 import csv
 
-eel.init('programma/web')  # Vervang met het pad naar je web map
+eel.init('programma/web')
 
-# Globale variabele voor het bijhouden van de laatste krachtmeting
+# Globale variabelen
 latest_weight = None
 latest_angle_x = None
 latest_angle_y = None
-
-latest_force_reading = None
 serial_instance = None
 is_test_running = False
-data_frame = None
 csv_bestandsnaam = None
 csv_writer = None
-csv_file = None  # Dit zorgt ervoor dat csv_file globaal beschikbaar is
+csv_file = None
 write_lock = Lock()
 
+# Globale variabelen voor sensorinstellingen
+sensor_scalar = 1232
+sensor_unit_factor = 0.000001
+
+# Globale variabelen voor starttijd
+start_tijd = None
 
 def read_serial_data():
-    global is_test_running, serial_instance, latest_weight, latest_angle_x, latest_angle_y
+    global start_tijd, is_test_running, serial_instance, latest_weight, latest_angle_x, latest_angle_y
     while is_test_running and serial_instance and serial_instance.isOpen():
         if serial_instance.in_waiting > 0:
             data = serial_instance.readline().decode().strip()
             parts = data.split(',')
             if len(parts) == 3:
                 weight, angle_x, angle_y = parts
-                calibrated_weight = format_data(weight)  # Pas format_data toe op gewicht
+                calibrated_weight = format_data(weight)
 
-                # Update global variabelen
                 latest_weight = calibrated_weight
                 latest_angle_x = angle_x
                 latest_angle_y = angle_y
 
-                # Schrijf naar CSV-bestand
+                if start_tijd is not None:
+                    verstreken_ms = int((time.time() * 1000) - start_tijd)
+                    verstreken_sec = verstreken_ms // 1000
+                    ms = verstreken_ms % 1000
+                    verstreken_tijd_str = f"{verstreken_sec}:{ms:03d}"
+                else:
+                    verstreken_tijd_str = "0:000"
+
                 with write_lock:
                     if csv_writer is not None:
-                        current_time = time.strftime("%Y-%m-%d %H:%M:%S")
-                        csv_writer.writerow([current_time, calibrated_weight, angle_x, angle_y])
+                        csv_writer.writerow([verstreken_tijd_str, calibrated_weight, angle_x, angle_y])
 
 
+def format_data(raw_data, precision=2):
+    global sensor_scalar, sensor_unit_factor
+    try:
+        value = float(raw_data)
+        calibrated_value = value * sensor_scalar
+        unit_converted_value = calibrated_value * sensor_unit_factor
+        return round(unit_converted_value, precision)
+    except ValueError:
+        return None
 
 
+@eel.expose
+def update_sensor_instellingen(scalar, eenheid):
+    global sensor_scalar, sensor_unit_factor
+    print(f"update_sensor_instellingen aangeroepen met scalar: {scalar}, eenheid: {eenheid}")
 
-def format_data(raw_data, scalar=1232, offset=0.0, unit_factor=0.000001, precision=2):
+    try:
+        sensor_scalar = float(scalar)
+
+        if eenheid == "gram":
+            sensor_unit_factor = 0.000001
+        elif eenheid == "newton":
+            sensor_unit_factor = 0.00000981
+        return True
+    except Exception as e:
+        print(f"Fout in update_sensor_instellingen: {e}")
+        return False
+    
+
+def format_data(raw_data, scalar=sensor_scalar, offset=0.0, unit_factor=sensor_unit_factor, precision=2):
     """
     Kalibreert en formateert de ruwe data van de sensor.
 
@@ -79,19 +112,6 @@ def format_data(raw_data, scalar=1232, offset=0.0, unit_factor=0.000001, precisi
         return round(unit_converted_value, precision)
     except ValueError:
         return None
-
-
-@eel.expose
-def update_sensor_instellingen( scalar, eenheid):
-    global sensor_scalar, sensor_eenheid
-    try:
-        sensor_scalar = float(scalar)
-        sensor_eenheid = eenheid
-        # Voeg hier eventuele extra logica toe om de sensorinstellingen toe te passen
-        return True
-    except Exception as e:
-        print(f"Fout bij het bijwerken van sensorinstellingen: {str(e)}")
-        return False
 
 
 @eel.expose
@@ -146,13 +166,14 @@ def set_csv_bestandsnaam(bestandsnaam):
 
 @eel.expose
 def start_test():
-    global is_test_running, csv_bestandsnaam, csv_file, csv_writer
+    global is_test_running, csv_bestandsnaam, csv_file, csv_writer, start_tijd
     if not is_test_running and csv_bestandsnaam:
+        start_tijd = time.time() * 1000
         is_test_running = True
 
         csv_file = open(csv_bestandsnaam + '.csv', mode='w', newline='', encoding='utf-8')
         csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(['Tijd', 'Data'])
+        csv_writer.writerow(['Time', 'Force', 'Angle X', 'Angle Y'])
 
         threading.Thread(target=read_serial_data, daemon=True).start()
         print("Test gestart met bestandsnaam:", csv_bestandsnaam)

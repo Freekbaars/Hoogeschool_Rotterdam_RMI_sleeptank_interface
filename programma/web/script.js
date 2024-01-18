@@ -1,5 +1,6 @@
 let isTestActief = false;
 let updateInterval;
+let startTijd;
 
 // Basisfuncties
 function resetGrafiek(chart) {
@@ -38,8 +39,22 @@ async function openSelectedPort() {
 async function updateSensorInstellingen() {
     let scalar = document.getElementById('scalar-factor').value;
     let eenheid = document.getElementById('eenheid-select').value;
+
+    // Controleer of scalar een geldige waarde heeft
+    if (!scalar) {
+        alert("Voer een geldige scalar-waarde in.");
+        return;
+    }
+
+    console.log(`Aanroepen update_sensor_instellingen met scalar: ${scalar}, eenheid: ${eenheid}`);
     let resultaat = await eel.update_sensor_instellingen(scalar, eenheid)();
-    console.log(resultaat ? "Sensorinstellingen bijgewerkt." : "Fout bij het bijwerken van sensorinstellingen.");
+    if (resultaat) {
+        console.log("Sensorinstellingen bijgewerkt naar " + eenheid + ".");
+        alert("Sensorinstellingen zijn bijgewerkt naar " + eenheid + ".");
+    } else {
+        console.log("Fout bij het bijwerken van sensorinstellingen.");
+        alert("Fout bij het bijwerken van de sensorinstellingen.");
+    }
 }
 
 // Grafiek voor gewicht
@@ -58,12 +73,15 @@ function tekenGewichtsGrafiek() {
 }
 
 async function updateGewichtsGrafiek() {
-    if (!isTestActief) return;
-    let gewicht = await eel.get_latest_weight()();
-    if (gewicht !== null && gewicht !== undefined) {
-        let tijd = new Date().toLocaleTimeString();
-        gewichtsChart.data.labels.push(tijd);
-        gewichtsChart.data.datasets[0].data.push(gewicht);
+    let gewichtsdata = await eel.get_latest_weight()();
+    
+    if (gewichtsdata !== null && gewichtsdata !== undefined) {
+        // Zorg ervoor dat de deling door 1000 correct wordt uitgevoerd
+        let verstrekenTijd = (Date.now() - startTijd) / 1000; 
+        let verstrekenTijdAfgerond = verstrekenTijd.toFixed(2); // Rond af op twee decimalen
+
+        gewichtsChart.data.labels.push(verstrekenTijdAfgerond); // Gebruik afgeronde verstreken tijd
+        gewichtsChart.data.datasets[0].data.push(gewichtsdata);
         gewichtsChart.update();
     }
 }
@@ -113,11 +131,13 @@ function bevestigBestandsnaam() {
 async function startTest() {
     let bestandsnaam = document.getElementById('csv-bestandsnaam').value;
     if (bestandsnaam) {
+        startTijd = Date.now();
         isTestActief = true;
-        eel.start_test()(() => updateInterval = setInterval(() => {
+        await eel.start_test()();  // Zorg dat de test daadwerkelijk start voordat de interval begint
+        updateInterval = setInterval(() => {
             updateGewichtsGrafiek();
             updateGyroGrafiek();
-        }, 1000));
+        }, 1000); // Zet de interval om de grafieken elke seconde te updaten
     } else {
         alert('Voer een geldige bestandsnaam in en bevestig.');
     }
