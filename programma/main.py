@@ -12,6 +12,7 @@ import time
 import csv
 import os
 
+
 eel.init('programma/web')
 
 # Globale variabelen
@@ -20,14 +21,18 @@ latest_angle_x = None
 latest_angle_y = None
 serial_instance = None
 is_test_running = False
-csv_bestandsnaam = None
+
+# Globale variabelen voor de CSV 
+csv_bestandsnaam = "default_bestandsnaam"
 csv_writer = None
 csv_file = None
 write_lock = Lock()
+opslag_pad = ""
 
 # Globale variabelen voor sensorinstellingen
-sensor_scalar = 1232
+sensor_scalar = 1232 # 2kg 
 sensor_unit_factor = 0.000001
+sensor_eenheid = "G"
 
 # Globale variabelen voor starttijd
 start_tijd = None
@@ -81,7 +86,7 @@ def create_unique_filename(base_name):
 
 @eel.expose
 def update_sensor_instellingen(scalar, eenheid):
-    global sensor_scalar, sensor_unit_factor
+    global sensor_scalar, sensor_unit_factor, sensor_eenheid
     print(f"update_sensor_instellingen aangeroepen met scalar: {scalar}, eenheid: {eenheid}")
 
     try:
@@ -89,13 +94,20 @@ def update_sensor_instellingen(scalar, eenheid):
 
         if eenheid == "gram":
             sensor_unit_factor = 0.000001
+            sensor_eenheid = "G"
         elif eenheid == "newton":
             sensor_unit_factor = 0.00000981
+            sensor_eenheid = "N"
         return True
     except Exception as e:
         print(f"Fout in update_sensor_instellingen: {e}")
         return False
-    
+
+
+@eel.expose
+def set_map_pad(pad):
+    global opslag_pad
+    opslag_pad = pad   
 
 def format_data(raw_data, scalar=sensor_scalar, offset=0.0, unit_factor=sensor_unit_factor, precision=2):
     """
@@ -177,20 +189,25 @@ def set_csv_bestandsnaam(bestandsnaam):
 
 @eel.expose
 def start_test():
-    global is_test_running, csv_bestandsnaam, csv_file, csv_writer, start_tijd
-    if not is_test_running and csv_bestandsnaam:
-        start_tijd = time.time() * 1000
+    global is_test_running, csv_bestandsnaam, csv_file, csv_writer, start_tijd, sensor_eenheid
+    if not is_test_running:
+        if csv_bestandsnaam is None:
+            csv_bestandsnaam = "default_bestandsnaam"  # Geef een standaardwaarde
+
+        unique_csv_bestandsnaam = create_unique_filename(csv_bestandsnaam)
+        start_tijd = time.time() * 1000  # Tijd in milliseconden
         is_test_running = True
 
-        csv_file = open(csv_bestandsnaam + '.csv', mode='w', newline='', encoding='utf-8')
+        volledige_pad = os.path.join(opslag_pad, unique_csv_bestandsnaam + '.csv')
+        csv_file = open(volledige_pad, mode='w', newline='', encoding='utf-8')
         csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(['Time', 'Force', 'Angle X', 'Angle Y'])
+        force_column_header = f"Force [{sensor_eenheid}]"
+        csv_writer.writerow(['Time [S]', force_column_header, 'Angle X [deg]', 'Angle Y [deg]'])
 
         threading.Thread(target=read_serial_data, daemon=True).start()
-        print("Test gestart met bestandsnaam:", csv_bestandsnaam)
+        print("Test gestart met bestandsnaam:", unique_csv_bestandsnaam)
     else:
         print("Test kan niet worden gestart. Is test running:", is_test_running, "Bestandsnaam:", csv_bestandsnaam)
-
 
 @eel.expose
 def stop_test():

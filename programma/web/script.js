@@ -1,6 +1,7 @@
 let isTestActief = false;
 let updateInterval;
 let startTijd;
+var gewichtsChart;
 
 // Basisfuncties
 function resetGrafiek(chart) {
@@ -35,6 +36,22 @@ async function openSelectedPort() {
     console.log(isOpened ? "Poort geopend: " + selectedPort : "Fout bij het openen van de poort");
 }
 
+// Testnaam bevestigen
+function bevestigBestandsnaam() {
+    let bestandsnaam = document.getElementById('csv-bestandsnaam').value;
+    if (bestandsnaam) {
+        eel.set_csv_bestandsnaam(bestandsnaam)(() => bestandsnaamBevestigd = true);
+    } else {
+        alert('Voer een geldige bestandsnaam in.');
+    }
+}
+
+// opslaan map
+function bevestigMapPad() {
+    let mapPad = document.getElementById('map_pad').value;
+    eel.set_map_pad(mapPad);
+}
+
 // Sensorinstellingen bijwerken
 async function updateSensorInstellingen() {
     let scalar = document.getElementById('scalar-factor').value;
@@ -58,8 +75,6 @@ async function updateSensorInstellingen() {
 }
 
 // Grafiek voor gewicht
-var gewichtsChart;
-
 function tekenGewichtsGrafiek() {
     var ctx = document.getElementById('Weerstand_Chart_1').getContext('2d');
     gewichtsChart = new Chart(ctx, {
@@ -115,16 +130,6 @@ async function updateGyroGrafiek() {
         gyroChart.data.datasets[0].data.push(hoekX);
         gyroChart.data.datasets[1].data.push(hoekY);
         gyroChart.update();
-    }
-}
-
-// Testnaam bevestigen
-function bevestigBestandsnaam() {
-    let bestandsnaam = document.getElementById('csv-bestandsnaam').value;
-    if (bestandsnaam) {
-        eel.set_csv_bestandsnaam(bestandsnaam)(() => bestandsnaamBevestigd = true);
-    } else {
-        alert('Voer een geldige bestandsnaam in.');
     }
 }
 

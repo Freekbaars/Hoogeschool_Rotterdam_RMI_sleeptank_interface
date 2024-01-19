@@ -34,6 +34,7 @@
 
 
     <button onclick="toggleZijmenu()" class="zijmenu-toggle">☰ Menu</button>
+
     <div id="zijmenu" class="zijmenu">
       <a href="javascript:void(0)" class="closebtn" onclick="toggleZijmenu()">&times;</a>
       
@@ -58,6 +59,9 @@
           <input type="text" class="input" id="csv-bestandsnaam" name="naam_doc" placeholder="CSV-naam" autocomplete="off">
           <button class="button--submit" onclick="bevestigBestandsnaam()">bevestig</button>
         </li>
+
+        <input type="text" id="map_pad" placeholder="Voer pad naar map in">
+        <button onclick="bevestigMapPad()">Bevestig Map Pad</button>
 
       </div>
 
