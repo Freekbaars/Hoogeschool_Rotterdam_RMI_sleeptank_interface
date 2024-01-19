@@ -1,6 +1,6 @@
 # author: Freek Baars
-# date: 2021-04-28
-# version: 1.0.0
+# date: 19-01-2024
+# version: 1.1.0
 # python 3.12.1
 
 import eel
@@ -11,6 +11,9 @@ from threading import Lock
 import time
 import csv
 import os
+import tkinter as tk
+from tkinter import filedialog
+
 
 
 eel.init('programma/web')
@@ -27,7 +30,7 @@ csv_bestandsnaam = "default_bestandsnaam"
 csv_writer = None
 csv_file = None
 write_lock = Lock()
-opslag_pad = ""
+opslag_pad = os.getcwd()
 
 # Globale variabelen voor sensorinstellingen
 sensor_scalar = 1232 # 2kg 
@@ -36,6 +39,7 @@ sensor_eenheid = "G"
 
 # Globale variabelen voor starttijd
 start_tijd = None
+
 
 def read_serial_data():
     global start_tijd, is_test_running, serial_instance, latest_weight, latest_angle_x, latest_angle_y
@@ -75,12 +79,15 @@ def format_data(raw_data, precision=2):
         return None
 
 
-def create_unique_filename(base_name):
+def create_unique_filename(base_path, base_name):
     counter = 1
-    unique_name = base_name
-    while os.path.exists(unique_name + '.csv'):
-        unique_name = f"{base_name}_{counter}"
+    base_name_without_extension = os.path.splitext(base_name)[0]  # Verwijdert de extensie (indien aanwezig)
+    unique_name = os.path.join(base_path, base_name_without_extension + '.csv')
+
+    while os.path.exists(unique_name):
+        unique_name = os.path.join(base_path, f"{base_name_without_extension}_{counter}.csv")
         counter += 1
+
     return unique_name
 
 
@@ -108,6 +115,7 @@ def update_sensor_instellingen(scalar, eenheid):
 def set_map_pad(pad):
     global opslag_pad
     opslag_pad = pad   
+
 
 def format_data(raw_data, scalar=sensor_scalar, offset=0.0, unit_factor=sensor_unit_factor, precision=2):
     """
@@ -181,29 +189,32 @@ def get_latest_angle_y():
 
 @eel.expose
 def set_csv_bestandsnaam(bestandsnaam):
-    global csv_bestandsnaam
-    csv_bestandsnaam = bestandsnaam
-    csv_bestandsnaam = create_unique_filename(bestandsnaam)
+    global csv_bestandsnaam, opslag_pad
+    csv_bestandsnaam = create_unique_filename(opslag_pad, bestandsnaam)
     print("Bestandsnaam voor CSV is ingesteld op:", csv_bestandsnaam)
 
 
 @eel.expose
 def start_test():
-    global is_test_running, csv_bestandsnaam, csv_file, csv_writer, start_tijd, sensor_eenheid
+    global is_test_running, csv_bestandsnaam, csv_file, csv_writer, start_tijd, sensor_eenheid, opslag_pad
     if not is_test_running:
-        if csv_bestandsnaam is None:
-            csv_bestandsnaam = "default_bestandsnaam"  # Geef een standaardwaarde
+        # Als opslag_pad niet is ingesteld, gebruik de huidige werkmap
+        if not opslag_pad:
+            opslag_pad = os.getcwd()
 
-        unique_csv_bestandsnaam = create_unique_filename(csv_bestandsnaam)
-        start_tijd = time.time() * 1000  # Tijd in milliseconden
-        is_test_running = True
+        # Genereer een unieke bestandsnaam
+        base_name = os.path.basename(csv_bestandsnaam) if csv_bestandsnaam else "default_bestandsnaam"
+        unique_csv_bestandsnaam = create_unique_filename(opslag_pad, base_name)
 
-        volledige_pad = os.path.join(opslag_pad, unique_csv_bestandsnaam + '.csv')
+        # Volledige pad voor het CSV-bestand
+        volledige_pad = os.path.join(opslag_pad, unique_csv_bestandsnaam)
         csv_file = open(volledige_pad, mode='w', newline='', encoding='utf-8')
         csv_writer = csv.writer(csv_file)
         force_column_header = f"Force [{sensor_eenheid}]"
         csv_writer.writerow(['Time [S]', force_column_header, 'Angle X [deg]', 'Angle Y [deg]'])
 
+        start_tijd = time.time() * 1000  # Tijd in milliseconden
+        is_test_running = True
         threading.Thread(target=read_serial_data, daemon=True).start()
         print("Test gestart met bestandsnaam:", unique_csv_bestandsnaam)
     else:
