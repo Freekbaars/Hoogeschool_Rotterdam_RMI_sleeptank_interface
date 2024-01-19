@@ -1,9 +1,15 @@
+// Beschrijving: JavaScript voor de webpagina
+// Auteur: Freek Baars
+// Laatst bewerkt: 19-01-2024
+// Versie: 1.0
+
+// Globale variabelen
 let isTestActief = false;
 let updateInterval;
 let startTijd;
 var gewichtsChart;
 
-// Basisfuncties
+// Grafiek resetten (labels en data verwijderen)
 function resetGrafiek(chart) {
     chart.data.labels = []; // Labels resetten
     chart.data.datasets.forEach((dataset) => {
@@ -12,13 +18,13 @@ function resetGrafiek(chart) {
     chart.update(); // Grafiek bijwerken om wijzigingen toe te passen
 }
 
-// Zijmenu
+// Zijmenu openen en sluiten
 function toggleZijmenu() {
     var zijmenu = document.getElementById("zijmenu");
     zijmenu.style.width = zijmenu.style.width === "250px" ? "0" : "250px";
 }
 
-// Poorten laden
+// Serial port dropdown vullen met beschikbare poorten
 async function loadSerialPorts() {
     let ports = await eel.get_serial_ports()();
     let portsDropdown = document.getElementById('serial-ports-dropdown');
@@ -30,13 +36,14 @@ async function loadSerialPorts() {
     });
 }
 
+// Serial port openen
 async function openSelectedPort() {
     let selectedPort = document.getElementById('serial-ports-dropdown').value;
     let isOpened = await eel.open_serial_port(selectedPort)();
     console.log(isOpened ? "Poort geopend: " + selectedPort : "Fout bij het openen van de poort");
 }
 
-// Testnaam bevestigen
+// testnaam bevestigen 
 function bevestigBestandsnaam() {
     let bestandsnaam = document.getElementById('csv-bestandsnaam').value;
     if (bestandsnaam) {
@@ -52,7 +59,7 @@ function bevestigMapPad() {
     eel.set_map_pad(mapPad);
 }
 
-// Sensorinstellingen bijwerken
+// Sensorinstellingen bijwerken 
 async function updateSensorInstellingen() {
     let scalar = document.getElementById('scalar-factor').value;
     let eenheid = document.getElementById('eenheid-select').value;
@@ -87,6 +94,7 @@ function tekenGewichtsGrafiek() {
     });
 }
 
+// Gewichtsgrafiek updaten
 async function updateGewichtsGrafiek() {
     let gewichtsdata = await eel.get_latest_weight()();
     
@@ -102,7 +110,6 @@ async function updateGewichtsGrafiek() {
 
 // Grafiek voor gyroscoop
 var gyroChart;
-
 function tekenGyroGrafiek() {
     var ctx = document.getElementById('Gyro_Chart').getContext('2d');
     gyroChart = new Chart(ctx, {
@@ -118,6 +125,7 @@ function tekenGyroGrafiek() {
     });
 }
 
+// Gyrografiek updaten
 async function updateGyroGrafiek() {
     if (!isTestActief) return;
     let hoekX = await eel.get_latest_angle_x()();
@@ -158,6 +166,7 @@ function stopTest() {
     resetGrafiek(gyroChart);
 }
 
+// Wanneer de pagina geladen is worden de serial ports geladen en de grafieken getekend 
 window.onload = function() {
     loadSerialPorts();
     tekenGewichtsGrafiek();
