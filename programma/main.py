@@ -11,9 +11,6 @@ from threading import Lock
 import time
 import csv
 import os
-import tkinter as tk
-from tkinter import filedialog
-
 
 
 eel.init('programma/web')
