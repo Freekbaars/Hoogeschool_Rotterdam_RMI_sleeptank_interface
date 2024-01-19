@@ -20,4 +20,4 @@ Om de interface te gebruiken moet je de volgende stappen volgen:
 7. Klik op start test
 8. Test loopt
 9. Klik op stop test
-10. geef de test een nieuwe naam (dit moet nog aan gepast worden zo dat als de zelfde naam word gegeven de vorige test niet word overschreven)
+10. geef de test een nieuwe naam
