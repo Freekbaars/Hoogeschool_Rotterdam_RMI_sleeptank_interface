@@ -1,7 +1,7 @@
-# deze code loopt op de metro m4
+# deze code loopt op de metro m4 (circuitpython)
 # author: Freek Baars
-# date: 2021-04-28
-# version: 1.0.0
+# date: 19-01-2024
+# version: 1.1.0
 
 import board
 from digitalio import DigitalInOut
