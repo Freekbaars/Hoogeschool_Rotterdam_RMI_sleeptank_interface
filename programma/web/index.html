@@ -1,54 +1,94 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>dachboard</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript" src="/eel.js"></script>
-    <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="style.css">
-  </head>
 
-  <body>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Sleeptank Dachboard</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/javascript" src="/eel.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
 
-    <div class="container">
-      <!--header balk-->
-      <header>
-        <!--logo-->
-        <img class="logo" src="img/logo.png" alt="logo">
-        <!--opties in header-->
-        <nav>
-          <ul class="nav_links">
-            <li>
-              <select id="serial-ports-dropdown"></select> 
-              <button onclick="openSelectedPort()">Open Poort</button>
-            </li>
+<body>
 
-            <li><button class="btn_start" onclick="startTest()">start test</button></li>
-            
-            <li><button class="btn_stop" onclick="stopTest()">stop test</button></li>
+  <button onclick="toggleZijmenu()" class="zijmenu-toggle">☰ Menu</button>
 
-            
-            <li class="input-group">
-              <input type="text" class="input" id="csv-bestandsnaam" name="naam_doc" placeholder="CSV-naam" autocomplete="off">
-              <button class="button--submit" onclick="bevestigBestandsnaam()">bevestig</button>
-            </li>
-          </ul>
-        </nav>
-       
-      </header>
+  <div class="container">
+    <!--header balk-->
+    <header>
+      <!--logo-->
+      <img class="logo" src="img/logo.png" alt="logo">
+      <!--opties in header-->
+      <nav>
+        <ul class="nav_links">
+
+          <li><button class="btn_start" onclick="startTest()">start test</button></li>
+
+          <li><button class="btn_stop" onclick="stopTest()">stop test</button></li>
+
+        </ul>
+      </nav>
+
+    </header>
+  </div>
+
+  <div id="zijmenu" class="zijmenu">
+    <a href="javascript:void(0)" class="closebtn" onclick="toggleZijmenu()">&times;</a>
+
+    <div id="poort-instellingen">
+
+      <h2>Poort instellingen</h2>
+
+      <div style="display: flex; align-items: center;">
+
+        <select id="serial-ports-dropdown"></select>
+        <button onclick="openSelectedPort()">Open Poort</button>
+
+      </div>
+
     </div>
 
-    
+    <div id="output-bestand">
+
+      <h2>Output bestand</h2>
+
+      <li class="input-group">
+        <input type="text" class="input" id="csv-bestandsnaam" name="naam_doc" placeholder="CSV-naam"
+          autocomplete="off">
+        <button class="button--submit" onclick="bevestigBestandsnaam()">bevestig</button>
+      </li>
+
+      <input type="text" id="map_pad" placeholder="Voer pad naar map in">
+      <button onclick="bevestigMapPad()">Bevestig Map Pad</button>
+
+    </div>
+
+    <div id="sensor-instellingen">
+      <h2>Sensor instellingen</h2>
+      <h4>2 kg = 1232</h4>
+      <h4>0.5 kg = ?</h4>
+      <input type="number" id="scalar-factor" placeholder="1232">
+      <select id="eenheid-select">
+        <option value="gram">Gram</option>
+        <option value="newton">Newton</option>
+      </select>
+      <button onclick="updateSensorInstellingen()">Bevestigen</button>
+    </div>
+
+  </div>
+
+  <div id="grafiek-container">
     <canvas id="Weerstand_Chart_1"></canvas>
+  </div>
 
-    <!--onzin :)
-    <div class="one-div"></div>
-    -->
+  <div id="gyro-grafiek-container">
+    <canvas id="Gyro_Chart"></canvas>
+  </div>
 
-  
-  </body>
+</body>
+<script src="script.js"></script>
+
 </html>
