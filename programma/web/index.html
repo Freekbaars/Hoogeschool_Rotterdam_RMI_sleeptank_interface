@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>dachboard</title>
+  <title>Sleeptank Dachboard</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/javascript" src="/eel.js"></script>
@@ -13,6 +13,8 @@
 </head>
 
 <body>
+
+  <button onclick="toggleZijmenu()" class="zijmenu-toggle">☰ Menu</button>
 
   <div class="container">
     <!--header balk-->
@@ -32,8 +34,6 @@
 
     </header>
   </div>
-
-  <button onclick="toggleZijmenu()" class="zijmenu-toggle">☰ Menu</button>
 
   <div id="zijmenu" class="zijmenu">
     <a href="javascript:void(0)" class="closebtn" onclick="toggleZijmenu()">&times;</a>
@@ -87,10 +87,6 @@
   <div id="gyro-grafiek-container">
     <canvas id="Gyro_Chart"></canvas>
   </div>
-
-  <!--onzin :)
-    <div class="one-div"></div>
-    -->
 
 </body>
 <script src="script.js"></script>
