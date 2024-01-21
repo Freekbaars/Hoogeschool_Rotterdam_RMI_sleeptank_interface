@@ -2,6 +2,13 @@
 :root {
   --background-color: #212121; /* Donkere achtergrond voor het hele lichaam */
   --nav-background-color: #212121; /* Donkere achtergrond voor de header */
+  --text-color: #e0e0e0; /* Tekstkleur */
+  --button-active-scale: 0.92; /* Schaal voor actieve knop */
+  --hover-background-gradient-start: rgba(44, 232, 31, 0.873); /* Begin van achtergrond gradient bij hover */
+  --hover-background-gradient-stop: rgba(241, 0, 0, 0.873);
+  --hover-background-gradient-end: rgba(2,29,78); /* Einde van achtergrond gradient bij hover */
+  --button-shadow: 0px 0px 60px #1f4c65; /* Schaduw voor knoppen */
+  --box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4)); /* Reflectie effect */
 }
 
 /* Algemene stijl van de pagina */
@@ -10,13 +17,13 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--background-color);
-  color: #e0e0e0; /* Deze kleur kan ook als variabele worden ingesteld indien gewenst */
+  color: var(--text-color);
 }
 
 /* Header stijlen */
 header {
   background: var(--nav-background-color);
-  color: var(--nav-text-color);
+  color: var(--text-color);
   padding: 20px 0;
   text-align: center;
 }
@@ -44,12 +51,12 @@ header {
 }
 
 .nav_links a:hover {
-  background-color: var(--nav-hover-background-color);
+  background-color: var(--hover-background-gradient-start);
 }
 
 
-/* start knop*/
-.btn_start {
+/* Knop stijlen */
+.btn_start, .btn_stop {
   font-size: 1.2rem;
   padding: 1rem 2.5rem;
   border: none;
@@ -57,127 +64,35 @@ header {
   border-radius: 0.4rem;
   cursor: pointer;
   text-transform: uppercase;
-  background-color: rgb(14, 26, 18);
   color: rgb(234, 234, 234);
   font-weight: 700;
   transition: 0.6s;
-  box-shadow: 0px 0px 60px #1f4c65;
-  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
+  box-shadow: var(--button-shadow);
+  -webkit-box-reflect: var(--box-reflect);
 }
 
-.btn_start:active {
-  scale: 0.92;
+.btn_start {
+  background-color: rgb(14, 26, 18);
+}
+
+.btn_stop {
+  background-color: rgb(26, 14, 14);
+}
+
+.btn_start:active, .btn_stop:active {
+  scale: var(--button-active-scale);
 }
 
 .btn_start:hover {
-  background: rgb(2,29,78);
-  background: linear-gradient(270deg, rgba(8, 78, 2, 0.681) 0%, rgba(44, 232, 31, 0.873) 60%);
+  background: linear-gradient(270deg, rgba(8, 78, 2, 0.681) 0%, var(--hover-background-gradient-start) 60%);
   color: rgb(4, 4, 38);
-}
-
-
-/* stop knop*/
-
-.btn_stop {
-  font-size: 1.2rem;
-  padding: 1rem 2.5rem;
-  border: none;
-  outline: none;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  text-transform: uppercase;
-  background-color: rgb(26, 14, 14);
-  color: rgb(234, 234, 234);
-  font-weight: 700;
-  transition: 0.6s;
-  box-shadow: 0px 0px 60px #1f4c65;
-  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
-}
-
-.btn_stop:active {
-  scale: 0.92;
 }
 
 .btn_stop:hover {
-  background: rgb(2,29,78);
-  background: linear-gradient(270deg, rgba(78, 2, 2, 0.681) 0%, rgba(232, 31, 31, 0.873) 60%);
-  color: rgb(4, 4, 38);
+  background: linear-gradient(270deg, rgba(78, 2, 2, 0.681) 0%, var(--hover-background-gradient-stop) 60%);
+  color: rgb(38, 4, 4);
 }
 
-
-/* zijmenu*/
-
-.zijmenu {
-height: 100%;
-width: 0; /* Zijmenu is standaard verborgen */
-position: fixed;
-z-index: 1;
-top: 0;
-left: 0;
-background-color: #111;
-overflow-x: hidden;
-transition: 0.5s; /* Gladde overgang voor in/uitklappen */
-padding-top: 60px;
-}
-
-.zijmenu-open {
-width: 250px; /* Breedte wanneer het menu zichtbaar is */
-}
-
-.zijmenu-toggle {
-position: fixed;
-top: 20px;
-left: 20px;
-font-size: 30px;
-cursor: pointer;
-color: white;
-background: none;
-border: none;
-}
-
-.zijmenu-toggle:hover {
-color: rgb(140, 255, 0);  
-}
-
-
-.zijmenu h2 {
-  color: white;
-  padding: 6px 16px;
-}
-
-
-.zijmenu h4 {
-  color: rgba(255, 255, 255, 0.482);
-  padding: 0px 16px;
-}
-
-.zijmenu input, .zijmenu select {
-  padding: 6px 16px;
-  margin: 10px;
-  width: 90%;
-}
-
-.zijmenu button {
-  margin: 10px 16px;
-}
-
-.input-group {
-  display: flex;
-  align-items: center;
-}
-
-
-#poort-instellingen {
-  margin-bottom: 100px;
-}
-
-#output-bestand {
-  margin-bottom: 100px;
-}
-
-#sensor-instellingen {
-  margin-bottom: 100px;
-} 
 
 .closebtn {
   position: absolute;
@@ -201,90 +116,6 @@ color: rgb(140, 255, 0);
 .closebtn:hover {
   background-color: #ff0000; /* achtergrond wit op hover */
   color: #000; /* tekst/icoon zwart op hover */
-}
-
-/* port selectie */
-#serial-ports-dropdown {
- max-width: 90px;
- padding: 0.5rem 0.5rem;
- border: 1px solid #5e4dcd;
- border-radius: 0.4rem;
- background-color: transparent;
- color: #fff;
- font-size: 1rem;
- cursor: pointer;
- transition: background-color 0.3s ease-in-out;
- -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
-}
-
-#serial-ports-dropdown:hover, #serial-ports-dropdown:focus {
-  background-color: rgba(44, 232, 31, 0.6);
-  border-color: #47ec38;
-}
-
-
-button[onclick="openSelectedPort()"] {
-  height: auto;
-  min-width: 100px;
-  padding: 10px 10px;
-  font-size: 13px;
-  border: none;
-  outline: none;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  text-transform: uppercase;
-  background-color: rgb(26, 26, 26);
-  color: rgb(234, 234, 234);
-  font-weight: 700;
-  transition: background-color 0.3s ease-in-out;
-  box-shadow: 0px 0px 60px #1f4c65;
-  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
-}
-
-button[onclick="openSelectedPort()"]:hover, button[onclick="openSelectedPort()"]:focus {
-  background-color: rgba(44, 232, 31, 0.873);
-  color: rgb(4, 4, 38);
-}
-
-
-/* CSV naam in voer*/  
-.input {
-  min-height: 20px;
-  max-width: 100px;
-  padding: 0 1rem;
-  color: #fff;
-  font-size: 15px;
-  border: 1px solid #5e4dcd;
-  border-radius: 6px;
-  background-color: transparent;
-  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
-}
-
-.button--submit {
-  min-height: 20px;
-  padding: .5em 0.5em;
-  border: none;
-  border-radius: 6px;
-  background-color: #5e4dcd;
-  color: #fff;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background-color .3s ease-in-out;
-  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
-}
-
-.button--submit:hover {
-  background-color: rgba(44, 232, 31, 0.873);
-}
-
-.input:focus, .input:focus-visible {
-  border-color: #3898EC;
-  outline: none;
-}
-
-.input:hover, .input:focus-visible {
-  border-color: #47ec38;
-  outline: none;
 }
 
 /*grafiek*/
