@@ -5,11 +5,12 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Sleeptank Dachboard</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="zijmenu.css">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/javascript" src="/eel.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -44,7 +45,7 @@
 
       <div style="display: flex; align-items: center;">
 
-        <select id="serial-ports-dropdown"></select>
+        <select class="dropdown" id="serial-ports-dropdown"></select>
         <button onclick="openSelectedPort()">Open Poort</button>
 
       </div>
@@ -55,27 +56,32 @@
 
       <h2>Output bestand</h2>
 
-      <li class="input-group">
+      <div class="input-group">
         <input type="text" class="input" id="csv-bestandsnaam" name="naam_doc" placeholder="CSV-naam"
           autocomplete="off">
         <button class="button--submit" onclick="bevestigBestandsnaam()">bevestig</button>
-      </li>
+      </div>
 
-      <input type="text" id="map_pad" placeholder="Voer pad naar map in">
-      <button onclick="bevestigMapPad()">Bevestig Map Pad</button>
-
+      <div class="input-group">
+        <input type="text" class="input" id="map_pad" placeholder="map pad">
+        <button class="button--submit" onclick="bevestigMapPad()">Bevestig</button>
+      </div>
     </div>
 
     <div id="sensor-instellingen">
       <h2>Sensor instellingen</h2>
+      <h4>bij het selecteren van een eenhijd ook de schaal factor ingeven.</h4>
+      <h5>standaard is 2KG</h5>
       <h4>2 kg = 1232</h4>
       <h4>0.5 kg = ?</h4>
-      <input type="number" id="scalar-factor" placeholder="1232">
-      <select id="eenheid-select">
+
+      <input class="input" type="number" id="scalar-factor" placeholder="schaal factor">
+
+      <select class="dropdown" id="eenheid-select">
         <option value="gram">Gram</option>
         <option value="newton">Newton</option>
       </select>
-      <button onclick="updateSensorInstellingen()">Bevestigen</button>
+      <button class="button--submit" onclick="updateSensorInstellingen()">Bevestigen</button>
     </div>
 
   </div>
