@@ -30,7 +30,7 @@ write_lock = Lock()
 opslag_pad = os.getcwd()
 
 # Globale variabelen voor sensorinstellingen
-sensor_scalar = 1232 # 2kg 
+sensor_scalar = 2241.31 # 1kg 
 sensor_unit_factor = 0.000001
 sensor_eenheid = "G"
 
