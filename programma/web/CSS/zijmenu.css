@@ -1,0 +1,162 @@
+/* Zijmenu stijlen */
+.zijmenu {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+}
+  
+.zijmenu-open {
+  width: 300px;
+}
+
+.zijmenu-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
+  background: none;
+  border: none;
+}
+
+.zijmenu-toggle:hover {
+  color: rgb(140, 255, 0);
+}
+
+.zijmenu h2, .zijmenu h4{
+  color: white;
+  padding: 6px 16px;
+}
+
+.zijmenu h4 {
+  color: rgba(255, 255, 255, 0.482);
+}
+
+.zijmenu h5 {
+    color: rgb(255, 0, 0);
+    padding: 0px 16px
+}
+
+.zijmenu input, .zijmenu select, .zijmenu button {
+  padding: 6px 16px;
+  margin: 10px;
+  width: 90%;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+/* marge tussen stukken van zijmenu */
+#poort-instellingen, #output-bestand, #sensor-instellingen  {
+  margin-bottom: 120px;
+}
+
+.dropdown {
+ max-width: 300px;
+ padding: 0.5rem 0.5rem;
+ border: 1px solid #5e4dcd;
+ border-radius: 0.4rem;
+ background-color: transparent;
+ color: #fff;
+ font-size: 1rem;
+ cursor: pointer;
+ transition: background-color 0.3s ease-in-out;
+}
+
+.dropdown option {
+    color: black; /* zwarte tekstkleur voor de opties */
+}
+
+/* port instellingen */
+
+#serial-ports-dropdown {
+ max-width: 90px;
+ padding: 0.5rem 0.5rem;
+ border: 1px solid #5e4dcd;
+ border-radius: 0.4rem;
+ background-color: transparent;
+ color: #fff;
+ font-size: 1rem;
+ cursor: pointer;
+ transition: background-color 0.3s ease-in-out;
+ -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
+}
+
+#serial-ports-dropdown:hover, #serial-ports-dropdown:focus {
+  background-color: rgba(44, 232, 31, 0.6);
+  border-color: #47ec38;
+}
+
+
+button[onclick="openSelectedPort()"] {
+  height: auto;
+  min-width: 100px;
+  padding: 10px 10px;
+  font-size: 13px;
+  border: none;
+  outline: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  background-color: rgb(26, 26, 26);
+  color: rgb(234, 234, 234);
+  font-weight: 700;
+  transition: background-color 0.3s ease-in-out;
+  box-shadow: 0px 0px 60px #1f4c65;
+  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4));
+}
+
+button[onclick="openSelectedPort()"]:hover, button[onclick="openSelectedPort()"]:focus {
+  background-color: rgba(44, 232, 31, 0.873);
+  color: rgb(4, 4, 38);
+}
+
+
+/* output bestand */ 
+
+.input {
+  min-height: 20px;
+  max-width: 200px;
+  padding: 0 1rem;
+  color: #fff;
+  font-size: 15px;
+  border: 1px solid #5e4dcd;
+  border-radius: 6px;
+  background-color: transparent;
+}
+
+.button--submit {
+  min-height: 20px;
+  padding: .5em 0.5em;
+  border: none;
+  border-radius: 6px;
+  background-color: #5e4dcd;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color .3s ease-in-out;
+}
+
+.button--submit:hover {
+  background-color: rgba(44, 232, 31, 0.873);
+}
+
+.input:focus, .input:focus-visible {
+  border-color: #3898EC;
+  outline: none;
+}
+
+.input:hover, .input:focus-visible {
+  border-color: #47ec38;
+  outline: none;
+}

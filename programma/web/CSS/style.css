@@ -1,0 +1,125 @@
+/* Globale variabelen */
+:root {
+  --background-color: #212121; /* Donkere achtergrond voor het hele lichaam */
+  --nav-background-color: #212121; /* Donkere achtergrond voor de header */
+  --text-color: #e0e0e0; /* Tekstkleur */
+  --button-active-scale: 0.92; /* Schaal voor actieve knop */
+  --hover-background-gradient-start: rgba(44, 232, 31, 0.873); /* Begin van achtergrond gradient bij hover */
+  --hover-background-gradient-stop: rgba(241, 0, 0, 0.873);
+  --hover-background-gradient-end: rgba(2,29,78); /* Einde van achtergrond gradient bij hover */
+  --button-shadow: 0px 0px 60px #1f4c65; /* Schaduw voor knoppen */
+  --box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4)); /* Reflectie effect */
+}
+
+/* Algemene stijl van de pagina */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Header stijlen */
+header {
+  background: var(--nav-background-color);
+  color: var(--text-color);
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* Logo stijl */
+.logo {
+  height: 60px;    
+}
+
+/* Navigatie stijlen */
+.nav_links {
+  list-style: none;
+  padding: 0;
+}
+
+.nav_links li {
+  display: inline;
+  margin: 0 20px;
+}
+
+.nav_links a {
+  color: var(--nav-text-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav_links a:hover {
+  background-color: var(--hover-background-gradient-start);
+}
+
+
+/* Knop stijlen */
+.btn_start, .btn_stop {
+  font-size: 1.2rem;
+  padding: 1rem 2.5rem;
+  border: none;
+  outline: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: rgb(234, 234, 234);
+  font-weight: 700;
+  transition: 0.6s;
+  box-shadow: var(--button-shadow);
+  -webkit-box-reflect: var(--box-reflect);
+}
+
+.btn_start {
+  background-color: rgb(14, 26, 18);
+}
+
+.btn_stop {
+  background-color: rgb(26, 14, 14);
+}
+
+.btn_start:active, .btn_stop:active {
+  scale: var(--button-active-scale);
+}
+
+.btn_start:hover {
+  background: linear-gradient(270deg, rgba(8, 78, 2, 0.681) 0%, var(--hover-background-gradient-start) 60%);
+  color: rgb(4, 4, 38);
+}
+
+.btn_stop:hover {
+  background: linear-gradient(270deg, rgba(78, 2, 2, 0.681) 0%, var(--hover-background-gradient-stop) 60%);
+  color: rgb(38, 4, 4);
+}
+
+
+.closebtn {
+  position: absolute;
+  top: 10px; 
+  right: 10px;
+  border: 2px solid #ff0000; /* witte rand */
+  background-color: transparent;
+  color: #ff0000; /* witte tekst of icoon */
+  font-size: 25px; /* pas aan op basis van uw behoefte */
+  border-radius: 50%; /* maakt de knop rond */
+  width: 25px; /* breedte van de knop */
+  height: 25px; /* hoogte van de knop */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.closebtn:hover {
+  background-color: #ff0000; /* achtergrond wit op hover */
+  color: #000; /* tekst/icoon zwart op hover */
+}
+
+/*grafiek*/
+#grafiek-container {
+height: 500px;
+width: 100%;
+}
