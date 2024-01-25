@@ -5,15 +5,28 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Sleeptank Dachboard</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="zijmenu.css">
-  <meta name="description" content="">
+  <link rel="stylesheet" href="CSS/style.css">
+  <link rel="stylesheet" href="CSS/zijmenu.css">
+  <link rel="stylesheet" href="CSS/pop-up.css">
+  <meta name="description" content="Dachboard">
+  </meta>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  </meta>
   <script type="text/javascript" src="/eel.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
+
+  <div id="comPortModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Selecteer een COM-poort</h2>
+      <select class="dropdown" id="serial-ports-dropdown"></select>
+      <button onclick="selectAndOpenPort()">Selecteer en Open Poort</button>
+    </div>
+  </div>
 
   <button onclick="toggleZijmenu()" class="zijmenu-toggle">☰ Menu</button>
 
@@ -38,19 +51,6 @@
 
   <div id="zijmenu" class="zijmenu">
     <a href="javascript:void(0)" class="closebtn" onclick="toggleZijmenu()">&times;</a>
-
-    <div id="poort-instellingen">
-
-      <h2>Poort instellingen</h2>
-
-      <div style="display: flex; align-items: center;">
-
-        <select class="dropdown" id="serial-ports-dropdown"></select>
-        <button onclick="openSelectedPort()">Open Poort</button>
-
-      </div>
-
-    </div>
 
     <div id="output-bestand">
 
@@ -95,6 +95,12 @@
   </div>
 
 </body>
-<script src="script.js"></script>
+<script src="JS/serialPort.js"></script>
+<script src="JS/comPortModal.js"></script>
+<script src="JS/fileManagement.js"></script>
+<script src="JS/sensorSettings.js"></script>
+<script src="JS/chartManagement.js"></script>
+<script src="JS/testControl.js"></script>
+<script src="JS/script.js"></script>
 
 </html>
