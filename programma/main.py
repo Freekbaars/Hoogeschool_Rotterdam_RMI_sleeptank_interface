@@ -1,6 +1,6 @@
 # author: Freek Baars
-# date: 19-01-2024
-# version: 1.1.0
+# date: 22-01-2024
+# version: 1.1.1
 # python 3.12.1
 
 import eel                     # Importeert de eel module om de webserver te starten
@@ -14,6 +14,7 @@ import os                      # Importeert de os module om de map pad te bepale
 
 
 eel.init('programma/web') # Initialiseert de webserver
+# eel.init('programma/web') # Initialiseert de webserver voor EXE.
 
 # Globale variabelen
 latest_Force = None
