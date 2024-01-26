@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Sleeptank Dachboard</title>
+  <link rel="stylesheet" href="CSS/standaard.css">
   <link rel="stylesheet" href="CSS/style.css">
   <link rel="stylesheet" href="CSS/zijmenu.css">
   <link rel="stylesheet" href="CSS/pop-up.css">
@@ -22,9 +23,9 @@
   <div id="comPortModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <h2>Selecteer een COM-poort</h2>
+      <h2 id="modal-text">Selecteer een COM-poort</h2>
       <select class="dropdown" id="serial-ports-dropdown"></select>
-      <button onclick="selectAndOpenPort()">Selecteer en Open Poort</button>
+      <button class="button--submit" onclick="selectAndOpenPort()">Selecteer en Open Poort</button>
     </div>
   </div>
 
