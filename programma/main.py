@@ -71,7 +71,8 @@ def read_serial_data():
                     with write_lock:
                         if csv_writer is not None:
                             csv_writer.writerow([verstreken_tijd_str, calibrated_Force, angle_x, angle_y])
-                            print({verstreken_tijd_str},{calibrated_Force},{angle_x},{angle_y})
+                            
+                            #print({verstreken_tijd_str},{calibrated_Force},{angle_x},{angle_y})
                     
                     last_time_logged = current_time  # Update de laatste logtijd
 
