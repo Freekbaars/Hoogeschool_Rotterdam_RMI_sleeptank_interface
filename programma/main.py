@@ -39,31 +39,41 @@ sensor_eenheid = "G"
 start_tijd = None
 
 
-def read_serial_data(): # Functie om de seriële data uit te lezen
+def read_serial_data(): 
     global start_tijd, is_test_running, serial_instance, latest_Force, latest_angle_x, latest_angle_y
+    last_time_logged = None
+    log_interval_ms = 100  # Interval tussen logs in milliseconden
+
     while is_test_running and serial_instance and serial_instance.isOpen():
-        if serial_instance.in_waiting > 0:
-            data = serial_instance.readline().decode().strip()
-            parts = data.split(',')
-            if len(parts) == 3:
-                weight, angle_x, angle_y = parts
-                calibrated_Force = format_data(weight)
+        current_time = int(time.time() * 1000)  # Huidige tijd in milliseconden
 
-                latest_Force = calibrated_Force
-                latest_angle_x = angle_x
-                latest_angle_y = angle_y
+        if last_time_logged is None or (current_time - last_time_logged) >= log_interval_ms:
+            if serial_instance.in_waiting > 0:
+                data = serial_instance.readline().decode().strip()
+                parts = data.split(',')
+                if len(parts) == 3:
+                    weight, angle_x, angle_y = parts
+                    calibrated_Force = format_data(weight)
 
-                if start_tijd is not None:
-                    verstreken_ms = int((time.time() * 1000) - start_tijd)
-                    verstreken_sec = verstreken_ms // 1000
-                    ms = verstreken_ms % 1000
-                    verstreken_tijd_str = f"{verstreken_sec}:{ms:03d}"
-                else:
-                    verstreken_tijd_str = "0:000"
+                    latest_Force = calibrated_Force
+                    latest_angle_x = angle_x
+                    latest_angle_y = angle_y
 
-                with write_lock:
-                    if csv_writer is not None:
-                        csv_writer.writerow([verstreken_tijd_str, calibrated_Force, angle_x, angle_y])
+                    if start_tijd is not None:
+                        verstreken_ms = current_time - start_tijd
+                        verstreken_sec = verstreken_ms // 1000
+                        ms = int(verstreken_ms % 1000)  # Zorg ervoor dat ms een integer is
+                        verstreken_sec = int(verstreken_sec % 60)  # Bepaal de resterende seconden
+                        verstreken_tijd_str = f"{verstreken_sec:02d}:{ms:03d}"
+                    else:
+                        verstreken_tijd_str = "0:000"
+
+                    with write_lock:
+                        if csv_writer is not None:
+                            csv_writer.writerow([verstreken_tijd_str, calibrated_Force, angle_x, angle_y])
+                            print({verstreken_tijd_str},{calibrated_Force},{angle_x},{angle_y})
+                    
+                    last_time_logged = current_time  # Update de laatste logtijd
 
 
 def format_data(raw_data, precision=2): # Functie om de Force data te kalibreren en te formatteren
@@ -209,7 +219,7 @@ def start_test(): # Functie om de test te starten
         csv_file = open(volledige_pad, mode='w', newline='', encoding='utf-8')
         csv_writer = csv.writer(csv_file)
         force_column_header = f"Force [{sensor_eenheid}]"
-        csv_writer.writerow(['Time [S]', force_column_header, 'Angle X [deg]', 'Angle Y [deg]'])
+        csv_writer.writerow(['Time [Sec]', force_column_header, 'Angle X [deg]', 'Angle Y [deg]'])
 
         start_tijd = time.time() * 1000  # Tijd in milliseconden
         is_test_running = True
