@@ -1,6 +1,6 @@
 # author: Freek Baars
-# date: 22-01-2024
-# version: 1.1.1
+# date: 19-01-2024
+# version: 1.1.0
 # python 3.12.1
 
 import eel                     # Importeert de eel module om de webserver te starten
@@ -14,7 +14,6 @@ import os                      # Importeert de os module om de map pad te bepale
 
 
 eel.init('programma/web') # Initialiseert de webserver
-# eel.init('programma/web') # Initialiseert de webserver voor EXE.
 
 # Globale variabelen
 latest_Force = None
@@ -31,7 +30,7 @@ write_lock = Lock()
 opslag_pad = os.getcwd()
 
 # Globale variabelen voor sensorinstellingen
-sensor_scalar = 2241.31 # 1kg 
+sensor_scalar = 1232 # 2kg 
 sensor_unit_factor = 0.000001
 sensor_eenheid = "G"
 
@@ -39,42 +38,31 @@ sensor_eenheid = "G"
 start_tijd = None
 
 
-def read_serial_data(): 
+def read_serial_data(): # Functie om de seriële data uit te lezen
     global start_tijd, is_test_running, serial_instance, latest_Force, latest_angle_x, latest_angle_y
-    last_time_logged = None
-    log_interval_ms = 100  # Interval tussen logs in milliseconden
-
     while is_test_running and serial_instance and serial_instance.isOpen():
-        current_time = int(time.time() * 1000)  # Huidige tijd in milliseconden
+        if serial_instance.in_waiting > 0:
+            data = serial_instance.readline().decode().strip()
+            parts = data.split(',')
+            if len(parts) == 3:
+                weight, angle_x, angle_y = parts
+                calibrated_Force = format_data(weight)
 
-        if last_time_logged is None or (current_time - last_time_logged) >= log_interval_ms:
-            if serial_instance.in_waiting > 0:
-                data = serial_instance.readline().decode().strip()
-                parts = data.split(',')
-                if len(parts) == 3:
-                    weight, angle_x, angle_y = parts
-                    calibrated_Force = format_data(weight)
+                latest_Force = calibrated_Force
+                latest_angle_x = angle_x
+                latest_angle_y = angle_y
 
-                    latest_Force = calibrated_Force
-                    latest_angle_x = angle_x
-                    latest_angle_y = angle_y
+                if start_tijd is not None:
+                    verstreken_ms = int((time.time() * 1000) - start_tijd)
+                    verstreken_sec = verstreken_ms // 1000
+                    ms = verstreken_ms % 1000
+                    verstreken_tijd_str = f"{verstreken_sec}:{ms:03d}"
+                else:
+                    verstreken_tijd_str = "0:000"
 
-                    if start_tijd is not None:
-                        verstreken_ms = current_time - start_tijd
-                        verstreken_sec = verstreken_ms // 1000
-                        ms = int(verstreken_ms % 1000)  # Zorg ervoor dat ms een integer is
-                        verstreken_sec = int(verstreken_sec % 60)  # Bepaal de resterende seconden
-                        verstreken_tijd_str = f"{verstreken_sec:02d}:{ms:03d}"
-                    else:
-                        verstreken_tijd_str = "0:000"
-
-                    with write_lock:
-                        if csv_writer is not None:
-                            csv_writer.writerow([verstreken_tijd_str, calibrated_Force, angle_x, angle_y])
-                            
-                            #print({verstreken_tijd_str},{calibrated_Force},{angle_x},{angle_y})
-                    
-                    last_time_logged = current_time  # Update de laatste logtijd
+                with write_lock:
+                    if csv_writer is not None:
+                        csv_writer.writerow([verstreken_tijd_str, calibrated_Force, angle_x, angle_y])
 
 
 def format_data(raw_data, precision=2): # Functie om de Force data te kalibreren en te formatteren
@@ -98,6 +86,40 @@ def create_unique_filename(base_path, base_name): # Functie om een unieke bestan
         counter += 1
 
     return unique_name
+
+## pas op dit is een gevaarlijke functie, als je deze functie aanroept dan wordt de csv file aangepast
+## dit is een snelle fix voor het probleem dat de csv de 1ste sec teveel data schrijft
+def cleanup_csv(csv_path, start_sec=1, rows_back=10):
+    """
+    Verwijdert alle rijen voor een specifiek tijdspunt minus een aantal rijen.
+
+    :param csv_path: Pad naar het CSV-bestand.
+    :param start_sec: De seconde in de tijd waarvan af aan moet worden begonnen.
+    :param rows_back: Aantal rijen om terug te gaan vanaf de start_sec.
+    """
+    with open(csv_path, 'r', encoding='utf-8') as file:
+        reader = list(csv.reader(file))
+        header = reader[0]
+        data_start_index = None
+
+        # Vind index van de eerste seconde
+        for i, row in enumerate(reader[1:], 1):  # Skip header
+            if row:  # Check of de rij niet leeg is
+                verstreken_tijd_str = row[0]
+                verstreken_sec, ms = map(int, verstreken_tijd_str.split(':'))
+                if verstreken_sec >= start_sec:
+                    data_start_index = i
+                    break
+        
+        # Bereken de index om vanaf te snijden
+        if data_start_index is not None:
+            cutoff_index = max(1, data_start_index - rows_back)  # Zorg ervoor dat we niet onder de header snijden
+        
+            # Schrijf de opgeschoonde data terug
+            with open(csv_path, 'w', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
+                writer.writerow(header)  # Schrijf header opnieuw
+                writer.writerows(reader[cutoff_index:])  # Schrijf opgeschoonde data
 
 
 @eel.expose
@@ -220,7 +242,7 @@ def start_test(): # Functie om de test te starten
         csv_file = open(volledige_pad, mode='w', newline='', encoding='utf-8')
         csv_writer = csv.writer(csv_file)
         force_column_header = f"Force [{sensor_eenheid}]"
-        csv_writer.writerow(['Time [Sec]', force_column_header, 'Angle X [deg]', 'Angle Y [deg]'])
+        csv_writer.writerow(['Time [S]', force_column_header, 'Angle X [deg]', 'Angle Y [deg]'])
 
         start_tijd = time.time() * 1000  # Tijd in milliseconden
         is_test_running = True
@@ -230,15 +252,16 @@ def start_test(): # Functie om de test te starten
         print("Test kan niet worden gestart. Is test running:", is_test_running, "Bestandsnaam:", csv_bestandsnaam)
 
 @eel.expose
-def stop_test(): # Functie om de test te stoppen
-    global is_test_running, csv_file, latest_force_reading
+def stop_test():  # Functie om de test te stoppen
+    global is_test_running, csv_file, csv_bestandsnaam, latest_force_reading
     if is_test_running:
         is_test_running = False
         latest_force_reading = None  # Reset de laatste krachtmeting
         if csv_file:
             csv_file.close()
             csv_file = None  # Reset csv_file na sluiting
-        print("Test gestopt en CSV-bestand gesloten")
+            cleanup_csv(csv_bestandsnaam)  # Roep cleanup_csv aan met het pad naar het CSV-bestand
+        print("Test gestopt, CSV-bestand opgeschoond en gesloten")
     else:
         print("Geen actieve test om te stoppen")
 
