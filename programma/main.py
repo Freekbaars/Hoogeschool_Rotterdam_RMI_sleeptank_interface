@@ -1,7 +1,18 @@
 # author: Freek Baars
-# date: 19-01-2024
-# version: 1.1.0
+# date: 06-02-2024
+# version: 1.1.1
 # python 3.12.1
+#
+# Dit programma is een webapplicatie die de data van een seriële poort uitleest en weergeeft in een webpagina.
+# De data wordt opgeslagen in een CSV bestand en de gebruiker kan de sensorinstellingen aanpassen.
+# De webapplicatie is gemaakt met de eel module en de frontend is gemaakt met HTML, CSS en JavaScript.
+# De backend is gemaakt met Python en de seriële data wordt uitgelezen met de serial module.
+# De data wordt opgeslagen in een CSV bestand met de csv module.
+# De webserver wordt gestart met de eel module en de webpagina wordt geopend in een webbrowser.
+# De gebruiker kan de seriële poort selecteren en openen, de sensorinstellingen aanpassen, de test starten en stoppen en de CSV bestandsnaam instellen.
+# De gebruiker kan de webpagina sluiten en de websocket verbinding wordt gesloten.
+#
+#latste uptadte functie toegevoegd om overmating data schrijven in de CSV tegen te gaan
 
 import eel                     # Importeert de eel module om de webserver te starten
 import serial.tools.list_ports # Importeert de serial module om de seriële poorten op te halen
@@ -11,6 +22,7 @@ from threading import Lock     # Importeert de threading module om de seriële d
 import time                    # Importeert de time module om de tijd te meten
 import csv                     # Importeert de csv module om de data op te slaan in een CSV bestand
 import os                      # Importeert de os module om de map pad te bepalen
+import numpy as np
 
 
 eel.init('programma/web') # Initialiseert de webserver
@@ -32,7 +44,7 @@ opslag_pad = os.getcwd()
 # Globale variabelen voor sensorinstellingen
 sensor_scalar = 1232 # 2kg 
 sensor_unit_factor = 0.000001
-sensor_eenheid = "G"
+sensor_eenheid = "G"  # uitlees eenheid van de sensor
 
 # Globale variabelen voor starttijd
 start_tijd = None
@@ -64,16 +76,6 @@ def read_serial_data(): # Functie om de seriële data uit te lezen
                     if csv_writer is not None:
                         csv_writer.writerow([verstreken_tijd_str, calibrated_Force, angle_x, angle_y])
 
-
-def format_data(raw_data, precision=2): # Functie om de Force data te kalibreren en te formatteren
-    global sensor_scalar, sensor_unit_factor
-    try:
-        value = float(raw_data)
-        calibrated_value = value * sensor_scalar
-        unit_converted_value = calibrated_value * sensor_unit_factor
-        return round(unit_converted_value, precision)
-    except ValueError:
-        return None
 
 
 def create_unique_filename(base_path, base_name): # Functie om een unieke bestandsnaam te genereren als de gebruiker geen bestandsnaam opgeeft die al gebruikt is
@@ -265,6 +267,39 @@ def stop_test():  # Functie om de test te stoppen
     else:
         print("Geen actieve test om te stoppen")
 
+#_______________________________________________________________________________________
+# Functies voor calibratie
+aantal_stappen = None
+stap_grootte_gram = None
+stap_grootte= None
+
+@eel.expose
+def start_calibratie(steps, step_weight):
+    global aantal_stappen, stap_grootte_gram, calibratie_data
+    print(f"Start calibratie met {steps} stappen van {step_weight} gram")
+    aantal_stappen = steps
+    stap_grootte_gram = step_weight
+    calibratie_data = []
+    eel.askSensorVastStaat()  # Roept een JavaScript-functie aan om te vragen of de sensor vaststaat
+
+@eel.expose
+def registreer_gewicht(gewicht_gram):
+    global kalibratie_data
+    kalibratie_data.append(gewicht_gram)  # Voeg het gewicht toe aan de kalibratie data
+    eel.updateCalibratieGrafiek(gewicht_gram)  # Update de grafiek met de nieuwe waarde
+
+def bereken_kalibratie_factor():
+    # Simpele lineaire fit voor demonstratie
+    sensor_readings = np.array([i for i in range(len(kalibratie_data))])
+    gewichten = np.array(kalibratie_data)
+    A, B = np.polyfit(sensor_readings, gewichten, 1)
+    print(f"Kalibratie factor: {A}, Offset: {B}")
+    eel.toon_kalibratie_factor(A, B)
+
+@eel.expose
+def update_grafiek_data(gewicht, sensor_reading):
+    # Stuur de nieuwe data naar JavaScript
+    eel.updateCalibratieGrafiek(gewicht, sensor_reading)
 
 
 def close_callback(route, websockets): # Functie om de websocket verbinding te sluiten

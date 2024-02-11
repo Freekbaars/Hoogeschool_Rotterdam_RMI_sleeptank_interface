@@ -1,0 +1,98 @@
+:root {
+  --background-color: #212121; /* Dark background for the whole body */
+  --button-color: #333; /* Button color */
+  --text-color: #ffffff; /* White text color */
+  --button-hover-color: #444; /* Button hover color */
+  --button-active-color: #555; /* Button active color */
+  --standaard-radius: 0px; /* No border radius for square buttons */
+}
+
+body {
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.menu {
+  width: 100%;
+  display: flex; /* of 'block' afhankelijk van hoe je de knoppen wilt tonen */
+  justify-content: center; /* Dit centreert de knoppen horizontaal */
+  align-items: center; /* Dit centreert de knoppen verticaal (indien nodig) */
+  gap: 20px; /* Spacing between buttons */
+}
+
+.menu-button {
+  position: relative; /* Needed to position the logo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px; /* Adjust for square size */
+  height: 100px; /* Same as width for square */
+  background-color: var(--button-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: var(--standaard-radius);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  text-align: center;
+  overflow: hidden; /* Ensures nothing spills out */
+  flex-direction: column; /* Stack image and text vertically */
+  justify-content: flex-end; /* Align text to bottom */
+  padding-bottom: 10px; /* Space at the bottom for the text */
+}
+
+.menu-button:hover {
+  background-color: var(--button-hover-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.menu-button:active {
+  background-color: var(--button-active-color);
+}
+
+.menu-button img {
+  max-width: 50%; /* Logo size, adjust as necessary */
+  position: absolute; /* Position the logo */
+  top: 10px; /* Adjust distance from the top */
+  left: 10px; /* Adjust distance from the left */
+}
+.menu-button-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 33%; /* Reserves the bottom third for the text */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevents the image from overflowing */
+}
+
+.menu-button-image img {
+  max-width: 100%; /* Allows the image to be as wide as its container */
+  height: auto; /* Keeps the image's aspect ratio */
+}
+
+.menu-button-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 33%; /* Matches the bottom space of .menu-button-image */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#appContent {
+    width: 100%; /* Gebruik de volledige breedte van de pagina */
+    /* Voeg eventueel andere stijlen toe die nodig zijn voor correcte weergave */
+}
+
+

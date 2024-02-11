@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Calibratie Tool</title>
+    <link rel="stylesheet" href="CSS/calibratie.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div>
+        <label for="aantal_stappen">Aantal Stappen:</label>
+        <input type="number" id="aantal_stappen" name="aantal_stappen" min="2" max="10">
+        
+        <label for="stap_grootte">Stap Grootte (gram):</label>
+        <input type="number" id="stap_grootte" name="stap_grootte">
+        
+        <button onclick="startCalibratie()">Start Calibratie</button>
+    </div>
+
+    <div id="calibratie_resultaat"></div>
+    <canvas id="kalibratie_grafiek"></canvas>
+
+
+
+</body>
+<script type="text/javascript" src="/eel.js"></script>
+<script src="JS_index/laadPagina.js"></script>
+<script src="JS/serialPort.js"></script>
+<script src="JS/fileManagement.js"></script>
+<script src="JS/sensorSettings.js"></script>
+<script src="JS/chartManagement.js"></script>
+<script src="JS/testControl.js"></script>
+<script>src="JS_calibratie/calibratie.js"</script>
+<script src="JS/script.js"></script>
+</html>
