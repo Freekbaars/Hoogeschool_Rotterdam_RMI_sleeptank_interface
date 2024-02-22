@@ -27,3 +27,8 @@ Om de interface te gebruiken moet je de volgende stappen volgen:
 9. Klik op stop test
 10. geef de test een nieuwe naam
 
+## TODO
+- [ ] back to main menu button
+- [ ] calibrate interface maken en implementeren
+ 
+
