@@ -10,7 +10,7 @@
     background-color: rgba(126, 90, 232, 0.211); 
 }
 .modal-content {
-    background-color: #878787;
+    background-color: var(--secondary);
     border-radius: var(--standaard-radius);
     margin: 15% auto; 
     padding: 10px;
@@ -18,7 +18,7 @@
     width: 80%;
 }
 .close {
-    color: #aaa;
+    color: #ff000057;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -32,7 +32,7 @@
 }
 
 #modal-text {
-    color:rgb(0, 0, 0);
+    color:var(--h1-color);
 }
 
 

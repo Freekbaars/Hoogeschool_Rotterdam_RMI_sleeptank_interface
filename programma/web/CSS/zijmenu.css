@@ -17,19 +17,22 @@
 }
 
 .zijmenu-toggle {
+  background-color: var(--secondary);
+  border: var(--secondary);
+  color: white;
+  box-shadow: var(--button-box-shadow, 0 0 0 rgba(0, 0, 0, 0));
+  border-radius: var(--standaard-radius-button);
   position: fixed;
   top: 20px;
   left: 20px;
   font-size: 30px;
   cursor: pointer;
-  color: white;
-  background: none;
-  border: none;
 }
 
 .zijmenu-toggle:hover {
-  color: rgb(140, 255, 0);
+  background-color: var(--primary-hover);
 }
+
 
 .zijmenu h2, .zijmenu h4{
   color: white;

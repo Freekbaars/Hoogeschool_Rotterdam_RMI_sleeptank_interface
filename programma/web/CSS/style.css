@@ -1,18 +1,3 @@
-/* Globale variabelen */
-:root {
-  --background-color: #212121; /* Donkere achtergrond voor het hele lichaam */
-  --nav-background-color: #212121; /* Donkere achtergrond voor de header */
-  --text-color: #e0e0e0; /* Tekstkleur */
-  --button-active-scale: 0.92; /* Schaal voor actieve knop */
-  --hover-background-gradient-start: rgba(44, 232, 31, 0.873); /* Begin van achtergrond gradient bij hover */
-  --hover-background-gradient-stop: rgba(241, 0, 0, 0.873);
-  --hover-background-gradient-end: rgba(2,29,78); /* Einde van achtergrond gradient bij hover */
-  --button-shadow: 0px 0px 60px #1f4c65; /* Schaduw voor knoppen */
-  --box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4)); /* Reflectie effect */
-  --standaard-radius: 10px;
-  --standaard-radius-button: 6px;
-}
-
 /* Algemene stijl van de pagina */
 body {
   font-family: 'Arial', sans-serif;
@@ -24,7 +9,7 @@ body {
 
 /* Header stijlen */
 header {
-  background: var(--nav-background-color);
+  background: var(--background-color);
   color: var(--text-color);
   padding: 20px 0;
   text-align: center;
@@ -73,12 +58,8 @@ header {
   -webkit-box-reflect: var(--box-reflect);
 }
 
-.btn_start {
-  background-color: rgb(14, 26, 18);
-}
-
-.btn_stop {
-  background-color: rgb(26, 14, 14);
+.btn_start, .btn_stop {
+  background-color: var(--secondary);
 }
 
 .btn_start:active, .btn_stop:active {
