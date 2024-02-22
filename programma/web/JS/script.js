@@ -18,6 +18,7 @@ function toggleZijmenu() {
 
 // Wanneer de pagina geladen is worden de serial ports geladen en de grafieken getekend 
 window.onload = function() {
+    laadPagina('start.html')
     loadSerialPorts();
     tekenGewichtsGrafiek();
     tekenGyroGrafiek();

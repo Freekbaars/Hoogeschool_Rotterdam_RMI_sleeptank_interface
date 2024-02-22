@@ -66,3 +66,13 @@ function resetGrafiek(chart) {
     });
     chart.update(); // Grafiek bijwerken om wijzigingen toe te passen
 }
+
+// Initialisatie functie voor grafieken
+function initialiseerGrafieken() {
+    if (document.getElementById('Weerstand_Chart_1')) {
+        tekenGewichtsGrafiek();
+    }
+    if (document.getElementById('Gyro_Chart')) {
+        tekenGyroGrafiek();
+    }
+}
