@@ -11,7 +11,7 @@ from threading import Lock     # Importeert de threading module om de seriële d
 import time                    # Importeert de time module om de tijd te meten
 import csv                     # Importeert de csv module om de data op te slaan in een CSV bestand
 import os                      # Importeert de os module om de map pad te bepalen
-
+import numpy as np
 
 eel.init('programma/web') # Initialiseert de webserver
 
@@ -21,6 +21,7 @@ latest_angle_x = None
 latest_angle_y = None
 serial_instance = None
 is_test_running = False
+weight = None
 
 # Globale variabelen voor de CSV 
 csv_bestandsnaam = "default_bestandsnaam"
@@ -39,7 +40,7 @@ start_tijd = None
 
 
 def read_serial_data(): # Functie om de seriële data uit te lezen
-    global start_tijd, is_test_running, serial_instance, latest_Force, latest_angle_x, latest_angle_y
+    global start_tijd, is_test_running, serial_instance, latest_Force, latest_angle_x, latest_angle_y, weight
     while is_test_running and serial_instance and serial_instance.isOpen():
         if serial_instance.in_waiting > 0:
             data = serial_instance.readline().decode().strip()
@@ -86,6 +87,7 @@ def create_unique_filename(base_path, base_name): # Functie om een unieke bestan
         counter += 1
 
     return unique_name
+
 
 ## pas op dit is een gevaarlijke functie, als je deze functie aanroept dan wordt de csv file aangepast
 ## dit is een snelle fix voor het probleem dat de csv de 1ste sec teveel data schrijft
@@ -202,15 +204,18 @@ def get_latest_force_reading(): # Functie om de laatste krachtmeting op te halen
     global latest_force_reading
     return latest_force_reading
 
+
 @eel.expose
 def get_latest_weight(): # Functie om de laatste krachtmeting op te halen uit de globale variabele en naar JS te sturen
     global latest_Force
     return latest_Force
 
+
 @eel.expose
 def get_latest_angle_x(): # Functie om de laatste hoekmeting om X op te halen uit de globale variabele en naar JS te sturen
     global latest_angle_x
     return latest_angle_x
+
 
 @eel.expose
 def get_latest_angle_y(): # Functie om de laatste hoekmeting om Y op te halen uit de globale variabele en naar JS te sturen
@@ -251,6 +256,7 @@ def start_test(): # Functie om de test te starten
     else:
         print("Test kan niet worden gestart. Is test running:", is_test_running, "Bestandsnaam:", csv_bestandsnaam)
 
+
 @eel.expose
 def stop_test():  # Functie om de test te stoppen
     global is_test_running, csv_file, csv_bestandsnaam, latest_force_reading
@@ -264,7 +270,6 @@ def stop_test():  # Functie om de test te stoppen
         print("Test gestopt, CSV-bestand opgeschoond en gesloten")
     else:
         print("Geen actieve test om te stoppen")
-
 
 
 def close_callback(route, websockets): # Functie om de websocket verbinding te sluiten

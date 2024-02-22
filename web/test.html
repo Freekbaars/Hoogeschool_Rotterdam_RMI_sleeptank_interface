@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Sleeptank Dachboard</title>
+  <link rel="stylesheet" href="CSS/standaard.css">
+  <link rel="stylesheet" href="CSS/style.css">
+  <link rel="stylesheet" href="CSS/zijmenu.css">
+  <link rel="stylesheet" href="CSS/pop-up.css">
+  <meta name="description" content="Dachboard"></meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+  <script type="text/javascript" src="/eel.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div id="comPortModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-text">Selecteer een COM-poort</h2>
+        <select class="dropdown" id="serial-ports-dropdown"></select>
+        <button class="button--submit" onclick="selectAndOpenPort()">Selecteer en Open Poort</button>
+      </div>
+    </div>
+  
+    <button onclick="toggleZijmenu()" class="zijmenu-toggle">☰ Menu</button>
+  
+    <div class="container">
+      <header>
+        <img class="logo" src="img/logo.png" alt="logo">
+        <nav>
+          <ul class="nav_links">
+  
+            <li><button class="btn_start" onclick="startTest()">start test</button></li>
+  
+            <li><button class="btn_stop" onclick="stopTest()">stop test</button></li>
+  
+          </ul>
+        </nav>
+  
+      </header>
+    </div>
+  
+    <div id="zijmenu" class="zijmenu">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleZijmenu()">&times;</a>
+  
+      <div id="output-bestand">
+  
+        <h2>Output bestand</h2>
+  
+        <div class="input-group">
+          <input type="text" class="input" id="csv-bestandsnaam" name="naam_doc" placeholder="CSV-naam"
+            autocomplete="off">
+          <button class="button--submit" onclick="bevestigBestandsnaam()">bevestig</button>
+        </div>
+  
+        <div class="input-group">
+          <input type="text" class="input" id="map_pad" placeholder="map pad">
+          <button class="button--submit" onclick="bevestigMapPad()">Bevestig</button>
+        </div>
+      </div>
+  
+      <div id="sensor-instellingen">
+        <h2>Sensor instellingen</h2>
+        <h4>bij het selecteren van een eenhijd ook de schaal factor ingeven.</h4>
+        <h5>standaard is 1KG</h5>
+        <h4>2 kg = 1232</h4>
+        <h4>1 kg = 2241.31</h4>
+  
+        <input class="input" type="number" id="scalar-factor" placeholder="schaal factor">
+  
+        <select class="dropdown" id="eenheid-select">
+          <option value="gram">Gram</option>
+          <option value="newton">Newton</option>
+        </select>
+  
+        <button class="button--submit" onclick="updateSensorInstellingen()">Bevestigen</button>
+  
+      </div>
+  
+    </div>
+  
+    <div id="grafiek-container">
+      <canvas id="Weerstand_Chart_1"></canvas>
+    </div>
+  
+    <div id="gyro-grafiek-container">
+      <canvas id="Gyro_Chart"></canvas>
+    </div>
+  
+  </body>
+
+  
+<script src="JS/serialPort.js"></script>
+<script src="JS/comPortModal.js"></script>
+<script src="JS/fileManagement.js"></script>
+<script src="JS/sensorSettings.js"></script>
+<script src="JS/chartManagement.js"></script>
+<script src="JS/testControl.js"></script>
+<script src="JS/script.js"></script>
+
+</html>

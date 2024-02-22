@@ -2,12 +2,10 @@ import numpy as np
 import serial
 import time
 
-# Placeholder voor seriële communicatie instellingen
-# Zorg ervoor dat je de juiste poort en baudrate instelt voor jouw setup
+# Seriële communicatie instellingen
 serial_port = 'COM3'
 baud_rate = 9600
 serial_instance = serial.Serial(serial_port, baud_rate, timeout=1)
-
 
 def read_serial_data():
     if serial_instance.in_waiting > 0:
@@ -19,7 +17,6 @@ def read_serial_data():
     return None
 
 def format_data(weight):
-    # Pas deze functie aan indien nodig om de data te converteren
     return weight
 
 def vraag_stappen_en_grootte():
@@ -38,12 +35,12 @@ def meet_gemiddelde_voor_stap(aantal_metingen=5):
 
 def calibratie_proces(aantal_stappen, stap_grootte):
     calibratie_data = []
-    for stap in range(2 * aantal_stappen):  # Heen en terug
-        gewicht_stap = stap_grootte * (stap if stap < aantal_stappen else 2 * aantal_stappen - stap - 1)
+    for stap in range(aantal_stappen):  # Voeg gewichten toe
+        gewicht_stap = stap * stap_grootte
         input(f"Plaats {gewicht_stap} gram en druk op Enter om door te gaan...")
         gemiddelde_gewicht = meet_gemiddelde_voor_stap()
         calibratie_data.append((gewicht_stap, gemiddelde_gewicht))
-        print(f"Stap {stap + 1}/{2 * aantal_stappen}: Gemiddelde gewicht = {gemiddelde_gewicht} voor {gewicht_stap} gram")
+        print(f"Stap {stap + 1}: Gemiddelde gewicht = {gemiddelde_gewicht} voor {gewicht_stap} gram")
     return calibratie_data
 
 def bereken_kalibratielijn(calibratie_data):
@@ -52,12 +49,23 @@ def bereken_kalibratielijn(calibratie_data):
     A, B = np.polyfit(x, y, 1)  # Lineaire regressie om Y = AX + B te vinden
     return A, B
 
+def verifieer_calibratie(calibratie_data, A, B, aantal_stappen, stap_grootte):
+    print("Begin verificatie van de kalibratie...")
+    for stap in range(aantal_stappen):  # Verifieer door gewichten te verwijderen
+        gewicht_stap = (aantal_stappen - stap - 1) * stap_grootte
+        input(f"Verwijder om naar {gewicht_stap} gram te gaan en druk op Enter om door te gaan...")
+        gemiddelde_gewicht = meet_gemiddelde_voor_stap()
+        verwachte_waarde = A * gewicht_stap + B
+        fout = abs(verwachte_waarde - gemiddelde_gewicht)
+        print(f"Verificatie Stap {stap + 1}: Gemeten gewicht = {gemiddelde_gewicht}, Verwachte gewicht = {verwachte_waarde}, Fout = {fout}")
+
 def main():
     print("Script is gestart")
     aantal_stappen, stap_grootte = vraag_stappen_en_grootte()
     calibratie_data = calibratie_proces(aantal_stappen, stap_grootte)
     A, B = bereken_kalibratielijn(calibratie_data)
     print(f"Kalibratie voltooid: A = {A}, B = {B}")
+    verifieer_calibratie(calibratie_data, A, B, aantal_stappen, stap_grootte)
 
 if __name__ == "__main__":
     main()
