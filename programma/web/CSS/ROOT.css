@@ -1,27 +1,26 @@
 /* Globale variabelen */
 :root {
-    --background-color: #11191f; /* Donkere achtergrond voor het hele lichaam */
-    --h1-color: hsl(205, 20%, 94%);
-    --h2-color: #e1e6eb;
-    --h3-color: hsl(205, 18%, 86%);
-    --h4-color: #c8d1d8;
-    --h5-color: hsl(205, 16%, 77%);
-    --h6-color: #afbbc4;
-    --button-active-scale: 0.92; /* Schaal voor actieve knop */
-    --hover-background-gradient-start: rgba(44, 232, 31, 0.873); /* Begin van achtergrond gradient bij hover */
-    --hover-background-gradient-stop: rgba(241, 0, 0, 0.873);
-    --hover-background-gradient-end: rgba(2,29,78); /* Einde van achtergrond gradient bij hover */
-    --button-shadow: 0px 0px 60px #1f4c65; /* Schaduw voor knoppen */
-    --box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4)); /* Reflectie effect */
-    --standaard-radius: 10px;
-    --standaard-radius-button: 6px;
-    --primary: hsl(235, 51%, 61%);
-    --primary-hover: hsl(195, 80%, 50%);
-    --primary-focus: rgba(16, 149, 193, 0.25);
-    --primary-inverse: #fff;
-    --secondary: hsl(205, 15%, 41%);
-    --secondary-hover: hsl(205, 10%, 50%);
-    --secondary-focus: rgba(115, 130, 140, 0.25);
-    --secondary-inverse: #fff;
-
-  }
+  --background-color: #11191f; /* Donkere achtergrond voor het hele lichaam */
+  --h1-color: hsl(205, 20%, 94%);
+  --h2-color: #e1e6eb;
+  --h3-color: hsl(205, 18%, 86%);
+  --h4-color: #c8d1d8;
+  --h5-color: hsl(205, 16%, 77%);
+  --h6-color: #afbbc4;
+  --button-active-scale: 0.92; /* Schaal voor actieve knop */
+  --hover-background-gradient-start: rgba(44, 232, 31, 0.873); /* Begin van achtergrond gradient bij hover */
+  --hover-background-gradient-stop: rgba(241, 0, 0, 0.873);
+  --hover-background-gradient-end: rgba(2,29,78); /* Einde van achtergrond gradient bij hover */
+  --button-shadow: 0px 0px 60px #1f4c65; /* Schaduw voor knoppen */
+  --box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.4)); /* Reflectie effect */
+  --standaard-radius: 10px;
+  --standaard-radius-button: 6px;
+  --primary: hsl(235, 51%, 61%);
+  --primary-hover: hsl(195, 80%, 50%);
+  --primary-focus: rgba(16, 149, 193, 0.25);
+  --primary-inverse: #fff;
+  --secondary: hsl(205, 15%, 41%);
+  --secondary-hover: hsl(205, 10%, 50%);
+  --secondary-focus: rgba(115, 130, 140, 0.25);
+  --secondary-inverse: #fff;
+}

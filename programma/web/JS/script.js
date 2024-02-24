@@ -22,5 +22,6 @@ window.onload = function() {
     loadSerialPorts();
     tekenGewichtsGrafiek();
     tekenGyroGrafiek();
+    tekenKalibratieGrafiek();
     showComPortModal(); // Toon de modal bij het laden van de pagina
 };

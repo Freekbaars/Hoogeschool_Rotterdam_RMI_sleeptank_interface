@@ -58,6 +58,34 @@ async function updateGyroGrafiek() {
     }
 }
 
+
+// Grafiek voor kalibratie
+function tekenKalibratieGrafiek() {
+    var ctx = document.getElementById('Kalibratie_Chart').getContext('2d');
+    gewichtsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{ label: 'Gewicht', data: [] }]
+        },
+        options: { maintainAspectRatio: false }
+    });
+}
+
+// kalibratie grafiek updaten
+async function updateKalibratieGrafiek() {
+    let gewichtsdata = await eel.get_latest_weight()();
+    
+    if (gewichtsdata !== null && gewichtsdata !== undefined) {
+        let verstrekenTijd = (Date.now() - startTijd) / 1000; 
+        let verstrekenTijdAfgerond = verstrekenTijd.toFixed(2); // Rond af op twee decimalen
+
+        gewichtsChart.data.labels.push(verstrekenTijdAfgerond); // Gebruik afgeronde verstreken tijd
+        gewichtsChart.data.datasets[0].data.push(gewichtsdata);
+        gewichtsChart.update();
+    }
+}
+
 // Grafiek resetten (labels en data verwijderen)
 function resetGrafiek(chart) {
     chart.data.labels = []; // Labels resetten
@@ -67,6 +95,7 @@ function resetGrafiek(chart) {
     chart.update(); // Grafiek bijwerken om wijzigingen toe te passen
 }
 
+
 // Initialisatie functie voor grafieken
 function initialiseerGrafieken() {
     if (document.getElementById('Weerstand_Chart_1')) {
@@ -74,5 +103,8 @@ function initialiseerGrafieken() {
     }
     if (document.getElementById('Gyro_Chart')) {
         tekenGyroGrafiek();
+    }
+    if (document.getElementById('Kalibratie_Chart')) {
+        tekenKalibratieGrafiek();
     }
 }

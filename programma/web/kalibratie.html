@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="CSS/style.css">
   <link rel="stylesheet" href="CSS/zijmenu.css">
   <link rel="stylesheet" href="CSS/pop-up.css">
+  <link rel="stylesheet" href="CSS/Kalibratie.css">
   <meta name="description" content="Dachboard">
   </meta>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +20,33 @@
 </head>
 
 <body>
-  <h1>test</h1>
+  <button onclick="laadPagina('start.html')" class="home-button">
+    <i class="fa fa-home"></i>
+    Home
+  </button>
+  
+  <div class="container">
+    <header>
+      <img class="logo" src="img/logo.png" alt="logo">
+      <nav>
+        <ul class="nav_links">
+
+          <li><button class="btn_start" onclick="startKalibratie()">start Kalibratie</button></li>
+        </ul>
+      </nav>
+    </header>
+  </div>
+
+  <div class="uitleg-text">
+    <h1>Uitleg</h1>
+    <h4>in deze module worden de omreken warede en de ofset bepaald voor de loadcel</h4>
+  </div>
+  
+  <div id="kalibratie-grafiek-container">
+    <canvas id="Kalibratie_Chart"></canvas>
+  </div>
+
+
 </body>
 
 <script src="JS/serialPort.js"></script>

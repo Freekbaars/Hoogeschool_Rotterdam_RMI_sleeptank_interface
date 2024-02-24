@@ -4,8 +4,8 @@ import plotly
 
 data_1 = pd.read_csv('test.csv')
 data_2 = pd.read_csv('test_1.csv')
-data_3 = pd.read_csv('test_2.csv')
-data_4 = pd.read_csv('test_3.csv')
+data_3 = pd.read_csv('test_1.csv')
+data_4 = pd.read_csv('test_1.csv')
 
 tijd_1 = data_1['ime [S]']
 tijd_2 = data_2['time [S]']
