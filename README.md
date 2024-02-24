@@ -31,4 +31,8 @@ Om de interface te gebruiken moet je de volgende stappen volgen:
 - [ ] back to main menu button
 - [ ] calibrate interface maken en implementeren
  
-
+## build comando
+python to exe
+```bash
+python -m eel programma\main.py programma\web --onefile 
+```
