@@ -16,8 +16,6 @@ def read_serial_data():
             return float(weight)  # Aanname: 'weight' is al in de juiste eenheid
     return None
 
-def format_data(weight):
-    return weight
 
 def vraag_stappen_en_grootte():
     aantal_stappen = int(input("Hoeveel stappen wil je doen voor de calibratie? "))
@@ -29,7 +27,7 @@ def meet_gemiddelde_voor_stap(aantal_metingen=5):
     for _ in range(aantal_metingen):
         gewicht = read_serial_data()
         if gewicht is not None:
-            metingen.append(format_data(gewicht))
+            metingen.append(gewicht)
         time.sleep(1)  # Wacht even tussen metingen
     return sum(metingen) / len(metingen) if metingen else 0
 

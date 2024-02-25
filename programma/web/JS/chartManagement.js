@@ -58,32 +58,84 @@ async function updateGyroGrafiek() {
     }
 }
 
-
+let kalibratieChart;
 // Grafiek voor kalibratie
 function tekenKalibratieGrafiek() {
     var ctx = document.getElementById('Kalibratie_Chart').getContext('2d');
-    gewichtsChart = new Chart(ctx, {
+    kalibratieChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [],
-            datasets: [{ label: 'Gewicht', data: [] }]
+            labels: [], // Deze worden dynamisch gevuld
+            datasets: [
+                {
+                    label: 'Gemeten Gewicht',
+                    data: [], // Dynamisch gevuld
+                    borderColor: '#007bff',
+                    backgroundColor: 'transparent',
+                },
+                {
+                    label: 'Kalibratielijn',
+                    data: [], // Dynamisch gevuld
+                    borderColor: '#dc3545',
+                    backgroundColor: 'transparent',
+                    borderDash: [10,5]
+                }
+            ]
         },
-        options: { maintainAspectRatio: false }
+        options: {
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
     });
 }
 
 // kalibratie grafiek updaten
-async function updateKalibratieGrafiek() {
-    let gewichtsdata = await eel.get_latest_weight()();
-    
-    if (gewichtsdata !== null && gewichtsdata !== undefined) {
-        let verstrekenTijd = (Date.now() - startTijd) / 1000; 
-        let verstrekenTijdAfgerond = verstrekenTijd.toFixed(2); // Rond af op twee decimalen
+function updateKalibratieGrafieken(calibratieData, A, B) {
+    console.log('Kalibratie data:', calibratieData, 'A:', A, 'B:', B);
 
-        gewichtsChart.data.labels.push(verstrekenTijdAfgerond); // Gebruik afgeronde verstreken tijd
-        gewichtsChart.data.datasets[0].data.push(gewichtsdata);
-        gewichtsChart.update();
+    // Locatie van de grafiek
+    const ctx = document.getElementById('Kalibratie_Chart').getContext('2d');
+
+    // Vernietig de vorige grafiek indien deze bestaat
+    if (kalibratieChart) {
+        kalibratieChart.destroy();
     }
+
+    // Extractie van labels en data uit de calibratieData
+    const labels = calibratieData.map(item => `${item[0]} gram`);
+    const data = calibratieData.map(item => item[1]);
+
+    // Aanmaken van de nieuwe grafiek
+    kalibratieChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Gemeten Waarde',
+                data: data,
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            },
+            // Voeg een tweede dataset toe voor de kalibratielijn als A en B gedefinieerd zijn
+            ...(A !== undefined && B !== undefined ? [{
+                label: 'Kalibratielijn',
+                data: labels.map((_, index) => A * index + B),
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'transparent',
+            }] : [])]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }
 
 // Grafiek resetten (labels en data verwijderen)

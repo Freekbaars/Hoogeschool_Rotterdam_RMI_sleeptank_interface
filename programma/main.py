@@ -22,6 +22,8 @@ latest_angle_y = None
 serial_instance = None
 is_test_running = False
 weight = None
+gewichtBevestigingStatus = False
+
 
 # Globale variabelen voor de CSV 
 csv_bestandsnaam = "default_bestandsnaam"
@@ -270,6 +272,99 @@ def stop_test():  # Functie om de test te stoppen
         print("Test gestopt, CSV-bestand opgeschoond en gesloten")
     else:
         print("Geen actieve test om te stoppen")
+
+
+def read_serial_data_for_calibration():
+    global serial_instance
+    try:
+        if serial_instance.in_waiting > 0:
+            data = serial_instance.readline().decode().strip()
+            parts = data.split(',')
+            if len(parts) == 3:
+                weight, _, _ = parts  # Negeer de hoekmetingen voor kalibratie
+                return float(weight)  # Converteer de gewichtsdata naar een float
+    except ValueError as e:
+        print(f"Fout bij het converteren van data naar float: {e}")
+    return None  # Retourneer None als er geen geldige data is of bij een fout
+
+
+@eel.expose
+def gewicht_plaatsing_bevestigen():
+    global gewichtBevestigingStatus
+    gewichtBevestigingStatus = True
+
+def wacht_op_bevestiging():
+    while not gewichtBevestigingStatus:
+        eel.sleep(1)  # Wacht 1 seconde voordat opnieuw gecontroleerd wordt
+    print("Gewicht plaatsing is bevestigd.")
+
+
+def meet_gemiddelde_voor_stap(aantal_metingen=5):
+    metingen = []
+    for _ in range(aantal_metingen):
+        gewicht = read_serial_data_for_calibration()
+        if gewicht is not None:
+            metingen.append(gewicht)
+        time.sleep(1)  # Wacht even tussen metingen
+    return sum(metingen) / len(metingen) if metingen else 0
+
+def calibratie_proces(aantal_stappen, stap_grootte):
+    # Converteer stringwaarden naar integers
+    aantal_stappen = int(aantal_stappen)
+    stap_grootte = int(stap_grootte)
+    
+    calibratie_data = []
+    for stap in range(aantal_stappen):
+        gewicht_stap = stap * stap_grootte
+        
+        # Stuur instructies naar de webinterface
+        print(f"DEBUG: Instructie naar webinterface - Plaats {gewicht_stap} gram.")
+        eel.toonKalibratieStapModal(f"Plaats {gewicht_stap} gram en bevestig om door te gaan...")()
+        
+        # Wacht op bevestiging van de gebruiker
+        wacht_op_bevestiging()
+
+        # Voer meting uit
+        gemiddelde_gewicht = meet_gemiddelde_voor_stap()
+        calibratie_data.append((gewicht_stap, gemiddelde_gewicht))
+        print(f"Stap {stap + 1}: Gemiddelde gewicht = {gemiddelde_gewicht} voor {gewicht_stap} gram")
+
+    return calibratie_data
+
+def bereken_kalibratielijn(calibratie_data):
+    x = np.array([data[0] for data in calibratie_data])
+    y = np.array([data[1] for data in calibratie_data])
+    A, B = np.polyfit(x, y, 1)  # Lineaire regressie om Y = AX + B te vinden
+    print(f"Kalibratielijn: Y = {A}X + {B}")
+    return A, B
+
+def verifieer_calibratie(calibratie_data, A, B, aantal_stappen, stap_grootte):
+    print("Begin verificatie van de kalibratie...")
+    for stap in range(aantal_stappen):  # Verifieer door gewichten te verwijderen
+        gewicht_stap = (aantal_stappen - stap - 1) * stap_grootte
+        input(f"Verwijder om naar {gewicht_stap} gram te gaan en druk op Enter om door te gaan...")
+        gemiddelde_gewicht = meet_gemiddelde_voor_stap()
+        verwachte_waarde = A * gewicht_stap + B
+        fout = abs(verwachte_waarde - gemiddelde_gewicht)
+        print(f"Verificatie Stap {stap + 1}: Gemeten gewicht = {gemiddelde_gewicht}, Verwachte gewicht = {verwachte_waarde}, Fout = {fout}")
+
+@eel.expose
+def start_kalibratie(aantal_stappen, stap_grootte):
+    print("DEBUG: Start kalibratieproces.")
+    calibratie_data = calibratie_proces(aantal_stappen, stap_grootte)
+    A, B = bereken_kalibratielijn(calibratie_data)
+    print("DEBUG: Kalibratie voltooid, data terugsturen naar JavaScript.")
+    return calibratie_data, A, B
+
+
+
+
+
+
+
+
+
+
 
 
 def close_callback(route, websockets): # Functie om de websocket verbinding te sluiten

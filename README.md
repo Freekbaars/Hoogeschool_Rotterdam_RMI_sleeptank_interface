@@ -7,7 +7,7 @@ voor mijn vrije kezedeel heb ik gekozen om een sleeptank interface te maken.
 de installatie is vrij simpel, je moet de volgende dingen installeren:
 - python 3.12
 - pyserial
-- eel (moet nog geubdate worden voor 3.12 maar werkt wel als je de volgende stappen volgt)
+- eel (moet nog geüpdate worden voor 3.12 maar werkt wel als je de volgende stappen volgt)
     1. Find this import line:
         - import bottle.ext.websocket as wbs
 
@@ -28,11 +28,13 @@ Om de interface te gebruiken moet je de volgende stappen volgen:
 10. geef de test een nieuwe naam
 
 ## TODO
-- [ ] back to main menu button
-- [ ] calibrate interface maken en implementeren
+- [X] back to main menu button
+- [X] calibrate interface maken en implementeren
+- [ ] controle van de functie (fout in berekenen lijn)
  
 ## build comando
 python to exe
+
 ```bash
 python -m eel programma\main.py programma\web --onefile 
 ```
