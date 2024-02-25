@@ -57,6 +57,7 @@ def verifieer_calibratie(calibratie_data, A, B, aantal_stappen, stap_grootte):
         fout = abs(verwachte_waarde - gemiddelde_gewicht)
         print(f"Verificatie Stap {stap + 1}: Gemeten gewicht = {gemiddelde_gewicht}, Verwachte gewicht = {verwachte_waarde}, Fout = {fout}")
 
+
 def main():
     print("Script is gestart")
     aantal_stappen, stap_grootte = vraag_stappen_en_grootte()

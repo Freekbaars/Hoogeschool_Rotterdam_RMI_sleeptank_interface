@@ -31,6 +31,8 @@ Om de interface te gebruiken moet je de volgende stappen volgen:
 - [X] back to main menu button
 - [X] calibrate interface maken en implementeren
 - [ ] controle van de functie (fout in berekenen lijn)
+- [ ] kalibratie niet acuraat genoeg vertraging in hetverwerken van de data
+- [ ] kalibratie warden laten zien in de interface
  
 ## build comando
 python to exe

@@ -272,7 +272,7 @@ def stop_test():  # Functie om de test te stoppen
         print("Test gestopt, CSV-bestand opgeschoond en gesloten")
     else:
         print("Geen actieve test om te stoppen")
-
+    
 
 def read_serial_data_for_calibration():
     global serial_instance
@@ -294,9 +294,11 @@ def gewicht_plaatsing_bevestigen():
     gewichtBevestigingStatus = True
 
 def wacht_op_bevestiging():
+    global gewichtBevestigingStatus
     while not gewichtBevestigingStatus:
         eel.sleep(1)  # Wacht 1 seconde voordat opnieuw gecontroleerd wordt
     print("Gewicht plaatsing is bevestigd.")
+    gewichtBevestigingStatus = False  # Reset de status voor de volgende ronde
 
 
 def meet_gemiddelde_voor_stap(aantal_metingen=5):
@@ -305,11 +307,11 @@ def meet_gemiddelde_voor_stap(aantal_metingen=5):
         gewicht = read_serial_data_for_calibration()
         if gewicht is not None:
             metingen.append(gewicht)
-        time.sleep(1)  # Wacht even tussen metingen
+        else:
+            print("Geen gewicht gedetecteerd, zorg ervoor dat de sensor correct is aangesloten.")
     return sum(metingen) / len(metingen) if metingen else 0
 
 def calibratie_proces(aantal_stappen, stap_grootte):
-    # Converteer stringwaarden naar integers
     aantal_stappen = int(aantal_stappen)
     stap_grootte = int(stap_grootte)
     
@@ -317,26 +319,32 @@ def calibratie_proces(aantal_stappen, stap_grootte):
     for stap in range(aantal_stappen):
         gewicht_stap = stap * stap_grootte
         
-        # Stuur instructies naar de webinterface
-        print(f"DEBUG: Instructie naar webinterface - Plaats {gewicht_stap} gram.")
+        # Stuur instructies naar de webinterface en wacht op bevestiging
+        print(f"Plaats {gewicht_stap} gram en bevestig om door te gaan...")
         eel.toonKalibratieStapModal(f"Plaats {gewicht_stap} gram en bevestig om door te gaan...")()
-        
-        # Wacht op bevestiging van de gebruiker
         wacht_op_bevestiging()
 
-        # Voer meting uit
-        gemiddelde_gewicht = meet_gemiddelde_voor_stap()
+        # Voer 5 metingen uit en bereken het gemiddelde
+        gemiddelde_gewicht = meet_gemiddelde_voor_stap(20)
         calibratie_data.append((gewicht_stap, gemiddelde_gewicht))
         print(f"Stap {stap + 1}: Gemiddelde gewicht = {gemiddelde_gewicht} voor {gewicht_stap} gram")
-
+    
     return calibratie_data
 
 def bereken_kalibratielijn(calibratie_data):
-    x = np.array([data[0] for data in calibratie_data])
-    y = np.array([data[1] for data in calibratie_data])
-    A, B = np.polyfit(x, y, 1)  # Lineaire regressie om Y = AX + B te vinden
-    print(f"Kalibratielijn: Y = {A}X + {B}")
+    """
+    Bereken de kalibratielijn waarbij Y het gewicht is en X de sensor meting.
+    calibratie_data bevat paren van (sensor meting, gewicht).
+    """
+    # X is de sensor meting, Y is het gewicht.
+    X = np.array([data[0] for data in calibratie_data])  # Sensor metingen
+    Y = np.array([data[1] for data in calibratie_data])  # Gewichten
+
+    # Gebruik polyfit met X als onafhankelijke variabele en Y als afhankelijke variabele
+    A, B = np.polyfit(X, Y, 1)  # Lineaire fit om de relatie Y = AX + B te vinden
+
     return A, B
+
 
 def verifieer_calibratie(calibratie_data, A, B, aantal_stappen, stap_grootte):
     print("Begin verificatie van de kalibratie...")
@@ -348,12 +356,27 @@ def verifieer_calibratie(calibratie_data, A, B, aantal_stappen, stap_grootte):
         fout = abs(verwachte_waarde - gemiddelde_gewicht)
         print(f"Verificatie Stap {stap + 1}: Gemeten gewicht = {gemiddelde_gewicht}, Verwachte gewicht = {verwachte_waarde}, Fout = {fout}")
 
+
+@eel.expose
+def reset_kalibratie():
+    global calibratie_data, gewichtBevestigingStatus
+
+    # Reset de kalibratiedata
+    calibratie_data = []
+
+    # Reset de status voor gewichtbevestiging
+    gewichtBevestigingStatus = False
+
+    print("Kalibratie is gereset.")
+
+
 @eel.expose
 def start_kalibratie(aantal_stappen, stap_grootte):
-    print("DEBUG: Start kalibratieproces.")
+    print("DEBUG: Start kalibratieproces.") 
     calibratie_data = calibratie_proces(aantal_stappen, stap_grootte)
     A, B = bereken_kalibratielijn(calibratie_data)
     print("DEBUG: Kalibratie voltooid, data terugsturen naar JavaScript.")
+    reset_kalibratie()
     return calibratie_data, A, B
 
 
