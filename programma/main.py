@@ -33,8 +33,9 @@ write_lock = Lock()
 opslag_pad = os.getcwd()
 
 # Globale variabelen voor sensorinstellingen
-sensor_scalar = 1232 # 2kg 
-sensor_unit_factor = 0.000001
+sensor_scalar = 0.0004464929699072973
+sensor_offset = 0.024420988329516415
+sensor_unit_factor = 1
 sensor_eenheid = "G"
 
 # Globale variabelen voor starttijd
@@ -127,18 +128,19 @@ def cleanup_csv(csv_path, start_sec=1, rows_back=10):
 
 
 @eel.expose
-def update_sensor_instellingen(scalar, eenheid): # Functie om de sensorinstellingen te updaten vanuit JS naar Python
-    global sensor_scalar, sensor_unit_factor, sensor_eenheid
+def update_sensor_instellingen(scalar, offset, eenheid): # Functie om de sensorinstellingen te updaten vanuit JS naar Python
+    global sensor_scalar, sensor_offset, sensor_unit_factor, sensor_eenheid
     print(f"update_sensor_instellingen aangeroepen met scalar: {scalar}, eenheid: {eenheid}")
 
     try:
         sensor_scalar = float(scalar)
+        sensor_offset = float(offset)
 
         if eenheid == "gram":
-            sensor_unit_factor = 0.000001
+            sensor_unit_factor = 1
             sensor_eenheid = "G"
         elif eenheid == "newton":
-            sensor_unit_factor = 0.00000981
+            sensor_unit_factor = 9.81
             sensor_eenheid = "N"
         return True
     except Exception as e:
@@ -152,7 +154,7 @@ def set_map_pad(pad): # Functie om de map pad te updaten vanuit JS naar Python
     opslag_pad = pad   
 
 
-def format_data(raw_data, scalar=sensor_scalar, offset=0.0, unit_factor=sensor_unit_factor, precision=2): # Functie om de data te kalibreren en te formatteren
+def format_data(raw_data, scalar=sensor_scalar, offset=sensor_offset, unit_factor=sensor_unit_factor, precision=2): # Functie om de data te kalibreren en te formatteren
     """
     Kalibreert en formateert de ruwe data van de sensor.
 
@@ -166,9 +168,11 @@ def format_data(raw_data, scalar=sensor_scalar, offset=0.0, unit_factor=sensor_u
     try:
         # Converteer de ruwe data naar een float
         value = float(raw_data)
+        A = float(scalar)
+        B = float(offset)
 
         # Pas kalibratie toe
-        calibrated_value = (value - offset) * scalar
+        calibrated_value = A * value + B
 
         # Converteer naar de gewenste eenheid
         unit_converted_value = calibrated_value * unit_factor
@@ -272,122 +276,6 @@ def stop_test():  # Functie om de test te stoppen
         print("Test gestopt, CSV-bestand opgeschoond en gesloten")
     else:
         print("Geen actieve test om te stoppen")
-    
-
-def read_serial_data_for_calibration():
-    global serial_instance
-    try:
-        if serial_instance.in_waiting > 0:
-            data = serial_instance.readline().decode().strip()
-            parts = data.split(',')
-            if len(parts) == 3:
-                weight, _, _ = parts  # Negeer de hoekmetingen voor kalibratie
-                return float(weight)  # Converteer de gewichtsdata naar een float
-    except ValueError as e:
-        print(f"Fout bij het converteren van data naar float: {e}")
-    return None  # Retourneer None als er geen geldige data is of bij een fout
-
-
-@eel.expose
-def gewicht_plaatsing_bevestigen():
-    global gewichtBevestigingStatus
-    gewichtBevestigingStatus = True
-
-def wacht_op_bevestiging():
-    global gewichtBevestigingStatus
-    while not gewichtBevestigingStatus:
-        eel.sleep(1)  # Wacht 1 seconde voordat opnieuw gecontroleerd wordt
-    print("Gewicht plaatsing is bevestigd.")
-    gewichtBevestigingStatus = False  # Reset de status voor de volgende ronde
-
-
-def meet_gemiddelde_voor_stap(aantal_metingen=5):
-    metingen = []
-    for _ in range(aantal_metingen):
-        gewicht = read_serial_data_for_calibration()
-        if gewicht is not None:
-            metingen.append(gewicht)
-        else:
-            print("Geen gewicht gedetecteerd, zorg ervoor dat de sensor correct is aangesloten.")
-    return sum(metingen) / len(metingen) if metingen else 0
-
-def calibratie_proces(aantal_stappen, stap_grootte):
-    aantal_stappen = int(aantal_stappen)
-    stap_grootte = int(stap_grootte)
-    
-    calibratie_data = []
-    for stap in range(aantal_stappen):
-        gewicht_stap = stap * stap_grootte
-        
-        # Stuur instructies naar de webinterface en wacht op bevestiging
-        print(f"Plaats {gewicht_stap} gram en bevestig om door te gaan...")
-        eel.toonKalibratieStapModal(f"Plaats {gewicht_stap} gram en bevestig om door te gaan...")()
-        wacht_op_bevestiging()
-
-        # Voer 5 metingen uit en bereken het gemiddelde
-        gemiddelde_gewicht = meet_gemiddelde_voor_stap(20)
-        calibratie_data.append((gewicht_stap, gemiddelde_gewicht))
-        print(f"Stap {stap + 1}: Gemiddelde gewicht = {gemiddelde_gewicht} voor {gewicht_stap} gram")
-    
-    return calibratie_data
-
-def bereken_kalibratielijn(calibratie_data):
-    """
-    Bereken de kalibratielijn waarbij Y het gewicht is en X de sensor meting.
-    calibratie_data bevat paren van (sensor meting, gewicht).
-    """
-    # X is de sensor meting, Y is het gewicht.
-    X = np.array([data[0] for data in calibratie_data])  # Sensor metingen
-    Y = np.array([data[1] for data in calibratie_data])  # Gewichten
-
-    # Gebruik polyfit met X als onafhankelijke variabele en Y als afhankelijke variabele
-    A, B = np.polyfit(X, Y, 1)  # Lineaire fit om de relatie Y = AX + B te vinden
-
-    return A, B
-
-
-def verifieer_calibratie(calibratie_data, A, B, aantal_stappen, stap_grootte):
-    print("Begin verificatie van de kalibratie...")
-    for stap in range(aantal_stappen):  # Verifieer door gewichten te verwijderen
-        gewicht_stap = (aantal_stappen - stap - 1) * stap_grootte
-        input(f"Verwijder om naar {gewicht_stap} gram te gaan en druk op Enter om door te gaan...")
-        gemiddelde_gewicht = meet_gemiddelde_voor_stap()
-        verwachte_waarde = A * gewicht_stap + B
-        fout = abs(verwachte_waarde - gemiddelde_gewicht)
-        print(f"Verificatie Stap {stap + 1}: Gemeten gewicht = {gemiddelde_gewicht}, Verwachte gewicht = {verwachte_waarde}, Fout = {fout}")
-
-
-@eel.expose
-def reset_kalibratie():
-    global calibratie_data, gewichtBevestigingStatus
-
-    # Reset de kalibratiedata
-    calibratie_data = []
-
-    # Reset de status voor gewichtbevestiging
-    gewichtBevestigingStatus = False
-
-    print("Kalibratie is gereset.")
-
-
-@eel.expose
-def start_kalibratie(aantal_stappen, stap_grootte):
-    print("DEBUG: Start kalibratieproces.") 
-    calibratie_data = calibratie_proces(aantal_stappen, stap_grootte)
-    A, B = bereken_kalibratielijn(calibratie_data)
-    print("DEBUG: Kalibratie voltooid, data terugsturen naar JavaScript.")
-    reset_kalibratie()
-    return calibratie_data, A, B
-
-
-
-
-
-
-
-
-
-
 
 
 def close_callback(route, websockets): # Functie om de websocket verbinding te sluiten
