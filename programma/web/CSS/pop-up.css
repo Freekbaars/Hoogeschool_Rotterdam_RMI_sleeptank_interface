@@ -7,7 +7,7 @@
     width: 100%;
     height: 100%;
     overflow: auto; 
-    background-color: rgba(126, 90, 232, 0.211); 
+    background-color:var(--secondary-focus); 
 }
 .modal-content {
     background-color: var(--secondary);
