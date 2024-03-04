@@ -1,6 +1,6 @@
 # author: Freek Baars
-# date: 19-01-2024
-# version: 1.1.0
+# date: 4-03-2024
+# version: 1.2.0
 # python 3.12.1
 
 import eel                     # Importeert de eel module om de webserver te starten
@@ -12,7 +12,7 @@ import time                    # Importeert de time module om de tijd te meten
 import csv                     # Importeert de csv module om de data op te slaan in een CSV bestand
 import os                      # Importeert de os module om de map pad te bepalen
 import numpy as np
-import json
+
 
 
 eel.init('programma/web') # Initialiseert de webserver
@@ -36,32 +36,13 @@ opslag_pad = os.getcwd()
 
 
 # Globale variabelen voor sensorinstellingen
+sensor_scalar = 0.0008445028583528493
+sensor_offset = -9.291104439186581
 sensor_unit_factor = 1
 sensor_eenheid = "G"
 
 # Globale variabelen voor starttijd
 start_tijd = None
-
-
-def load_sensor_config():
-    config_path = os.path.join(os.path.dirname(__file__), 'sensor_config.json')
-    try:
-        with open(config_path, 'r') as file:
-            config = json.load(file)
-            return config
-    except FileNotFoundError:
-        print("Configuratiebestand niet gevonden.")
-        return None
-    
-config = load_sensor_config()
-if config is not None:
-    sensor_scalar = config["sensor_scalar"]
-    sensor_offset = config["sensor_offset"]
-    print(f"Scalar: {sensor_scalar}, Offset: {sensor_offset}")
-else:
-    # Standaardwaarden of foutafhandeling
-    sensor_scalar = 1.0
-    sensor_offset = 0.0    
 
 
 
@@ -91,16 +72,6 @@ def read_serial_data(): # Functie om de seriële data uit te lezen
                     if csv_writer is not None:
                         csv_writer.writerow([verstreken_tijd_str, calibrated_Force, angle_x, angle_y])
 
-
-def format_data(raw_data, precision=2): # Functie om de Force data te kalibreren en te formatteren
-    global sensor_scalar, sensor_unit_factor
-    try:
-        value = float(raw_data)
-        calibrated_value = value * sensor_scalar
-        unit_converted_value = calibrated_value * sensor_unit_factor
-        return round(unit_converted_value, precision)
-    except ValueError:
-        return None
 
 
 def create_unique_filename(base_path, base_name): # Functie om een unieke bestandsnaam te genereren als de gebruiker geen bestandsnaam opgeeft die al gebruikt is
@@ -151,20 +122,18 @@ def cleanup_csv(csv_path, start_sec=1, rows_back=10):
 
 
 @eel.expose
-def update_sensor_instellingen(scalar, offset, eenheid): # Functie om de sensorinstellingen te updaten vanuit JS naar Python
+def update_sensor_instellingen(scalar, offset, eenheid):
     global sensor_scalar, sensor_offset, sensor_unit_factor, sensor_eenheid
-    print(f"update_sensor_instellingen aangeroepen met scalar: {scalar}, eenheid: {eenheid}")
-
     try:
         sensor_scalar = float(scalar)
         sensor_offset = float(offset)
-
         if eenheid == "gram":
             sensor_unit_factor = 1
             sensor_eenheid = "G"
         elif eenheid == "newton":
             sensor_unit_factor = 9.81
             sensor_eenheid = "N"
+        print(f"Instellingen bijgewerkt: scalar={sensor_scalar}, offset={sensor_offset}, eenheid={sensor_eenheid}, factor={sensor_unit_factor}")
         return True
     except Exception as e:
         print(f"Fout in update_sensor_instellingen: {e}")
@@ -177,28 +146,24 @@ def set_map_pad(pad): # Functie om de map pad te updaten vanuit JS naar Python
     opslag_pad = pad   
 
 
-def format_data(raw_data, scalar=sensor_scalar, offset=sensor_offset, unit_factor=sensor_unit_factor, precision=2): # Functie om de data te kalibreren en te formatteren
+def format_data(raw_data, precision=2):
     """
     Kalibreert en formateert de ruwe data van de sensor.
 
     :param raw_data: De ruwe data van de sensor als een string.
-    :param scalar: De kalibratiefactor voor de sensor.
-    :param offset: De offsetwaarde voor nul kalibratie.
-    :param unit_factor: De factor om de eenheid te converteren (bijv. van gram naar kilogram).
     :param precision: Het aantal decimalen voor afronding.
     :return: De gekalibreerde en geformatteerde waarde.
     """
+    global sensor_scalar, sensor_offset, sensor_unit_factor
     try:
         # Converteer de ruwe data naar een float
         value = float(raw_data)
-        A = float(scalar)
-        B = float(offset)
 
-        # Pas kalibratie toe
-        calibrated_value = A * value + B
+        # Pas kalibratie toe met de meest recente globale instellingen
+        calibrated_value = sensor_scalar * value + sensor_offset
 
         # Converteer naar de gewenste eenheid
-        unit_converted_value = calibrated_value * unit_factor
+        unit_converted_value = calibrated_value * sensor_unit_factor
 
         # Rond af tot de gewenste precisie
         return round(unit_converted_value, precision)
