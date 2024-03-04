@@ -29,6 +29,7 @@ gewichtBevestigingStatus = False
 
 # Globale variabelen voor de CSV 
 csv_bestandsnaam = "default_bestandsnaam"
+unique_csv_bestandsnaam = ""
 csv_writer = None
 csv_file = None
 write_lock = Lock()
@@ -226,7 +227,7 @@ def set_csv_bestandsnaam(bestandsnaam): # Functie om de CSV bestandsnaam te upda
 
 @eel.expose
 def start_test(): # Functie om de test te starten
-    global is_test_running, csv_bestandsnaam, csv_file, csv_writer, start_tijd, sensor_eenheid, opslag_pad
+    global is_test_running, csv_bestandsnaam, csv_file, csv_writer, start_tijd, sensor_eenheid, opslag_pad, unique_csv_bestandsnaam
     if not is_test_running:
         # Als opslag_pad niet is ingesteld, gebruik de huidige werkmap
         if not opslag_pad:
@@ -253,14 +254,14 @@ def start_test(): # Functie om de test te starten
 
 @eel.expose
 def stop_test():  # Functie om de test te stoppen
-    global is_test_running, csv_file, csv_bestandsnaam, latest_force_reading
+    global is_test_running, csv_file, unique_csv_bestandsnaam, latest_force_reading
     if is_test_running:
         is_test_running = False
         latest_force_reading = None  # Reset de laatste krachtmeting
         if csv_file:
             csv_file.close()
             csv_file = None  # Reset csv_file na sluiting
-            cleanup_csv(csv_bestandsnaam)  # Roep cleanup_csv aan met het pad naar het CSV-bestand
+            cleanup_csv(unique_csv_bestandsnaam)  # Roep cleanup_csv aan met het pad naar het CSV-bestand
         print("Test gestopt, CSV-bestand opgeschoond en gesloten")
     else:
         print("Geen actieve test om te stoppen")
