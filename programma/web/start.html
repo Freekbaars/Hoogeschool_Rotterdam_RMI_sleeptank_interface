@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="CSS/index.css">
+    <link rel="stylesheet" href="CSS/pop-up.css">
+    <link rel="stylesheet" href="CSS/start.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>sleep tank</title>
+  </head>
+  <body>
+
+    <div id="comPortModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-text">Selecteer een COM-poort</h2>
+        <select class="dropdown" id="serial-ports-dropdown"></select>
+        <button class="button--submit" onclick="selectAndOpenPort()">Selecteer en Open Poort</button>
+      </div>
+    </div>
+    
+    <div class="menu">
+      <button class="menu-button" onclick="laadPagina('test.html')">
+        <div class="menu-button-image">
+          <img src="img/afbilding sleeptest.png" alt="Test 1 Logo">
+        </div>
+        <div class="menu-button-text"><h2>Sleeptest</h2></div>
+      </button>
+
+      <button class="menu-button" onclick="laadPagina('kalibratie.html')">
+        <div class="menu-button-image">
+          <img src="img/kalibratie.png" alt="Test 1 Logo">
+        </div>
+        <div class="menu-button-text"><h2>kalibratie WIP</h2></div>
+      </button>
+
+    </div>
+    
+  </body>
+
+  <script type="text/javascript" src="/eel.js"></script>
+  <script src="JS/laadPagina.js"></script>
+  <script src="JS/kalibratie.js"></script>
+  <script src="JS/serialPort.js"></script>
+  <script src="JS/comPortModal.js"></script>
+  <script src="JS/fileManagement.js"></script>
+  <script src="JS/sensorSettings.js"></script>
+  <script src="JS/chartManagement.js"></script>
+  <script src="JS/testControl.js"></script>
+  <script src="JS/script.js"></script>
+
+</html>

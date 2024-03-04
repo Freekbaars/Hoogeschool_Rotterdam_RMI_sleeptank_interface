@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Sleeptank Dachboard</title>
+  <link rel="stylesheet" href="CSS/ROOT.css">
+  <link rel="stylesheet" href="CSS/standaard.css">
+  <link rel="stylesheet" href="CSS/style.css">
+  <link rel="stylesheet" href="CSS/zijmenu.css">
+  <link rel="stylesheet" href="CSS/pop-up.css">
+  <link rel="stylesheet" href="CSS/Kalibratie.css">
+  <meta name="description" content="Dachboard">
+  </meta>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  </meta>
+  <script type="text/javascript" src="/eel.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <button onclick="laadPagina('start.html')" class="home-button">
+    <i class="fa fa-home"></i>
+    Home
+  </button>
+
+  <div class="container">
+    <header>
+      <img class="logo" src="img/logo.png" alt="logo">
+      <nav>
+        <ul class="nav_links">
+
+          <li><button class="btn_start" onclick="startKalibratie()">start Kalibratie</button></li>
+        </ul>
+      </nav>
+    </header>
+  </div>
+
+  <!-- Kalibratie Parameters Modal -->
+  <div id="kalibratieModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Voer kalibratieparameters in</h2>
+      <label for="gewicht">Gewicht (gram):</label>
+      <input type="number" id="gewicht" name="gewicht"><br><br>
+      <label for="stappen">Aantal stappen:</label>
+      <input type="number" id="stappen" name="stappen"><br><br>
+      <button onclick="startKalibratieProces()">Start Kalibratie</button>
+    </div>
+  </div>
+
+  <!-- Kalibratie Stap Modal -->
+  <div id="kalibratieStapModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="sluitKalibratieStapModal()">&times;</span>
+      <h2>Kalibratie Stap</h2>
+      <p id="kalibratieStapTekst">Plaats nu het gewicht op de weegschaal.</p>
+      <button onclick="bevestigKalibratieStap()">Bevestig</button>
+    </div>
+  </div>
+
+  <div class="uitleg-text">
+    <h1>Uitleg</h1>
+    <h4>in deze module worden de omreken warede en de ofset bepaald voor de loadcel</h4>
+  </div>
+
+  <div id="kalibratie-grafiek-container">
+    <canvas id="Kalibratie_Chart"></canvas>
+  </div>
+
+</body>
+
+<script src="JS/laadPagina.js"></script>
+<script src="JS/serialPort.js"></script>
+<script src="JS/comPortModal.js"></script>
+<script src="JS/kalibratie.js"></script>
+<script src="JS/fileManagement.js"></script>
+<script src="JS/sensorSettings.js"></script>
+<script src="JS/chartManagement.js"></script>
+<script src="JS/testControl.js"></script>
+<script src="JS/script.js"></script>
+
+</html>

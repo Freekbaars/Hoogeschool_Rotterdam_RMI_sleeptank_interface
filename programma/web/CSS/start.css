@@ -1,0 +1,69 @@
+:root {
+    --button-size: 200px
+}
+
+body {
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.menu {
+  width: 100%;
+  display: flex; /* of 'block' afhankelijk van hoe je de knoppen wilt tonen */
+  justify-content: center; /* Dit centreert de knoppen horizontaal */
+  align-items: center; /* Dit centreert de knoppen verticaal (indien nodig) */
+  gap: 20px; /* Spacing between buttons */
+}
+
+.menu-button {
+  position: relative; /* Needed to position the logo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--button-size);
+  height: var(--button-size);
+  background-color: var(--secondary);
+  color: var(--h1-color);
+  border: none;
+  border-radius: var(--standaard-radius);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  text-align: center;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+}
+
+.menu-button:hover {
+  background-color: var(--secondary-hover);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.menu-button:active {
+  background-color: var(--secondary-hover);
+}
+
+
+.menu-button-image img {
+  max-width: 90%; /* Allows the image to be as wide as its container */
+  height: auto; /* Keeps the image's aspect ratio */
+}
+
+.menu-button-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 33%; /* Matches the bottom space of .menu-button-image */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}

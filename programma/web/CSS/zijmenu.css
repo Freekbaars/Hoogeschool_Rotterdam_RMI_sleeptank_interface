@@ -1,0 +1,91 @@
+/* Zijmenu stijlen */
+.zijmenu {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+}
+  
+.zijmenu-open {
+  width: 300px;
+}
+
+.zijmenu-toggle {
+  background-color: var(--secondary);
+  border: var(--secondary);
+  color: white;
+  box-shadow: var(--button-box-shadow, 0 0 0 rgba(0, 0, 0, 0));
+  border-radius: var(--standaard-radius-button);
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.zijmenu-toggle:hover {
+  background-color: var(--primary-hover);
+}
+
+
+.zijmenu h2, .zijmenu h4{
+  color: white;
+  padding: 6px 16px;
+}
+
+.zijmenu h4 {
+  color: rgba(255, 255, 255, 0.482);
+}
+
+.zijmenu h5 {
+    color: rgb(255, 0, 0);
+    padding: 0px 16px
+}
+
+.zijmenu input, .zijmenu select, .zijmenu button {
+  padding: 6px 16px;
+  margin: 10px;
+  width: 90%;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+/* marge tussen stukken van zijmenu */
+#output-bestand, #sensor-instellingen  {
+  margin-bottom: 120px;
+}
+
+
+
+/* output bestand */ 
+
+.input {
+  min-height: 20px;
+  max-width: 200px;
+  padding: 0 1rem;
+  color: #fff;
+  font-size: 15px;
+  border: 1px solid #5e4dcd;
+  border-radius: 6px;
+  background-color: transparent;
+}
+
+
+.input:focus, .input:focus-visible {
+  border-color: #3898EC;
+  outline: none;
+}
+
+.input:hover, .input:focus-visible {
+  border-color: #47ec38;
+  outline: none;
+}

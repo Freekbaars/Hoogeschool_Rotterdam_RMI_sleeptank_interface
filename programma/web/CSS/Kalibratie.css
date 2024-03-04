@@ -1,0 +1,24 @@
+body {
+    background-color: var(--background-color);
+  }
+
+.uitleg-text {
+    height: 200px;
+    width: 200px;
+    background-color: var(--secondary);
+    border-radius: var(--standaard-radius);
+}
+.uitleg-text h1 {
+    color: var(--h1-color);
+    padding: 10px;
+}
+
+.uitleg-text h4 {
+    color: var(--h4-color);
+    padding: 10px;
+}
+/*grafiek*/
+#kalibratie-grafiek-container {
+    height: 500px;
+    width: 500px;
+}

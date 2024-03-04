@@ -1,0 +1,74 @@
+.h1 {
+    color: var(--h1-color);
+}
+
+.h2 {
+    color: var(--h2-color);
+}
+
+.h3 {
+    color: var(--h3-color);
+}
+
+.h4 {
+    color: var(--h5-color);
+}
+
+.h5 {
+    color: var(--text-color);
+}
+
+
+.button--submit {
+    min-height: 20px;
+    padding: .5em 0.5em;
+    border: none;
+    border-radius: var(--standaard-radius-button);
+    background-color: #5e4dcd;
+    color: var(--text-color);
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color .3s ease-in-out;
+}
+  
+.button--submit:hover {
+    background-color: rgba(44, 232, 31, 0.873);
+}
+
+
+.dropdown {
+    max-width: 300px;
+    padding: 0.5rem 0.5rem;
+    border: 1px solid #5e4dcd;
+    border-radius: var(--standaard-radius-button);
+    background-color: transparent;
+    color: var(--text-color);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.dropdown:hover {
+    border: 1px solid #b3ff00;
+}
+
+.dropdown option {
+    color: rgb(0, 0, 0);
+}
+
+.home-button {
+    background-color: var(--secondary);
+  border: var(--secondary);
+  color: white;
+  box-shadow: var(--button-box-shadow, 0 0 0 rgba(0, 0, 0, 0));
+  border-radius: var(--standaard-radius-button);
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.home-button:hover {
+    background-color: var(--primary-hover);
+}
