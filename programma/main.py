@@ -12,6 +12,8 @@ import time                    # Importeert de time module om de tijd te meten
 import csv                     # Importeert de csv module om de data op te slaan in een CSV bestand
 import os                      # Importeert de os module om de map pad te bepalen
 import numpy as np
+import json
+
 
 eel.init('programma/web') # Initialiseert de webserver
 
@@ -32,14 +34,35 @@ csv_file = None
 write_lock = Lock()
 opslag_pad = os.getcwd()
 
+
 # Globale variabelen voor sensorinstellingen
-sensor_scalar = 0.0004464929699072973
-sensor_offset = 0.024420988329516415
 sensor_unit_factor = 1
 sensor_eenheid = "G"
 
 # Globale variabelen voor starttijd
 start_tijd = None
+
+
+def load_sensor_config():
+    config_path = os.path.join(os.path.dirname(__file__), 'sensor_config.json')
+    try:
+        with open(config_path, 'r') as file:
+            config = json.load(file)
+            return config
+    except FileNotFoundError:
+        print("Configuratiebestand niet gevonden.")
+        return None
+    
+config = load_sensor_config()
+if config is not None:
+    sensor_scalar = config["sensor_scalar"]
+    sensor_offset = config["sensor_offset"]
+    print(f"Scalar: {sensor_scalar}, Offset: {sensor_offset}")
+else:
+    # Standaardwaarden of foutafhandeling
+    sensor_scalar = 1.0
+    sensor_offset = 0.0    
+
 
 
 def read_serial_data(): # Functie om de seriële data uit te lezen
