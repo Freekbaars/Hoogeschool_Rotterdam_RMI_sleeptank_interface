@@ -28,11 +28,9 @@ Om de interface te gebruiken moet je de volgende stappen volgen:
 10. geef de test een nieuwe naam
 
 ## TODO
-- [X] back to main menu button
-- [X] calibrate interface maken en implementeren
-- [ ] controle van de functie (fout in berekenen lijn)
-- [ ] kalibratie niet acuraat genoeg vertraging in hetverwerken van de data
 - [ ] kalibratie warden laten zien in de interface
+- [ ] .json file voor instelingen
+- [ ] controleeren van alles 
  
 ## build comando
 python to exe
