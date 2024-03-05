@@ -8,7 +8,7 @@ async function startTest() {
         updateInterval = setInterval(() => {
             updateGewichtsGrafiek();
             updateGyroGrafiek();
-        }, 1000); // Zet de interval om de grafieken elke  seconde te updaten
+        }, 100); // Zet de interval om de grafieken elke  seconde te updaten
     } else {
         alert('Voer een geldige bestandsnaam in en bevestig.');
     }
