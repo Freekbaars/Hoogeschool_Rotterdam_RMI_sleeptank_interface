@@ -19,6 +19,9 @@ function stopTest() {
     eel.stop_test()();
     isTestActief = false;
     clearInterval(updateInterval);
+}
+
+function grafiekLatenStaan() {
     resetGrafiek(gewichtsChart);
     resetGrafiek(gyroChart);
 }
