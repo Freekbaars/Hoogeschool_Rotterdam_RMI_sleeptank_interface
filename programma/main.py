@@ -37,10 +37,10 @@ opslag_pad = os.getcwd()
 
 
 # Globale variabelen voor sensorinstellingen
-sensor_scalar = 0.0008445028583528493
-sensor_offset = -9.291104439186581
-sensor_unit_factor = 1
-sensor_eenheid = "G"
+sensor_scalar = 0.00044721445660144023
+sensor_offset = -0.3352244076764338
+sensor_unit_factor = 9.81/1000
+sensor_eenheid = "N"
 
 # Globale variabelen voor starttijd
 start_tijd = None
@@ -132,7 +132,7 @@ def update_sensor_instellingen(scalar, offset, eenheid):
             sensor_unit_factor = 1
             sensor_eenheid = "G"
         elif eenheid == "newton":
-            sensor_unit_factor = 9.81
+            sensor_unit_factor = 9.81/1000
             sensor_eenheid = "N"
         print(f"Instellingen bijgewerkt: scalar={sensor_scalar}, offset={sensor_offset}, eenheid={sensor_eenheid}, factor={sensor_unit_factor}")
         return True
