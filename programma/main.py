@@ -2,6 +2,19 @@
 # date: 4-03-2024
 # version: 1.2.0
 # python 3.12.1
+#
+#    Copyright (C) <2024>  <Freek Baars>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
 
 import eel                     # Importeert de eel module om de webserver te starten
 import serial.tools.list_ports # Importeert de serial module om de seriële poorten op te halen
@@ -15,7 +28,7 @@ import numpy as np
 
 
 
-eel.init('programma/web') # Initialiseert de webserver
+eel.init('web') # Initialiseert de webserver
 
 # Globale variabelen
 latest_Force = None
