@@ -99,7 +99,7 @@ def main():
     aantal_stappen, stap_grootte = vraag_stappen_en_grootte()
     calibratie_data = calibratie_proces(aantal_stappen, stap_grootte)
     A, B = bereken_kalibratielijn(calibratie_data)
-    print(f"Kalibratie voltooid: A = {A}, B = {B}")
+    print(f"Kalibratie voltooid: sensor_scalar = {A}, sensor_offset = {B}")
     
     stop_data_thread()  # Stop de dataleesthread
     thread.join()  # Wacht tot de thread volledig is gestopt
